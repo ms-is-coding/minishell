@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 12:06:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:53:10 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,7 +398,8 @@ static void	sh_destroy(t_shell *sh)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell		*sh = &g_sh;
-	t_result	result;
+	t_argument	*arg;
+	int			exit_code;
 
 	if (arguments_init(&sh->args, argc, argv) != RESULT_OK
 		|| environment_init(&sh->env, envp) != RESULT_OK
@@ -411,14 +412,10 @@ int	main(int argc, char **argv, char **envp)
 	sh->prev_fd = 0;
 	sh->pipefd[0] = 0;
 	sh->pipefd[1] = 1;
-	auto t_argument * arg = arguments_find_short(&sh->args, 'c');
+	arg = arguments_find_short(&sh->args, 'c');
 	if (arg && arg->is_set)
-	{
-		result = parser_parse(&sh->parser, arg->value);
-		if (result == RESULT_OK)
-			vm_run(&sh->parser.chunk);
-		return (0);
-	}
-	repl(sh);
-	return (0);
+		exit_code = command(&sh, arg);
+	else
+		exit_code = repl(sh);
+	return (exit_code);
 }
