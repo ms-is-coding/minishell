@@ -6,14 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:01:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 13:53:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:56:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLI_H
 # define CLI_H
 
-#include "common.h"
+# include "common.h"
 # include "libft.h"
 # include <stdbool.h>
 

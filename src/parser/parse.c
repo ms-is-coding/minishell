@@ -6,12 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 00:30:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:00:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "parser.h"
+#include "parser/parser.h"
 #include "token.h"
 
 t_result	parse_error(t_parser *p, t_token token)
@@ -23,7 +23,7 @@ t_result	parse_error(t_parser *p, t_token token)
 
 t_result	parse_pipe(t_parser *p, t_token token)
 {
-	p->chunk.data[p->chunk.len - 1] = OP_PIPE;
+	p->program.data[p->program.len - 1] = OP_PIPE;
 	return (parser_parse_expr(p, parser_get_rule(token.type).precedence));
 }
 
@@ -40,6 +40,6 @@ t_result	parser_parse(t_parser *p, char *line)
 		if (result != RESULT_OK)
 			return (result);
 	}
-	chunk_write_u8(&p->chunk, OP_WAIT);
+	program_write_u8(&p->program, OP_WAIT);
 	return (RESULT_OK);
 }

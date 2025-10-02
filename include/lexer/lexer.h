@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 22:26:53 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:26 by smamalig         ###   ########.fr       */
+/*   Created: 2025/07/03 22:25:32 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/02 16:56:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser/parser.h"
+#ifndef LEXER_H
+# define LEXER_H
 
-t_result	parser_init(t_parser *p, t_lexer *lexer)
+# include "token.h"
+# include "libft.h"
+# include <stdbool.h>
+
+typedef struct s_lexer
 {
-	p->lexer = lexer;
-	p->curr_token = (t_token){0};
-	p->prev_token = (t_token){0};
-	p->program.len = 0;
-	p->in_cmd = false;
-	return (RESULT_OK);
-}
+	char	*input;
+	int		i;
+	int		col;
+	int		row;
+	int		len;
+	int		fd;
+}	t_lexer;
+
+t_result	lexer_init(t_lexer *lexer, char *line);
+
+t_token		lexer_advance(t_lexer *lexer);
+void		print_token(t_token token);
+
+#endif

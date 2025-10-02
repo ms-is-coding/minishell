@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 15:08:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:37:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_result	cli_parse(t_cli *cli, int argc, char **argv)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	while (++i < argc)
 	{
 		if (argv[i][0] != '-'

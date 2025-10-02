@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:15:20 by smamalig          #+#    #+#             */
-/*   Updated: 2025/08/22 18:17:48 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:00:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parser/parser.h"
 
 void	parser_advance(t_parser *p)
 {

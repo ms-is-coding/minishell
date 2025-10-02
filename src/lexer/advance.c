@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/01 21:57:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:59:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "lexer/lexer_internal.h"
 
 static t_lex_fn	get_fn(int idx)
 {
@@ -30,9 +30,9 @@ static t_lex_fn	get_fn(int idx)
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
 		lex_error, lex_error, lex_error, lex_word, lex_word, lex_word, lex_word,
-		lex_letter_e, lex_word, lex_word, lex_word, lex_letter_i, lex_word,
+		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_letter_t, lex_word, lex_word, lex_letter_w,
+		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_error, lex_pipe, lex_error,
 		lex_word, lex_error}[idx]);
 }

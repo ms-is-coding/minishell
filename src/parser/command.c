@@ -6,25 +6,25 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:10:56 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 00:32:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:01:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parser/parser.h"
 
 t_result	parse_command(t_parser *p, t_token token)
 {
 	if (p->in_cmd)
 	{
-		chunk_write_u8(&p->chunk, OP_ARG);
-		chunk_write_u8(&p->chunk, (unsigned char)token.pos.len);
-		chunk_write_str(&p->chunk, p->lexer->input + token.pos.start,
+		program_write_u8(&p->program, OP_ARG);
+		program_write_u8(&p->program, (unsigned char)token.pos.len);
+		program_write_str(&p->program, p->lexer->input + token.pos.start,
 			token.pos.len);
 		return (RESULT_OK);
 	}
-	chunk_write_u8(&p->chunk, OP_COMMAND);
-	chunk_write_u8(&p->chunk, (unsigned char)token.pos.len);
-	chunk_write_str(&p->chunk, p->lexer->input + token.pos.start,
+	program_write_u8(&p->program, OP_CMD);
+	program_write_u8(&p->program, (unsigned char)token.pos.len);
+	program_write_str(&p->program, p->lexer->input + token.pos.start,
 		token.pos.len);
 	while (p->curr_token.type == TOK_WORD
 		|| p->curr_token.type == TOK_REDIR_OUT)
@@ -33,7 +33,7 @@ t_result	parse_command(t_parser *p, t_token token)
 		if (parser_parse_expr(p, PREC_REDIR) != RESULT_OK)
 			return (RESULT_ERROR);
 	}
-	chunk_write_u8(&p->chunk, OP_EXEC);
+	program_write_u8(&p->program, OP_EXE);
 	p->in_cmd = false;
 	return (RESULT_OK);
 }

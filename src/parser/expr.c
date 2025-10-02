@@ -6,11 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 13:18:36 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/02 17:01:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parser/parser.h"
 #include "ansi.h"
 
 static void	repeat(char *s, int count)

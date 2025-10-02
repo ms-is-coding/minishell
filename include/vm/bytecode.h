@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/22 15:07:16 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/01 21:53:21 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/02 16:26:44 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/02 16:29:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stddef.h>
 # include <stdint.h>
+
 # include "libft.h"
 
 # define MAX_CHUNK 0x10000
@@ -22,28 +23,29 @@
 typedef enum e_opcode
 {
 	OP_NULL,
-	OP_COMMAND,
-	OP_EXEC,
+	OP_CMD,
+	OP_EXE,
 	OP_ARG,
-	OP_FILENAME,
+	OP_FNAME,
 	OP_PIPE,
-	OP_BACKGROUND,
-	OP_REDIR_OUT,
-	OP_REDIR_IN,
+	OP_BG,
+	OP_OUT,
+	OP_IN,
 	OP_JZ,
 	OP_JNZ,
 	OP_WAIT,
-	OP_COUNT,
+	OP_COUNT
 }	t_opcode;
 
-typedef struct s_chunk
+typedef struct s_program
 {
 	uint8_t	data[MAX_CHUNK];
 	size_t	len;
-}	t_chunk;
+	size_t	pc;
+}	t_program;
 
-t_result	chunk_write_u8(t_chunk *chunk, uint8_t data);
-t_result	chunk_write_i32(t_chunk *chunk, int32_t data);
-t_result	chunk_write_str(t_chunk *chunk, const char *data, size_t len);
+t_result	program_write_u8(t_program *program, uint8_t data);
+t_result	program_write_i32(t_program *program, int32_t data);
+t_result	program_write_str(t_program *program, const char *data, size_t len);
 
-#endif
+#endif // BYTECODE_H

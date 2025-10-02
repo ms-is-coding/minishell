@@ -6,23 +6,23 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 01:00:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:00:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "lexer.h"
+# include "lexer/lexer.h"
 # include "libft.h"
 # include "token.h"
-# include "bytecode.h"
+# include "vm/bytecode.h"
 # include <stdbool.h>
 
 typedef struct s_parser
 {
 	t_lexer		*lexer;
-	t_chunk		chunk;
+	t_program	program;
 
 	t_token		curr_token;
 	t_token		prev_token;

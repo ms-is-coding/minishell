@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:02:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/01 21:59:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:59:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "lexer/lexer_internal.h"
 #include "token.h"
 #include <limits.h>
 #include <stdbool.h>

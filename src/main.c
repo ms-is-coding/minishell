@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 13:45:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:05:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 #include "ansi.h"
 #include "cli/cli.h"
 #include "builtins.h"
-#include "environment.h"
+#include "environ/environ.h"
 #include "libft.h"
-#include "parser.h"
+#include "parser/parser.h"
 #include "shell.h"
 
 #define MAX_OFFSET 16
@@ -86,14 +86,14 @@ static t_builtin_fn	find_builtin(char *arg)
 	return (NULL);
 }
 
-static void print_bytes(int bytes, t_chunk *chunk, size_t *offset, const char *desc)
+static void print_bytes(int bytes, t_program *program, size_t *offset, const char *desc)
 {
 	int	i;
 
 	assert(bytes <= MAX_OFFSET);
 	i = -1;
 	while (++i < bytes)
-		ft_printf("%02x ", chunk->data[(*offset)++]);
+		ft_printf("%02x ", program->data[(*offset)++]);
 	i = bytes - 1;
 	while (++i < MAX_OFFSET)
 		ft_printf("   ");
@@ -101,40 +101,40 @@ static void print_bytes(int bytes, t_chunk *chunk, size_t *offset, const char *d
 }
 
 __attribute__((__unused__))
-static void	disassemble(t_chunk *chunk)
+static void	disassemble(t_program *program)
 {
 	size_t len;
-	for (size_t offset = 0; offset < chunk->len;) {
+	for (size_t offset = 0; offset < program->len;) {
 		ft_printf(" %04lx: ", offset);
 
-		switch (chunk->data[offset]) {
-			case OP_NULL:     print_bytes(1, chunk, &offset, "NULL"); break;
-			case OP_EXEC:     print_bytes(1, chunk, &offset, "EXEC"); break;
-			case OP_COMMAND:
-				len = chunk->data[offset + 1];
-				print_bytes((int)len + 2, chunk, &offset, "COMMAND");
+		switch (program->data[offset]) {
+			case OP_NULL:     print_bytes(1, program, &offset, "NULL"); break;
+			case OP_EXE:     print_bytes(1, program, &offset, "EXEC"); break;
+			case OP_CMD:
+				len = program->data[offset + 1];
+				print_bytes((int)len + 2, program, &offset, "COMMAND");
 				break;
 			case OP_ARG:
-				len = chunk->data[offset + 1];
-				print_bytes((int)len + 2, chunk, &offset, "ARG");
+				len = program->data[offset + 1];
+				print_bytes((int)len + 2, program, &offset, "ARG");
 				break;
-			case OP_FILENAME:
-				len = chunk->data[offset + 1];
-				print_bytes((int)len + 2, chunk, &offset, "FILENAME");
+			case OP_FNAME:
+				len = program->data[offset + 1];
+				print_bytes((int)len + 2, program, &offset, "FILENAME");
 				break;
-			case OP_PIPE:     print_bytes(1, chunk, &offset, "PIPE"); break;
-			case OP_REDIR_OUT:print_bytes(5, chunk, &offset, "REDIR_OUT"); break;
-			case OP_JZ:       print_bytes(5, chunk, &offset, "JZ"); break;
-			case OP_JNZ:      print_bytes(5, chunk, &offset, "JNZ"); break;
-			case OP_REDIR_IN: print_bytes(1, chunk, &offset, "REDIR_IN"); break;
-			case OP_WAIT:     print_bytes(1, chunk, &offset, "WAIT"); break;
+			case OP_PIPE:     print_bytes(1, program, &offset, "PIPE"); break;
+			case OP_OUT:print_bytes(5, program, &offset, "REDIR_OUT"); break;
+			case OP_JZ:       print_bytes(5, program, &offset, "JZ"); break;
+			case OP_JNZ:      print_bytes(5, program, &offset, "JNZ"); break;
+			case OP_IN: print_bytes(1, program, &offset, "REDIR_IN"); break;
+			case OP_WAIT:     print_bytes(1, program, &offset, "WAIT"); break;
 			default:
-				print_bytes(1, chunk, &offset, "UNKNOWN");
+				print_bytes(1, program, &offset, "UNKNOWN");
 		}
 	}
 }
 
-typedef void (*t_exec_fn)(t_chunk *chunk, size_t *ip);
+typedef void (*t_exec_fn)(t_program *program, size_t *ip);
 
 typedef struct s_stack_frame
 {
@@ -171,34 +171,34 @@ static void	pop_stack_frame(void)
 	frames = temp;
 }
 
-static void	exec_op_wait(t_chunk *chunk, size_t *ip)
+static void	exec_op_wait(t_program *program, size_t *ip)
 {
 	ft_vector_foreach(&g_sh.pids, ft_waitpid);
 	g_sh.pids.length = 0;
-	(void)chunk;
+	(void)program;
 	(void)ip;
 }
 
-static void	exec_op_command(t_chunk *chunk, size_t *ip)
+static void	exec_op_command(t_program *program, size_t *ip)
 {
 	t_stack_frame	*frame;
 	size_t			len;
 
 	frame = push_stack_frame();
-	len = chunk->data[++(*ip)];
-	frame->stack[frame->sp++] = ft_strndup((char *)chunk->data + *ip + 1, len);
+	len = program->data[++(*ip)];
+	frame->stack[frame->sp++] = ft_strndup((char *)program->data + *ip + 1, len);
 	*ip += len;
 }
 
 
-static void	exec_op_arg(t_chunk *chunk, size_t *ip)
+static void	exec_op_arg(t_program *program, size_t *ip)
 {
 	t_stack_frame	*frame;
 	size_t			len;
 
 	frame = frames;
-	len = chunk->data[++(*ip)];
-	frame->stack[frame->sp++] = ft_strndup((char *)chunk->data + *ip + 1, len);
+	len = program->data[++(*ip)];
+	frame->stack[frame->sp++] = ft_strndup((char *)program->data + *ip + 1, len);
 	*ip += len;
 }
 
@@ -209,7 +209,7 @@ static void	push_env(size_t idx, t_value val)
 	env[idx] = val.value.str;
 }
 
-static void exec_op_exec(t_chunk *chunk, size_t *ip)
+static void exec_op_exec(t_program *program, size_t *ip)
 {
 	t_stack_frame *frame;
 	char *exec;
@@ -265,53 +265,53 @@ static void exec_op_exec(t_chunk *chunk, size_t *ip)
 	ft_vector_push(&g_sh.pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
 	pop_stack_frame();
 	free(env);
-	(void)chunk;
+	(void)program;
 	(void)ip;
 }
 
-static void exec_op_pipe(t_chunk *chunk, size_t *ip)
+static void exec_op_pipe(t_program *program, size_t *ip)
 {
 	if (pipe(g_sh.pipefd) < 0) {
 		ft_printf("pipe failed: %m\n");
 		return;
 	}
-	exec_op_exec(chunk, ip);
+	exec_op_exec(program, ip);
 }
 
 
-static void	exec_op_filename(t_chunk *chunk, size_t *ip)
+static void	exec_op_filename(t_program *program, size_t *ip)
 {
 	size_t	len;
 
-	len = chunk->data[++(*ip)];
+	len = program->data[++(*ip)];
 	*ip += len;
 }
 
-static void	exec_op_background(t_chunk *chunk, size_t *ip)
+static void	exec_op_background(t_program *program, size_t *ip)
 {
-	(void)chunk;
+	(void)program;
 	(void)ip;
 }
 
-static void	exec_op_redir_out(t_chunk *chunk, size_t *ip)
+static void	exec_op_redir_out(t_program *program, size_t *ip)
 {
 	*ip += 4;
-	(void)chunk;
+	(void)program;
 	(void)ip;
 }
 
-static void	exec_op_redir_in(t_chunk *chunk, size_t *ip)
+static void	exec_op_redir_in(t_program *program, size_t *ip)
 {
-	(void)chunk;
+	(void)program;
 	(void)ip;
 }
 
-static void	exec_op_jump(t_chunk *chunk, size_t *ip)
+static void	exec_op_jump(t_program *program, size_t *ip)
 {
 	int32_t	jmp_pos;
 
 	(*ip)++;
-	memcpy(&jmp_pos, chunk->data + *ip, sizeof(int32_t));
+	memcpy(&jmp_pos, program->data + *ip, sizeof(int32_t));
 	*ip = jmp_pos - 1;
 }
 
@@ -341,13 +341,13 @@ static t_exec_fn exec_vm_op(t_opcode opcode)
 	}[opcode]);
 }
 
-static void	vm_run(t_chunk *chunk)
+static void	vm_run(t_program *program)
 {
 	size_t		ip;
 
 	ip = -1UL;
-	while (++ip < chunk->len)
-		exec_vm_op(chunk->data[ip])(chunk, &ip);
+	while (++ip < program->len)
+		exec_vm_op(program->data[ip])(program, &ip);
 }
 
 static int	repl(t_shell *sh)
@@ -366,8 +366,8 @@ static int	repl(t_shell *sh)
 		if (result == RESULT_OK)
 		{
 			if (cli_is_set(&sh->cli, "disassemble"))
-				disassemble(&sh->parser.chunk);
-			vm_run(&sh->parser.chunk);
+				disassemble(&sh->parser.program);
+			vm_run(&sh->parser.program);
 		}
 		free(line);
 	}
@@ -386,16 +386,16 @@ static t_result command(t_shell *sh, char *command)
 	return (RESULT_OK);
 }
 
-t_result	environment_init(t_environment *sh, char **envp)
+t_result	environ_init(t_environ	*env, char **envp)
 {
 	t_result	result;
 
-	(void)sh;
-	ft_vector_init(&sh->public, 64);
-	ft_vector_init(&sh->private, 8);
+	(void)env;
+	ft_vector_init(&env->public, 64);
+	ft_vector_init(&env->private, 8);
 	while (*envp)
 	{
-		result = ft_vector_push(&sh->public,
+		result = ft_vector_push(&env->public,
 				ft_gen_val(TYPE_OTHER, (t_any){.str = ft_strdup(*envp)}));
 		if (result != RESULT_OK)
 			return (RESULT_ERROR);
@@ -415,7 +415,7 @@ int	main(int argc, char **argv, char **envp)
 	int			exit_code;
 
 	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
-		|| environment_init(&sh->env, envp) != RESULT_OK
+		|| environ_init(&sh->env, envp) != RESULT_OK
 		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK
 		|| ft_vector_init(&sh->pids, 16) != RESULT_OK)
 	{

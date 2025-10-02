@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   environ.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 22:26:53 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:26 by smamalig         ###   ########.fr       */
+/*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/02 16:57:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser/parser.h"
+#ifndef ENVIRON_H
+# define ENVIRON_H
 
-t_result	parser_init(t_parser *p, t_lexer *lexer)
+# include "libft.h"
+
+typedef struct s_environ
 {
-	p->lexer = lexer;
-	p->curr_token = (t_token){0};
-	p->prev_token = (t_token){0};
-	p->program.len = 0;
-	p->in_cmd = false;
-	return (RESULT_OK);
-}
+	t_vector	public;
+	t_vector	private;
+}	t_environ;
+
+t_result	environ_init(t_environ *env, char **envp);
+
+#endif // ENVIRON_H
