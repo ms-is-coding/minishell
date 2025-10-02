@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expr.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 00:30:41 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:18:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-#define COLOR_BLUE "\x1b[94m"
-#define COLOR_RESET "\x1b[m"
-#define COLOR_YELLOW "\x1b[93m"
-#define COLOR_BOLD "\x1b[1m"
-#define COLOR_RED "\x1b[91m"
+#include "ansi.h"
 
 static void	repeat(char *s, int count)
 {
@@ -30,21 +25,21 @@ static void	repeat(char *s, int count)
 static void	print_error(t_parser *p, t_token token, char *message)
 {
 	repeat(" ", ft_intlen(token.pos.row) + 2);
-	ft_dprintf(2, "┌─ " COLOR_BLUE "anon" COLOR_RESET ":" COLOR_YELLOW "%d"
-		COLOR_RESET ":" COLOR_YELLOW "%d" COLOR_RESET, token.pos.row,
+	ft_dprintf(2, "┌─ " ANSI_BLUE "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
+		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET, token.pos.row,
 		token.pos.col);
-	ft_dprintf(2, COLOR_BOLD COLOR_RED " Syntax Error\n" COLOR_RESET);
-	ft_dprintf(2, " " COLOR_BOLD "%d │ " COLOR_RESET, token.pos.row);
+	ft_dprintf(2, ANSI_BOLD ANSI_RED " Syntax Error\n" ANSI_RESET);
+	ft_dprintf(2, " " ANSI_BOLD "%d │ " ANSI_RESET, token.pos.row);
 	ft_dprintf(2, "%.*s", token.pos.col - 1, p->lexer->input);
-	ft_dprintf(2, COLOR_RED "%.*s" COLOR_RESET, token.pos.len,
+	ft_dprintf(2, ANSI_RED "%.*s" ANSI_RESET, token.pos.len,
 		p->lexer->input + token.pos.col - 1);
 	ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1 + token.pos.len);
 	repeat(" ", ft_intlen(token.pos.row) + 2);
 	ft_dprintf(2, "╵");
 	repeat(" ", token.pos.col);
-	ft_dprintf(2, COLOR_RED "^");
+	ft_dprintf(2, ANSI_RED "^");
 	repeat("~", token.pos.len - 1);
-	ft_dprintf(2, COLOR_RED " %s\n\n" COLOR_RESET, message);
+	ft_dprintf(2, ANSI_RED " %s\n\n" ANSI_RESET, message);
 }
 
 t_result	parser_parse_expr(t_parser *p, t_precedence prec)
