@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 14:57:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:21:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 	cli_add(cli, "verbose", 'v', 0);
 	cli_add(cli, NULL, 'c', 1);
 	cli_init_debug(cli);
-	if (parse(cli, argc, argv) != RESULT_OK)
+	if (cli_parse(cli, argc, argv) != RESULT_OK)
 		return (RESULT_ERROR);
 	return (RESULT_OK);
 }

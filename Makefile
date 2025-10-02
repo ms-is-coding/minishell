@@ -6,45 +6,46 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/01 22:19:21 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/02 15:34:04 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= minishell
-CC			= cc
-CFLAGS		= -Wall -Wextra -MMD -MP -std=c99
-SRC_DIR		= src
-OBJ_DIR		= obj
+NAME			= minishell
+CC				= cc
+CFLAGS			= -Wall -Wextra -MMD -MP -std=c99
+SRC_DIR			= src
+OBJ_DIR			= obj
 
-SRC_ARGS	= arguments/init.c arguments/add.c arguments/find.c arguments/get.c
-SRC_LEXER	= lexer/init.c lexer/lex.c lexer/advance.c
-SRC_PARSER	= parser/init.c parser/parse.c parser/util.c parser/rules.c \
-			  parser/command.c parser/expr.c parser/logical.c parser/list.c \
-			  parser/group.c parser/redir.c
-SRC_BYTECODE 	= bytecode/write.c
-SRC_BUILTINS = builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
-			   builtins/false.c builtins/pwd.c builtins/true.c
-SRC_FILES	:= $(SRC_ARGS) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
-			   $(SRC_BUILTINS) main.c
+SRC_CLI			= cli/init.c cli/add.c cli/find.c cli/get.c cli/parse.c
+SRC_LEXER		= lexer/init.c lexer/lex.c lexer/advance.c
+SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
+				  parser/command.c parser/expr.c parser/logical.c parser/list.c \
+				  parser/group.c parser/redir.c
+SRC_BYTECODE	= bytecode/write.c
+SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
+				  builtins/false.c builtins/pwd.c builtins/true.c
 
-SRCS		:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJS		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
-DEPS		:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.d, $(SRCS))
+SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
+				   $(SRC_BUILTINS) main.c
 
-INCLUDES	= -Iinclude -Ilibft/include
+SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+DEPS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.d, $(SRCS))
 
-RED			= \e[31m
-GREEN		= \e[32m
-YELLOW		= \e[33m
-BLUE		= \e[34m
-MAGENTA		= \e[35m
-CYAN		= \e[36m
-RESET		= \e[m
+INCLUDES		= -Iinclude -Ilibft/include
 
-LIBFT_FLAGS	= -Llibft -lft
-LIBFT_DIR	= ./libft
+RED				= \e[31m
+GREEN			= \e[32m
+YELLOW			= \e[33m
+BLUE			= \e[34m
+MAGENTA			= \e[35m
+CYAN			= \e[36m
+RESET			= \e[m
 
-LDFLAGS		= $(LIBFT_FLAGS) -lreadline
+LIBFT_FLAGS		= -Llibft -lft
+LIBFT_DIR		= ./libft
+
+LDFLAGS			:= $(LIBFT_FLAGS) -lreadline
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -Og -g3 -D_DEBUG \
