@@ -6,25 +6,25 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 15:21:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:39:46 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli/cli_internal.h"
 #include "libft.h"
 
-#ifdef DEBUG
+#ifdef NDEBUG
 
 static void	cli_init_debug(t_cli *cli)
 {
-	cli_add(cli, "disassemble", 'd', 0);
+	(void)cli;
 }
 
 #else
 
 static void	cli_init_debug(t_cli *cli)
 {
-	(void)cli;
+	cli_add(cli, "disassemble", 'd', 0);
 }
 
 #endif
@@ -32,6 +32,8 @@ static void	cli_init_debug(t_cli *cli)
 t_result	cli_init(t_cli *cli, int argc, char **argv)
 {
 	cli->name = argv[0];
+	cli->opt_i = 0;
+	cli->pos_i = 0;
 	// ft_vector_init(&cli->positional, (size_t)size) != RESULT_OK
 	cli_add(cli, "posix", 0, 0);
 	cli_add(cli, "verbose", 'v', 0);

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:10:31 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 14:41:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:37:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_cli_option	*cli_find(t_cli *cli, const char *name)
 	return (NULL);
 }
 
-t_cli_option	*cli_find_short(t_cli *cli, char name)
+t_cli_option	*cli_find_short(t_cli *cli, char short_name)
 {
 	t_cli_option	*opt;
 	int				i;
@@ -37,7 +37,7 @@ t_cli_option	*cli_find_short(t_cli *cli, char name)
 	while (++i < cli->opt_i)
 	{
 		opt = &cli->options[i];
-		if (opt->short_name == name)
+		if (opt->short_name == short_name)
 			return (opt);
 	}
 	return (NULL);

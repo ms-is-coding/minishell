@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 15:37:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:42:01 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,16 @@ t_result	cli_parse(t_cli *cli, int argc, char **argv)
 	i = 0;
 	while (++i < argc)
 	{
-		if (argv[i][0] != '-'
-			&& parse_positional(cli, argv[i]) != RESULT_OK)
-			return (RESULT_ERROR);
-		else if (argv[i][1] != '-'
-			&& parse_short(cli, argc, argv, &i) != RESULT_OK)
-			return (RESULT_ERROR);
+		if (argv[i][0] != '-')
+		{
+			if (parse_positional(cli, argv[i]) != RESULT_OK)
+				return (RESULT_ERROR);
+		}
+		else if (argv[i][1] != '-')
+		{
+			if (parse_short(cli, argc, argv, &i) != RESULT_OK)
+				return (RESULT_ERROR);
+		}
 		else if (parse_long(cli, argc, argv, &i) != RESULT_OK)
 			return (RESULT_ERROR);
 	}
