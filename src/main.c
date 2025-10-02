@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 12:53:10 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/02 13:24:49 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <wait.h>
 
+#include "ansi.h"
 #include "arguments.h"
 #include "builtins.h"
 #include "environment.h"
@@ -349,27 +350,29 @@ static void	vm_run(t_chunk *chunk)
 		exec_vm_op(chunk->data[ip])(chunk, &ip);
 }
 
-static void	repl(t_shell *sh)
+static int	repl(t_shell *sh)
 {
 	char		*line;
 	t_result	result;
 
 	while (1)
 	{
-		line = readline("\x1b[1;32m$\x1b[m ");
+		line = readline(ANSI_BOLD ANSI_GREEN "$" ANSI_RESET " ");
 		if (!line)
 			break ;
 		add_history(line);
-		ft_printf("\x1b[m");
+		ft_printf(ANSI_RESET); // what the fuck
 		result = parser_parse(&sh->parser, line);
 		if (result == RESULT_OK)
 		{
-			disassemble(&sh->parser.chunk);
+			if (arguments_find(&sh->args, "disassemble")->is_set)
+				disassemble(&sh->parser.chunk);
 			vm_run(&sh->parser.chunk);
 		}
 		free(line);
 	}
 	ft_printf("exit\n");
+	return (0);
 }
 
 t_result	environment_init(t_environment *sh, char **envp)
@@ -398,7 +401,6 @@ static void	sh_destroy(t_shell *sh)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell		*sh = &g_sh;
-	t_argument	*arg;
 	int			exit_code;
 
 	if (arguments_init(&sh->args, argc, argv) != RESULT_OK
@@ -412,10 +414,8 @@ int	main(int argc, char **argv, char **envp)
 	sh->prev_fd = 0;
 	sh->pipefd[0] = 0;
 	sh->pipefd[1] = 1;
-	arg = arguments_find_short(&sh->args, 'c');
-	if (arg && arg->is_set)
-		exit_code = command(&sh, arg);
-	else
+	// if (arguments_find_short(&sh->args, 'c')->is_set)
+	// 	exit_code = command(&sh, arg);
 		exit_code = repl(sh);
 	return (exit_code);
 }

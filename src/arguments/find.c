@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:10:31 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/08 23:53:41 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:23:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 t_argument	*arguments_find(t_arguments *args, const char *name)
 {
-	auto size_t i = (size_t)-1;
+	static t_argument	dummy = {NULL, NULL, 0, 0, 0};
+	size_t				i;
+
+	i = (size_t)-1;
 	while (++i < args->options.length)
 	{
 		auto t_value val = ft_vector_at(&args->options, (ssize_t)i);
@@ -26,12 +29,15 @@ t_argument	*arguments_find(t_arguments *args, const char *name)
 				return (arg);
 		}
 	}
-	return (NULL);
+	return (&dummy);
 }
 
 t_argument	*arguments_find_short(t_arguments *args, char name)
 {
-	auto size_t i = (size_t)-1;
+	static t_argument	dummy = {NULL, NULL, 0, 0, 0};
+	size_t				i;
+
+	i = (size_t)-1;
 	while (++i < args->options.length)
 	{
 		auto t_value val = ft_vector_at(&args->options, (ssize_t)i);
@@ -42,5 +48,5 @@ t_argument	*arguments_find_short(t_arguments *args, char name)
 				return (val.value.ptr);
 		}
 	}
-	return (NULL);
+	return (&dummy);
 }
