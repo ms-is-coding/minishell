@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/08 12:22:25 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:39:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define SHELL_H
 
 # include "environment.h"
-# include "arguments.h"
+# include "cli/cli.h"
 # include "parser.h"
 # include "lexer.h"
 
 typedef struct s_shell
 {
-	t_arguments		args;
+	t_cli			cli;
 	t_lexer			lexer;
 	t_parser		parser;
 	t_environment	env;

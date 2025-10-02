@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 13:24:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:45:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <wait.h>
 
 #include "ansi.h"
-#include "arguments.h"
+#include "cli/cli.h"
 #include "builtins.h"
 #include "environment.h"
 #include "libft.h"
@@ -365,7 +365,7 @@ static int	repl(t_shell *sh)
 		result = parser_parse(&sh->parser, line);
 		if (result == RESULT_OK)
 		{
-			if (arguments_find(&sh->args, "disassemble")->is_set)
+			if (cli_is_set(&sh->cli, "disassemble"))
 				disassemble(&sh->parser.chunk);
 			vm_run(&sh->parser.chunk);
 		}
@@ -373,6 +373,17 @@ static int	repl(t_shell *sh)
 	}
 	ft_printf("exit\n");
 	return (0);
+}
+
+static t_result command(t_shell *sh, char *command)
+{
+	t_result	result;
+
+	result = parser_parse(&sh->parser, command);
+	if (result != RESULT_OK)
+		return (RESULT_ERROR);
+	// return (vm_run(&sh->vm, &sh->parser.program));
+	return (RESULT_OK);
 }
 
 t_result	environment_init(t_environment *sh, char **envp)
@@ -395,7 +406,7 @@ t_result	environment_init(t_environment *sh, char **envp)
 
 static void	sh_destroy(t_shell *sh)
 {
-	arguments_destroy(&sh->args);
+	cli_destroy(&sh->cli);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -403,7 +414,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell		*sh = &g_sh;
 	int			exit_code;
 
-	if (arguments_init(&sh->args, argc, argv) != RESULT_OK
+	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
 		|| environment_init(&sh->env, envp) != RESULT_OK
 		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK
 		|| ft_vector_init(&sh->pids, 16) != RESULT_OK)
@@ -414,8 +425,9 @@ int	main(int argc, char **argv, char **envp)
 	sh->prev_fd = 0;
 	sh->pipefd[0] = 0;
 	sh->pipefd[1] = 1;
-	// if (arguments_find_short(&sh->args, 'c')->is_set)
-	// 	exit_code = command(&sh, arg);
+	if (cli_is_set_short(&sh->cli, 'c'))
+		exit_code = command(sh, cli_get_short(&sh->cli, 'c'));
+	else
 		exit_code = repl(sh);
 	return (exit_code);
 }

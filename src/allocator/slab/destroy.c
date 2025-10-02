@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get.c                                              :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 15:17:53 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/02 20:33:39 by smamalig         ###   ########.fr       */
+/*   Created: 2025/09/13 18:29:20 by smamalig          #+#    #+#             */
+/*   Updated: 2025/09/13 18:47:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "arguments.h"
+#include "allocator/allocator_internal.h"
+#include <stdlib.h>
 
-_Bool	arguments_is_set(t_arguments *args, const char *name)
+void	allocator_slab_destroy(t_allocator *alc, t_slab_region *slab)
 {
-	auto const t_argument * arg = arguments_find(args, name);
-	if (!arg)
-		return (0);
-	return (arg->is_set);
-}
-
-char	*arguments_get(t_arguments *args, const char *name)
-{
-	auto const t_argument * arg = arguments_find(args, name);
-	if (!arg)
-		return (NULL);
-	return (arg->value);
+	slab->id = 0;
+	slab->used = 0;
+	if (slab >= alc->stack_slabs && slab < alc->stack_slabs + STACK_SLABS)
+		return ;
+	free(slab);
 }

@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/13 14:52:19 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/02 13:50:32 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/02 13:51:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator.h"
-#include <stdint.h>
+#ifndef COMMON_H
+# define COMMON_H
 
-void	allocator_init(t_allocator *alc)
-{
-	int	i;
+# define CLI_OPTION_COUNT 8
 
-	alc->next_arena_id = 1;
-	alc->next_slab_id = 1;
-	alc->slabs = NULL;
-	alc->arenas = NULL;
-	i = -1;
-	while (++i < STACK_ARENAS)
-		alc->stack_arenas[i].id = 0;
-	i = -1;
-	while (++i < STACK_SLABS)
-		alc->stack_slabs[i].id = 0;
-}
+#endif // COMMON_H

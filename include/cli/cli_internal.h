@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   cli_internal.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/13 14:52:19 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/02 13:37:21 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/02 14:51:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator.h"
-#include <stdint.h>
+#ifndef CLI_INTERNAL_H
+# define CLI_INTERNAL_H
 
-void	allocator_init(t_allocator *alc)
-{
-	int	i;
+# include "cli.h"
 
-	alc->next_arena_id = 1;
-	alc->next_slab_id = 1;
-	alc->slabs = NULL;
-	alc->arenas = NULL;
-	i = -1;
-	while (++i < STACK_ARENAS)
-		alc->stack_arenas[i].id = 0;
-	i = -1;
-	while (++i < STACK_SLABS)
-		alc->stack_slabs[i].id = 0;
-}
+t_cli_option	*cli_find(t_cli *cli, const char *name);
+t_cli_option	*cli_find_short(t_cli *cli, char short_name);
+
+t_result		cli_add(t_cli *cli, const char *long_name,
+					char short_name, bool has_value);
+t_result		cli_parse(t_cli *cli, int argc, char **argv);
+
+#endif // CLI_INTERNAL_H

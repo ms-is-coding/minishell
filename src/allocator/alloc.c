@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   alloc.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/13 14:52:19 by smamalig         ###   ########.fr       */
+/*   Created: 2025/09/13 14:10:44 by smamalig          #+#    #+#             */
+/*   Updated: 2025/09/13 18:23:13 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
-#include <stdint.h>
+#include "allocator/allocator_internal.h"
+#include <stdlib.h>
 
-void	allocator_init(t_allocator *alc)
+t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena)
 {
-	int	i;
+	t_allocation	alloc;
 
-	alc->next_arena_id = 1;
-	alc->next_slab_id = 1;
-	alc->slabs = NULL;
-	alc->arenas = NULL;
-	i = -1;
-	while (++i < STACK_ARENAS)
-		alc->stack_arenas[i].id = 0;
-	i = -1;
-	while (++i < STACK_SLABS)
-		alc->stack_slabs[i].id = 0;
+	if (arena)
+		return (allocator_arena_alloc(alc, arena, size));
+	if (size <= MAX_SLAB_SIZE)
+		return (allocator_slab_alloc(alc, size));
+	alloc.size = size;
+	alloc.kind = ALLOC_ALLOC;
+	alloc.data = malloc(size);
+	alloc.parent_id = 0;
+	alloc.region = NULL;
+	return (alloc);
 }

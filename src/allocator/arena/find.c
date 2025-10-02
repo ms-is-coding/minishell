@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   find.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/13 14:52:19 by smamalig         ###   ########.fr       */
+/*   Created: 2025/09/13 16:43:29 by smamalig          #+#    #+#             */
+/*   Updated: 2025/09/13 17:01:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
-#include <stdint.h>
+#include "allocator/allocator_internal.h"
 
-void	allocator_init(t_allocator *alc)
+t_arena	*allocator_arena_find(t_allocator *alc, t_arena_id id)
 {
-	int	i;
+	t_arena	*arena;
+	int		i;
 
-	alc->next_arena_id = 1;
-	alc->next_slab_id = 1;
-	alc->slabs = NULL;
-	alc->arenas = NULL;
+	if (id == 0)
+		return (NULL);
 	i = -1;
 	while (++i < STACK_ARENAS)
-		alc->stack_arenas[i].id = 0;
-	i = -1;
-	while (++i < STACK_SLABS)
-		alc->stack_slabs[i].id = 0;
+	{
+		if (alc->stack_arenas[i].id == id)
+			return (&alc->stack_arenas[i]);
+	}
+	arena = alc->arenas;
+	while (arena)
+	{
+		if (arena->id == id)
+			return (arena);
+	}
+	return (NULL);
 }

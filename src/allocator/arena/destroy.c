@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   slab.c                                             :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/28 11:03:27 by smamalig          #+#    #+#             */
-/*   Updated: 2025/08/28 12:35:10 by smamalig         ###   ########.fr       */
+/*   Created: 2025/09/13 15:59:35 by smamalig          #+#    #+#             */
+/*   Updated: 2025/09/13 16:04:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator.h"
+#include "allocator/allocator_internal.h"
 #include <stdlib.h>
 
-// TODO: replace malloc with a custom call
-t_slab_region	*allocator_slab_new(t_allocator *alc, size_t block_size,
-	size_t num_blocks)
+void	allocator_arena_destroy(t_allocator *alc, t_arena *arena)
 {
-	t_slab_region	*next;
-	t_slab_region	*new;
-
-	next = alc->slabs;
-	new = malloc(sizeof(t_slab_region));
-	if (!new)
-		return (NULL);
-	new->next = next;
-	new->capacity = num_blocks;
-	new->block_size = block_size;
-	alc->slabs = new;
-	return (new);
+	arena->id = 0;
+	arena->used = 0;
+	if (arena >= alc->stack_arenas && arena < alc->stack_arenas + STACK_ARENAS)
+		return ;
+	free(arena);
 }
