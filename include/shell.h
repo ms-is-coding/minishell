@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:04:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:05:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "cli/cli.h"
 # include "parser/parser.h"
 # include "lexer/lexer.h"
+# include "vm/vm.h"
 
 typedef struct s_shell
 {
@@ -24,9 +25,7 @@ typedef struct s_shell
 	t_lexer		lexer;
 	t_parser	parser;
 	t_environ	env;
-	t_vector	pids;
-	int			pipefd[2];
-	int			prev_fd;
+	t_vm		vm;
 }	t_shell;
 
 #endif

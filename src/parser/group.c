@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:21:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:02:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 22:53:29 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_result	parse_group(t_parser *p, t_token token)
 
 	(void)token;
 	result = parser_parse_expr(p, PREC_NUL);
-	parser_consume(p, TOK_PAREN_CLOSE, "Expected ')'");
+	if (result != RESULT_OK)
+		return (result);
+	result = parser_consume(p, TOK_PAREN_CLOSE, "Expected ')'");
 	return (result);
 }

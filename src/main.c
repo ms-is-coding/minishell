@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:05:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:37:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,21 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <assert.h>
-#include <wait.h>
+#include <sys/wait.h>
 
-#include "ansi.h"
-#include "cli/cli.h"
-#include "builtins.h"
 #include "environ/environ.h"
-#include "libft.h"
 #include "parser/parser.h"
+#include "cli/cli.h"
+#include "vm/vm.h"
+
+#include "builtins.h"
+#include "libft.h"
+#include "ansi.h"
 #include "shell.h"
 
 #define MAX_OFFSET 16
 
-static t_shell			g_sh;
-
-static void	ft_waitpid(size_t idx, t_value val);
-
+__attribute__((__unused__))
 static char	*find_exec(char *arg)
 {
 	const char	*paths[] = {
@@ -68,6 +67,7 @@ struct s_builtin {
 	t_builtin_fn	fn;
 };
 
+__attribute__((__unused__))
 static t_builtin_fn	find_builtin(char *arg)
 {
 	static struct s_builtin	builtins[] = {
@@ -109,11 +109,8 @@ static void	disassemble(t_program *program)
 
 		switch (program->data[offset]) {
 			case OP_NULL:     print_bytes(1, program, &offset, "NULL"); break;
-			case OP_EXE:     print_bytes(1, program, &offset, "EXEC"); break;
-			case OP_CMD:
-				len = program->data[offset + 1];
-				print_bytes((int)len + 2, program, &offset, "COMMAND");
-				break;
+			case OP_EXE:      print_bytes(1, program, &offset, "EXEC"); break;
+			case OP_CMD:      print_bytes(5, program, &offset, "COMMAND"); break;
 			case OP_ARG:
 				len = program->data[offset + 1];
 				print_bytes((int)len + 2, program, &offset, "ARG");
@@ -123,231 +120,14 @@ static void	disassemble(t_program *program)
 				print_bytes((int)len + 2, program, &offset, "FILENAME");
 				break;
 			case OP_PIPE:     print_bytes(1, program, &offset, "PIPE"); break;
-			case OP_OUT:print_bytes(5, program, &offset, "REDIR_OUT"); break;
+			case OP_OUT:      print_bytes(5, program, &offset, "REDIR_OUT"); break;
 			case OP_JZ:       print_bytes(5, program, &offset, "JZ"); break;
 			case OP_JNZ:      print_bytes(5, program, &offset, "JNZ"); break;
-			case OP_IN: print_bytes(1, program, &offset, "REDIR_IN"); break;
+			case OP_IN:       print_bytes(1, program, &offset, "REDIR_IN"); break;
 			case OP_WAIT:     print_bytes(1, program, &offset, "WAIT"); break;
-			default:
-				print_bytes(1, program, &offset, "UNKNOWN");
+			default:          print_bytes(1, program, &offset, "UNKNOWN");
 		}
 	}
-}
-
-typedef void (*t_exec_fn)(t_program *program, size_t *ip);
-
-typedef struct s_stack_frame
-{
-	char					*stack[128];
-	size_t					sp;
-	struct s_stack_frame	*next;
-}	t_stack_frame;
-
-static t_stack_frame *frames = NULL;
-
-static t_stack_frame	*push_stack_frame(void)
-{
-	t_stack_frame	*temp;
-	t_stack_frame	*frame;
-
-	temp = frames;
-	frame = malloc(sizeof(t_stack_frame));
-	if (!frame)
-		return (NULL);
-	frame->next = temp;
-	frame->sp = 0;
-	frames = frame;
-	return (frame);
-}
-
-static void	pop_stack_frame(void)
-{
-	t_stack_frame	*temp;
-
-	if (!frames)
-		return ;
-	temp = frames->next;
-	free(frames);
-	frames = temp;
-}
-
-static void	exec_op_wait(t_program *program, size_t *ip)
-{
-	ft_vector_foreach(&g_sh.pids, ft_waitpid);
-	g_sh.pids.length = 0;
-	(void)program;
-	(void)ip;
-}
-
-static void	exec_op_command(t_program *program, size_t *ip)
-{
-	t_stack_frame	*frame;
-	size_t			len;
-
-	frame = push_stack_frame();
-	len = program->data[++(*ip)];
-	frame->stack[frame->sp++] = ft_strndup((char *)program->data + *ip + 1, len);
-	*ip += len;
-}
-
-
-static void	exec_op_arg(t_program *program, size_t *ip)
-{
-	t_stack_frame	*frame;
-	size_t			len;
-
-	frame = frames;
-	len = program->data[++(*ip)];
-	frame->stack[frame->sp++] = ft_strndup((char *)program->data + *ip + 1, len);
-	*ip += len;
-}
-
-static char **env;
-
-static void	push_env(size_t idx, t_value val)
-{
-	env[idx] = val.value.str;
-}
-
-static void exec_op_exec(t_program *program, size_t *ip)
-{
-	t_stack_frame *frame;
-	char *exec;
-	t_builtin_fn builtin;
-	int pid;
-
-	env = malloc(sizeof(char *) * (g_sh.env.public.length + 1));
-	if (!env)
-		return;
-	ft_vector_foreach(&g_sh.env.public, push_env);
-	env[g_sh.env.public.length] = NULL;
-
-	frame = frames;
-	frame->stack[frame->sp++] = NULL;
-
-	builtin = find_builtin(frame->stack[0]);
-	if (builtin == builtin_exec || builtin == builtin_exit) {
-		builtin(&g_sh, (int)frame->sp - 1, frame->stack);
-		exit(0);
-	}
-	pid = fork();
-	if (pid == 0) {
-		if (g_sh.prev_fd != 0)
-			dup2(g_sh.prev_fd, STDIN_FILENO);
-		if (g_sh.pipefd[1] != 1)
-			dup2(g_sh.pipefd[1], STDOUT_FILENO);
-		if (g_sh.prev_fd != 0)
-			close(g_sh.prev_fd);
-		if (g_sh.pipefd[0] != 0)
-			close(g_sh.pipefd[0]);
-		if (g_sh.pipefd[1] != 1)
-			close(g_sh.pipefd[1]);
-		builtin = find_builtin(frame->stack[0]);
-		if (builtin) {
-			builtin(&g_sh, (int)frame->sp - 1, frame->stack);
-			exit(0);
-		}
-		exec = find_exec(frame->stack[0]);
-		execve(exec, frame->stack, env);
-		free(exec);
-		ft_printf("execve failed: %m\n");
-		exit(1);
-	}
-	else if (pid < 0)
-		ft_printf("fork failed: %m\n");
-	if (g_sh.prev_fd != 0)
-		close(g_sh.prev_fd);
-	if (g_sh.pipefd[1] != 1)
-		close(g_sh.pipefd[1]);
-	g_sh.prev_fd = g_sh.pipefd[0];
-	g_sh.pipefd[0] = 0;
-	g_sh.pipefd[1] = 1;
-	ft_vector_push(&g_sh.pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
-	pop_stack_frame();
-	free(env);
-	(void)program;
-	(void)ip;
-}
-
-static void exec_op_pipe(t_program *program, size_t *ip)
-{
-	if (pipe(g_sh.pipefd) < 0) {
-		ft_printf("pipe failed: %m\n");
-		return;
-	}
-	exec_op_exec(program, ip);
-}
-
-
-static void	exec_op_filename(t_program *program, size_t *ip)
-{
-	size_t	len;
-
-	len = program->data[++(*ip)];
-	*ip += len;
-}
-
-static void	exec_op_background(t_program *program, size_t *ip)
-{
-	(void)program;
-	(void)ip;
-}
-
-static void	exec_op_redir_out(t_program *program, size_t *ip)
-{
-	*ip += 4;
-	(void)program;
-	(void)ip;
-}
-
-static void	exec_op_redir_in(t_program *program, size_t *ip)
-{
-	(void)program;
-	(void)ip;
-}
-
-static void	exec_op_jump(t_program *program, size_t *ip)
-{
-	int32_t	jmp_pos;
-
-	(*ip)++;
-	memcpy(&jmp_pos, program->data + *ip, sizeof(int32_t));
-	*ip = jmp_pos - 1;
-}
-
-static void	ft_waitpid(size_t idx, t_value val)
-{
-	int	stat;
-
-	(void)idx;
-	waitpid(val.value.i32, &stat, 0);
-}
-
-static t_exec_fn exec_vm_op(t_opcode opcode)
-{
-	return ((t_exec_fn[OP_COUNT]){
-		exec_op_wait,
-		exec_op_command,
-		exec_op_exec,
-		exec_op_arg,
-		exec_op_filename,
-		exec_op_pipe,
-		exec_op_background,
-		exec_op_redir_out,
-		exec_op_redir_in,
-		exec_op_jump,
-		exec_op_jump,
-		exec_op_wait,
-	}[opcode]);
-}
-
-static void	vm_run(t_program *program)
-{
-	size_t		ip;
-
-	ip = -1UL;
-	while (++ip < program->len)
-		exec_vm_op(program->data[ip])(program, &ip);
 }
 
 static int	repl(t_shell *sh)
@@ -367,7 +147,7 @@ static int	repl(t_shell *sh)
 		{
 			if (cli_is_set(&sh->cli, "disassemble"))
 				disassemble(&sh->parser.program);
-			vm_run(&sh->parser.program);
+			vm_run(&sh->vm, &sh->parser.program);
 		}
 		free(line);
 	}
@@ -382,8 +162,7 @@ static t_result command(t_shell *sh, char *command)
 	result = parser_parse(&sh->parser, command);
 	if (result != RESULT_OK)
 		return (RESULT_ERROR);
-	// return (vm_run(&sh->vm, &sh->parser.program));
-	return (RESULT_OK);
+	return (vm_run(&sh->vm, &sh->parser.program));
 }
 
 t_result	environ_init(t_environ	*env, char **envp)
@@ -396,7 +175,7 @@ t_result	environ_init(t_environ	*env, char **envp)
 	while (*envp)
 	{
 		result = ft_vector_push(&env->public,
-				ft_gen_val(TYPE_OTHER, (t_any){.str = ft_strdup(*envp)}));
+				ft_gen_val(TYPE_OTHER, (t_any){.str = *envp}));
 		if (result != RESULT_OK)
 			return (RESULT_ERROR);
 		envp++;
@@ -411,23 +190,19 @@ static void	sh_destroy(t_shell *sh)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell		*sh = &g_sh;
+	t_shell		sh;
 	int			exit_code;
 
-	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
-		|| environ_init(&sh->env, envp) != RESULT_OK
-		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK
-		|| ft_vector_init(&sh->pids, 16) != RESULT_OK)
+	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
+		|| environ_init(&sh.env, envp) != RESULT_OK
+		|| parser_init(&sh.parser, &sh.lexer) != RESULT_OK)
 	{
-		sh_destroy(sh);
+		sh_destroy(&sh);
 		return (2);
 	}
-	sh->prev_fd = 0;
-	sh->pipefd[0] = 0;
-	sh->pipefd[1] = 1;
-	if (cli_is_set_short(&sh->cli, 'c'))
-		exit_code = command(sh, cli_get_short(&sh->cli, 'c'));
+	if (cli_is_set_short(&sh.cli, 'c'))
+		exit_code = command(&sh, cli_get_short(&sh.cli, 'c'));
 	else
-		exit_code = repl(sh);
+		exit_code = repl(&sh);
 	return (exit_code);
 }

@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/02 15:34:04 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/02 22:40:08 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,11 @@ SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 SRC_BYTECODE	= bytecode/write.c
 SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
 				  builtins/false.c builtins/pwd.c builtins/true.c
+SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
+				  vm/wait.c vm/file.c vm/cmd.c
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
-				   $(SRC_BUILTINS) main.c
+				   $(SRC_BUILTINS) $(SRC_VM) main.c
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
@@ -48,7 +50,7 @@ LIBFT_DIR		= ./libft
 LDFLAGS			:= $(LIBFT_FLAGS) -lreadline
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -Og -g3 -D_DEBUG \
+	CFLAGS += -Og -g3 -DDEBUG \
 			  -Wpedantic -Wpacked -Wstrict-prototypes -Wshadow -Wpadded \
 			  -Wconversion -Wmissing-prototypes -Wmissing-declarations \
 			  -Wold-style-definition -Winline -Wsign-conversion -Wundef \
@@ -59,7 +61,7 @@ ifeq ($(DEBUG), 1)
 		CFLAGS += -fsanitize=address,undefined,leak
 	endif
 else
-	CFLAGS += -Werror
+	CFLAGS += -Werror -DNDEBUG
 endif
 
 ifeq ($(RELEASE), 1)

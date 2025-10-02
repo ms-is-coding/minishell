@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:34:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ typedef struct s_parser
 
 	t_token		curr_token;
 	t_token		prev_token;
+
+	int			argc;
 	bool		in_cmd;
+	char		reserved[3];
 }	t_parser;
 
 typedef enum e_precedence
@@ -52,19 +55,19 @@ typedef struct s_parse_rule
 
 t_parse_rule	parser_get_rule(t_token_type type);
 
+void			print_error(t_parser *p, t_token token, const char *message);
+
 t_result		parse_error(t_parser *p, t_token t);
-t_result		parse_command(t_parser *p, t_token t);
+t_result		parse_word(t_parser *p, t_token t);
 t_result		parse_pipe(t_parser *p, t_token t);
 t_result		parse_group(t_parser *p, t_token t);
 t_result		parse_and(t_parser *p, t_token t);
 t_result		parse_or(t_parser *p, t_token t);
 t_result		parse_semi(t_parser *p, t_token t);
-t_result		parse_background(t_parser *p, t_token t);
 t_result		parse_r_out(t_parser *p, t_token t);
-t_result		parse_subcommand(t_parser *p, t_token t);
 
 void			parser_advance(t_parser *p);
-t_token			parser_consume(t_parser *p, t_token_type type, const char *err);
+t_result		parser_consume(t_parser *p, t_token_type type, const char *err);
 bool			parser_match(t_parser *p, t_token_type type);
 
 t_result		parser_init(t_parser *p, t_lexer *lexer);

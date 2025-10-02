@@ -6,25 +6,25 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:01:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:06:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.h"
 #include "ansi.h"
 
-static void	repeat(char *s, int count)
+static void	repeat(char c, int count)
 {
 	int	i;
 
 	i = -1;
 	while (++i < count)
-		ft_dprintf(2, "%s", s);
+		ft_dprintf(2, "%c", c);
 }
 
-static void	print_error(t_parser *p, t_token token, char *message)
+void	print_error(t_parser *p, t_token token, const char *message)
 {
-	repeat(" ", ft_intlen(token.pos.row) + 2);
+	repeat(' ', ft_intlen(token.pos.row) + 2);
 	ft_dprintf(2, "┌─ " ANSI_BLUE "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
 		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET, token.pos.row,
 		token.pos.col);
@@ -34,11 +34,11 @@ static void	print_error(t_parser *p, t_token token, char *message)
 	ft_dprintf(2, ANSI_RED "%.*s" ANSI_RESET, token.pos.len,
 		p->lexer->input + token.pos.col - 1);
 	ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1 + token.pos.len);
-	repeat(" ", ft_intlen(token.pos.row) + 2);
+	repeat(' ', ft_intlen(token.pos.row) + 2);
 	ft_dprintf(2, "╵");
-	repeat(" ", token.pos.col);
+	repeat(' ', token.pos.col);
 	ft_dprintf(2, ANSI_RED "^");
-	repeat("~", token.pos.len - 1);
+	repeat('~', token.pos.len - 1);
 	ft_dprintf(2, ANSI_RED " %s\n\n" ANSI_RESET, message);
 }
 
@@ -55,7 +55,7 @@ t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 	rule = parser_get_rule(token.type);
 	if (!rule.nud)
 	{
-		print_error(p, token, "unexpected token");
+		print_error(p, token, "Unexpected token");
 		return (RESULT_ERROR);
 	}
 	if (rule.nud(p, token) != RESULT_OK)
