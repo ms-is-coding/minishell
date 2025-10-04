@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 18:21:23 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/04 16:38:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,7 @@ static bool	get_path(t_environ *env, char *arg, char **path)
 	else
 		*path = arg;
 	if (!*path)
-	{
-		if (!arg)
-			ft_dprintf(2, "cd: HOME not set\n");
-		else
-			ft_dprintf(2, "cd: OLDPWD not set\n");
 		return (false);
-	}
 	return (true);
 }
 
@@ -69,10 +63,7 @@ static bool	resolve_path(char *newpwd, const char *oldpwd, const char *path)
 	if (path[0] == '/')
 		ft_strlcpy(newpwd, path, PATH_MAX);
 	else if (ft_snprintf(newpwd, PATH_MAX, "%s/%s", oldpwd, path) >= PATH_MAX)
-	{
-		ft_dprintf(2, "cd: path too long\n");
 		return (false);
-	}
 	normalize_path(newpwd);
 	return (true);
 }
@@ -84,19 +75,18 @@ int	builtin_cd(t_shell *sh, int argc, char **argv)
 	char		newpwd[PATH_MAX];
 
 	(void)argc;
-	argv++;
-	if (argv[0] && argv[1])
-		return (ft_dprintf(2, "cd: too many arguments"), 2);
-	ft_strlcpy(oldpwd, get_env_path(&sh->env, "PWD" ), PATH_MAX);
+	if (argv[1] && argv[2])
+		return (2); //too many args
+	ft_strlcpy(oldpwd, get_env_path(&sh->env, "PWD"), PATH_MAX);
 	if (!oldpwd[0])
 	{
 		if (getcwd(oldpwd, PATH_MAX) == NULL)
-			return (ft_dprintf(2, "cd: %m\n"), 1);
+			return (1); //perror
 	}
-	if (!get_path(&sh->env, argv[0], &path))
-		return (1);
+	if (!get_path(&sh->env, argv[1], &path))
+		return (1); //HOME or OLDPWD not set
 	if (!resolve_path(newpwd, oldpwd, path))
-		return (1);
+		return (1); //path too long
 	if (chdir(newpwd) != 0)
 		return (ft_dprintf(2, "cd: %m\n"), 1);
 	set_env_path(&sh->env, "OLDPWD", oldpwd);

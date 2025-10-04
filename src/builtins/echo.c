@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_buf.c                                         :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:10:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 11:16:37 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/04 16:47:57 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static bool	get_flags(const char *opt, char *flags)
 	int		i;
 	char	curr;
 
-	if (!opt || opt[0] != '-')
+	if (!opt || opt[0] != '-' || ft_strcmp(opt, "-") == 0)
 		return (false);
 	curr = *flags;
 	i = 1;
