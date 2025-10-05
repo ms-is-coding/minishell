@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create.c                                           :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 17:04:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 00:45:14 by smamalig         ###   ########.fr       */
+/*   Created: 2025/09/14 14:02:57 by smamalig          #+#    #+#             */
+/*   Updated: 2025/09/16 16:07:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator.h"
 #include "allocator/allocator_internal.h"
+#include "allocator/slab_internal.h"
 
-// this function assumes allocator_alloc will fallback to malloc
-t_arena	*allocator_arena_create(t_allocator *alc)
+void	allocator_slab_free(t_allocation alloc)
 {
-	return (allocator_alloc(alc, sizeof(t_arena), NULL).data);
+	t_slab_region	*region;
+	t_slab_meta		*meta;
+
+	region = alloc.region;
+	meta = (void *)((char *)alloc.data - sizeof(t_slab_meta));
+	meta->prev_block |= SLAB_FLAG_FREE;
+	if (region->max_free < alloc.size)
+	{
+		region->max_free = (uint16_t)alloc.size;
+	}
 }
