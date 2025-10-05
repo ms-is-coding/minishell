@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/05 09:00:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:56:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int	builtin_exec(t_shell *sh, int argc, char **argv)
 	cmd = find_exec(argv[1]);
 	if (!cmd)
 		ft_printf("exec: %s: command not found\n", argv[1]);
-	env = malloc(sizeof(char *) * (sh->env.public.length + 1));
+	env = malloc(sizeof(char *) * (sh->environ.public.length + 1));
 	if (!env)
 		return (0);
-	ft_vector_foreach(&sh->env.public, push_env);
+	ft_vector_foreach(&sh->environ.public, push_env);
 	execve(cmd, argv + 1, env);
 	exit(0);
 	return (0);

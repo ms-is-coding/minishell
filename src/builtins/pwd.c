@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:20:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/05 08:49:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/02 23:56:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int	builtin_pwd(t_shell *sh, int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	ft_vector_foreach(&sh->env.public, print_pwd);
+	ft_vector_foreach(&sh->environ.public, print_pwd);
 	return (0);
 }

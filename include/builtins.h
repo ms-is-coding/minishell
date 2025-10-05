@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/04 18:43:14 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/05 12:22:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ typedef int	(*t_builtin_fn)(t_shell	*sh, int argc, char **argv);
 
 int	builtin_cd(t_shell *sh, int argc, char **argv);
 int	builtin_echo(t_shell *sh, int argc, char **argv);
+int	builtin_echo_buf(t_shell *sh, int argc, char **argv);
+int	builtin_echo_mal(t_shell *sh, int argc, char **argv);
 int	builtin_env(t_shell *sh, int argc, char **argv);
 int	builtin_exec(t_shell *sh, int argc, char **argv);
 int	builtin_exit(t_shell *sh, int argc, char **argv);
