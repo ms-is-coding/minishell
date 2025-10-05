@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 00:58:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 12:27:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ static int	repl(t_shell *sh)
 		free(line);
 	}
 	ft_printf("exit\n");
-	return (0);
+	return (ft_vector_at(&sh->vm.exit_codes, -1).value.i32);
 }
 
 static int	command(t_shell *sh, char *command)

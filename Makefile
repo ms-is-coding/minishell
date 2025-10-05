@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/04 13:52:45 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/05 12:29:25 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,7 @@ SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 				  parser/group.c parser/redir.c
 SRC_BYTECODE	= bytecode/write.c
 SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
-				  builtins/false.c builtins/pwd.c builtins/true.c \
-				  builtins/echo_mal.c builtins/echo_buf.c
+				  builtins/false.c builtins/pwd.c builtins/true.c
 SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
 				  vm/wait.c vm/file.c vm/cmd.c
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \

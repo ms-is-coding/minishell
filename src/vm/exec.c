@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/04 18:40:36 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 12:29:46 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*find_exec(char *arg)
 static t_builtin_fn	find_builtin(char *arg)
 {
 	static struct s_builtin	builtins[] = {
-	{"cd", builtin_cd}, {"echo", builtin_echo_buf}, {"exec", builtin_exec},
+	{"cd", builtin_cd}, {"echo", builtin_echo}, {"exec", builtin_exec},
 	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
 	{":", builtin_true}, {"pwd", builtin_pwd},
 	{NULL, NULL}};
