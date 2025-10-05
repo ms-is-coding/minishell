@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/14 14:58:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/03 20:40:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,34 @@
 # include <stdbool.h>
 
 # ifndef STACK_ARENAS
-#  define STACK_ARENAS 32
+#  define STACK_ARENAS 0
 # endif
 # ifndef STACK_SLABS
-#  define STACK_SLABS 12
+#  define STACK_SLABS 0
 # endif
-# ifndef MAX_SLAB_SIZE
-#  define MAX_SLAB_SIZE 512
+# ifndef MAX_ALLOC_SIZE
+#  define MAX_ALLOC_SIZE 512
 # endif
 
-# ifndef STACK_ONLY
-#  define ARENA_CAPACITY 4084 // 4096 - 12
-#  define SLAB_CAPACITY 4082 // 4096 - 14
-# else
-#  define ARENA_CAPACITY 4076 // 4096 - 12 - 8
-#  define SLAB_CAPACITY 4074 // 4096 - 14 - 8
+# ifdef STACK_ONLY
+#  define ARENA_CAPACITY 4080 // 4096 - 16
+#  define SLAB_CAPACITY 4080 // 4096 - 16
+# else // add malloc padding
+#  define ARENA_CAPACITY 4072 // 4096 - 16 - 8
+#  define SLAB_CAPACITY 4072 // 4096 - 16 - 8
 # endif
 
 typedef uint16_t	t_arena_id;
 
-typedef enum e_alloc_kind {
+typedef enum e_alloc_kind
+{
 	ALLOC_ARENA,
 	ALLOC_SLAB,
-	ALLOC_ALLOC,
+	ALLOC_HEAP,
 }	t_alloc_kind;
 
-typedef struct s_allocation {
+typedef struct s_allocation
+{
 	void			*region;
 	void			*data;
 	size_t			size;
@@ -52,28 +54,37 @@ typedef struct s_allocation {
 	char			reserved[2];
 }	t_allocation;
 
-typedef struct s_arena {
+typedef struct s_arena
+{
 	struct s_arena	*next;
-	uint16_t		used;
 	uint16_t		id;
+	uint16_t		flags;
+	uint16_t		used;
+	char			reserved[2];
 	char			data[ARENA_CAPACITY];
 }	t_arena;
 
-typedef struct s_slab_meta {
-	uint16_t	size;
-	bool		used;
-	char		reserved;
-}	t_slab_meta;
+typedef struct s_large_alloc
+{
+	struct s_arena	*next;
+	uint16_t		id;
+	uint16_t		flags;
+	char			reserved[4];
+	void			*data;
+}	t_large_alloc;
 
-typedef struct s_slab_region {
+typedef struct s_slab_region
+{
 	struct s_slab_region	*next;
 	uint16_t				id;
 	uint16_t				used;
 	uint16_t				max_free;
+	char					reserved[2];
 	char					data[SLAB_CAPACITY];
 }	t_slab_region;
 
-typedef struct s_allocator {
+typedef struct s_allocator
+{
 	t_arena			*arenas;
 	t_slab_region	*slabs;
 	t_arena_id		next_arena_id;
@@ -87,7 +98,7 @@ void			allocator_init(t_allocator *alc);
 void			allocator_destroy(t_allocator *alc);
 
 t_arena			*allocator_arena_new(t_allocator *alc);
-void			allocator_bulk_free(t_allocator *alc, t_arena *arena);
+void			allocator_arena_free(t_allocator *alc, t_arena *arena);
 
 t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena);
 void			allocator_free(t_allocator *alc, t_allocation alloc);
