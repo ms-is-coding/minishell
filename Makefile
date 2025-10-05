@@ -6,13 +6,13 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/02 22:40:08 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/04 13:52:45 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 CC				= cc
-CFLAGS			= -Wall -Wextra -MMD -MP -std=c99
+CFLAGS			= -Wall -Wextra -MMD -MP
 SRC_DIR			= src
 OBJ_DIR			= obj
 
@@ -23,12 +23,17 @@ SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 				  parser/group.c parser/redir.c
 SRC_BYTECODE	= bytecode/write.c
 SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
-				  builtins/false.c builtins/pwd.c builtins/true.c
+				  builtins/false.c builtins/pwd.c builtins/true.c \
+				  builtins/echo_mal.c builtins/echo_buf.c
 SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
 				  vm/wait.c vm/file.c vm/cmd.c
+SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
+					arena/alloc.c arena/free.c arena/new.c arena/create.c \
+					arena/destroy.c arena/find.c \
+					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
-				   $(SRC_BUILTINS) $(SRC_VM) main.c
+				   $(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) main.c
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
