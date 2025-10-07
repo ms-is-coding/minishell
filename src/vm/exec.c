@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 16:41:46 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 18:22:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	vm_exec(t_vm *vm, t_program *program)
 	builtin = find_builtin(vm->frame.argv[0]);
 	if (builtin == builtin_exec
 		|| builtin == builtin_exit
-		|| builtin == builtin_export)
+		|| builtin == builtin_export
+		|| builtin == builtin_cd)
 	{
 		builtin(sh, vm->frame.argc, vm->frame.argv, env);
 		return ;

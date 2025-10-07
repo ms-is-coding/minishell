@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 17:44:54 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 08:49:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:54:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static t_allocation	large_alloc(t_arena *arena, size_t size)
 	arena->next = (void *)large;
 	alloc.kind = ALLOC_ARENA;
 	alloc.size = size;
+	alloc.data = large->data;
 	alloc.parent_id = arena->id;
 	alloc.region = (void *)large;
 	return (alloc);

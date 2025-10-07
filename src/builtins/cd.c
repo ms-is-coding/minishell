@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 15:56:31 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 18:22:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	normalize_path(char *path)
 
 	ft_memcpy(tmp, path, PATH_MAX);
 	top = 0;
-	ft_printf("\"%s\" \"%s\"\n", path, tmp);
 	token = ft_strtok(tmp, "/");
 	while (token)
 	{
@@ -67,8 +66,6 @@ static bool	resolve_path(char *newpwd, const char *oldpwd, const char *path)
 		ft_strlcpy(newpwd, path, PATH_MAX);
 	else if (ft_snprintf(newpwd, PATH_MAX, "%s/%s", oldpwd, path) >= PATH_MAX)
 		return (false);
-	ft_printf("path --> %s\n", path);
-	ft_printf("newpwd --> %s\n", newpwd);
 	normalize_path(newpwd);
 	return (true);
 }
@@ -94,7 +91,6 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	}
 	if (!get_path(&sh->env, argv[1], &path))
 		return (1); //HOME or OLDPWD not set
-	ft_printf("\"%s\" \"%s\" \"%s\"\n", newpwd, oldpwd, path);
 	if (!resolve_path(newpwd, oldpwd, path))
 		return (1); //path too long
 	if (chdir(newpwd) != 0)
