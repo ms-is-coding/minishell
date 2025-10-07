@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   remove.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 20:41:42 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/06 00:47:51 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/06 01:01:34 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "env/env_internal.h"
 
-# include "allocator/allocator.h"
-# include "parser/parser.h"
-# include "lexer/lexer.h"
-# include "cli/cli.h"
-# include "env/env.h"
-# include "vm/vm.h"
-
-typedef struct s_shell
+void	env_remove(t_env *env, const char *key)
 {
-	t_allocator	allocator;
-	t_parser	parser;
-	t_lexer		lexer;
-	t_cli		cli;
-	t_env		env;
-	t_vm		vm;
-}	t_shell;
+	t_env_bucket	*bucket;
 
-#endif
+	bucket = env_find_key(env, key);
+	if (!bucket)
+		return ;
+	bucket->key = NULL;
+	bucket->value = NULL;
+	bucket->is_tombstone = 1;
+}

@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   env_internal.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 20:41:42 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/06 00:33:01 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/06 00:57:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef ENV_INTERNAL_H
+# define ENV_INTERNAL_H
 
-# include "allocator/allocator.h"
-# include "parser/parser.h"
-# include "lexer/lexer.h"
-# include "cli/cli.h"
-# include "env/env.h"
-# include "vm/vm.h"
+# include "env.h"
 
-typedef struct s_shell
-{
-	t_allocator	allocator;
-	t_parser	parser;
-	t_lexer		lexer;
-	t_cli		cli;
-	t_env		env;
-	t_vm		vm;
-}	t_shell;
+size_t			env_hash(t_env *env, const char *data);
+t_env_bucket	*env_find_key(t_env *env, const char *key);
+t_env_bucket	*env_find_empty(t_env *env, const char *key);
 
-#endif
+#endif // ENV_INTERNAL_H

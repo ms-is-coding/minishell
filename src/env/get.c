@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environ.h                                          :+:      :+:    :+:   */
+/*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:57:19 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/06 00:44:20 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/06 00:55:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVIRON_H
-# define ENVIRON_H
+#include "env/env.h"
+#include "env/env_internal.h"
 
-# include "libft.h"
-
-typedef struct s_environ
+const char	*env_get(t_env *env, const char *key)
 {
-	t_vector	public;
-	t_vector	private;
-}	t_environ;
+	t_env_bucket	*bucket;
 
-t_result	environ_init(t_environ *env, char **envp);
-
-#endif // ENVIRON_H
+	bucket = env_find_key(env, key);
+	if (!bucket)
+		return (NULL);
+	return (bucket->value);
+}
