@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:20:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 23:56:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:27:22 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	print_pwd(size_t idx, t_value val)
 int	builtin_pwd(t_shell *sh, int argc, char **argv)
 {
 	(void)argc;
-	(void)argv;
-	ft_vector_foreach(&sh->environ.public, print_pwd);
+	(void)argv; //to beautify
+	ft_vector_foreach(&sh->env.public, print_pwd);
 	return (0);
 }

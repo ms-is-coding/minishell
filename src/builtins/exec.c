@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 23:56:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:27:30 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static void	push_env(size_t idx, t_value val)
 	env[idx] = val.value.str;
 }
 
-// todo:
-// - decrement shlvl
 int	builtin_exec(t_shell *sh, int argc, char **argv)
 {
+	// todo:
+	// - decrement shlvl
 	char	*cmd;
 
 	if (argc == 1)

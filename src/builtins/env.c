@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:12:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/04 18:44:57 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_var(size_t idx, t_value val)
 int	builtin_env(t_shell *sh, int argc, char **argv)
 {
 	(void)argc;
-	(void)argv;
+	(void)argv; //to beautify
 	ft_vector_foreach(&sh->env.public, print_var);
 	return (0);
 }
