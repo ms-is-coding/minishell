@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:02:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:59:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 20:33:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-bool	is_operator(unsigned char c)
+bool	is_operator(char sc)
 {
+	unsigned char	c;
+
+	c = (unsigned char)sc;
 	return (ft_isspace(c) || c == '|' || c == '&'
 		|| c == '<' || c == '>' || c == ';'
 		|| c == '`' || c == '(' || c == ')'
@@ -162,57 +165,6 @@ t_token	lex_number(t_lexer *lexer)
 	if (lexer_match(lexer, '<'))
 		return (lex_redir_in(lexer));
 	lexer->fd = 1;
-	return (lex_word(lexer));
-}
-
-t_token	lex_letter_e(t_lexer *lexer)
-{
-	if (lexer_match(lexer, 'l'))
-	{
-		if (lexer_match(lexer, 's')
-			&& lexer_match(lexer, 'e')
-			&& is_operator(lexer->input[lexer->i]))
-			return (lexer_emit(lexer, TOK_ELSE));
-		if (lexer_match(lexer, 'i')
-			&& lexer_match(lexer, 'f')
-			&& is_operator(lexer->input[lexer->i]))
-			return (lexer_emit(lexer, TOK_ELIF));
-	}
-	return (lex_word(lexer));
-}
-
-t_token	lex_letter_i(t_lexer *lexer)
-{
-	if (lexer_match(lexer, 'f') && is_operator(lexer->input[lexer->i]))
-		return (lexer_emit(lexer, TOK_IF));
-	if (lexer_match(lexer, 'n') && is_operator(lexer->input[lexer->i]))
-		return (lexer_emit(lexer, TOK_IN));
-	return (lex_word(lexer));
-}
-
-t_token	lex_letter_t(t_lexer *lexer)
-{
-	if (lexer_match(lexer, 'i')
-		&& lexer_match(lexer, 'm')
-		&& lexer_match(lexer, 'e')
-		&& is_operator(lexer->input[lexer->i]))
-		return (lexer_emit(lexer, TOK_TIME));
-	if (lexer_match(lexer, 'h')
-		&& lexer_match(lexer, 'e')
-		&& lexer_match(lexer, 'n')
-		&& is_operator(lexer->input[lexer->i]))
-		return (lexer_emit(lexer, TOK_THEN));
-	return (lex_word(lexer));
-}
-
-t_token	lex_letter_w(t_lexer *lexer)
-{
-	if (lexer_match(lexer, 'h')
-		&& lexer_match(lexer, 'i')
-		&& lexer_match(lexer, 'l')
-		&& lexer_match(lexer, 'e')
-		&& is_operator(lexer->input[lexer->i]))
-		return (lexer_emit(lexer, TOK_WHILE));
 	return (lex_word(lexer));
 }
 

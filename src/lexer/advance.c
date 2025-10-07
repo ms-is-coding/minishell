@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:59:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/06 00:03:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static t_lex_fn	get_fn(int idx)
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, lex_error, lex_word, lex_word, lex_word, lex_word,
+		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
+		lex_word, lex_word, lex_error, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
 		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:49:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 20:32:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "lexer.h"
 
-bool		is_operator(unsigned char c);
+bool		is_operator(char c);
 
 char		lexer_next(t_lexer *lexer);
 bool		lexer_match(t_lexer *lexer, char c);
