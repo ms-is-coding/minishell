@@ -6,25 +6,23 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:20:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:27:22 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 12:39:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "libft.h"
+#include "env/env.h"
 
-static void	print_pwd(size_t idx, t_value val)
+int	builtin_pwd(t_shell *sh, int argc, char **argv, char **envp)
 {
-	(void)idx;
-	if (ft_strncmp("PWD=", val.value.str, 4) != 0)
-		return ;
-	ft_printf("%s\n", val.value.str + 4);
-}
+	const char	*pwd;
 
-int	builtin_pwd(t_shell *sh, int argc, char **argv)
-{
+	(void)envp;
 	(void)argc;
-	(void)argv; //to beautify
-	ft_vector_foreach(&sh->env.public, print_pwd);
+	(void)argv;
+	pwd = env_get(&sh->env, "PWD");
+	if (!pwd)
+		return (1); // error
+	ft_printf("%s\n", pwd);
 	return (0);
 }

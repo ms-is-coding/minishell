@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:27:30 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 12:39:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,19 @@ static char	*find_exec(char *arg)
 	return (NULL);
 }
 
-static char **env;
-
-static void	push_env(size_t idx, t_value val)
+int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 {
-	env[idx] = val.value.str;
-}
-
-int	builtin_exec(t_shell *sh, int argc, char **argv)
-{
-	// todo:
-	// - decrement shlvl
 	char	*cmd;
 
+// todo:
+// - decrement shlvl
+	(void)sh;
 	if (argc == 1)
 		return (0);
 	cmd = find_exec(argv[1]);
 	if (!cmd)
 		ft_printf("exec: %s: command not found\n", argv[1]);
-	env = malloc(sizeof(char *) * (sh->environ.public.length + 1));
-	if (!env)
-		return (0);
-	ft_vector_foreach(&sh->environ.public, push_env);
-	execve(cmd, argv + 1, env);
+	execve(cmd, argv + 1, envp);
 	exit(0);
 	return (0);
 }

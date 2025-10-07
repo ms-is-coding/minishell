@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 12:29:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:34:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 #include "libft_printf.h"
 #include <unistd.h>
 
-char *get_env_path(t_environ *env, const char *name)
+char *get_env_path(t_env *env, const char *name)
 {
 	(void)env;
 	(void)name;
 	return (NULL);
 }
 
-void	set_env_path(t_environ *env, const char *name, const char *value)
+void	set_env_path(t_env *env, const char *name, const char *value)
 {
 	(void)env;
 	(void)name;
 	(void)value;
 }
 
-static bool	get_path(t_environ *env, char *arg, char **path)
+static bool	get_path(t_env *env, char *arg, char **path)
 {
 	if (!arg)
 		*path = get_env_path(env, "HOME");
@@ -82,29 +82,30 @@ static bool	resolve_path(char *newpwd, const char *oldpwd, const char *path)
 	return (true);
 }
 
-int	builtin_cd(t_shell *sh, int argc, char **argv)
+int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char		*path;
 	char		oldpwd[PATH_MAX];
 	char		newpwd[PATH_MAX];
 
+	(void)envp;
 	(void)argc;
 	if (argv[1] && argv[2])
 		return (2); //too many args
-	ft_strlcpy(oldpwd, get_env_path(&sh->environ, "PWD"), PATH_MAX);
+	ft_strlcpy(oldpwd, get_env_path(&sh->env, "PWD"), PATH_MAX);
 	if (!oldpwd[0])
 	{
 		if (getcwd(oldpwd, PATH_MAX) == NULL)
 			return (1); //perror
 	}
-	if (!get_path(&sh->environ, argv[1], &path))
+	if (!get_path(&sh->env, argv[1], &path))
 		return (1); //HOME or OLDPWD not set
 	if (!resolve_path(newpwd, oldpwd, path))
 		return (1); //path too long
 	if (chdir(newpwd) != 0)
 		return (ft_dprintf(2, "cd: %m\n"), 1);
-	set_env_path(&sh->environ, "OLDPWD", oldpwd);
-	set_env_path(&sh->environ, "PWD", newpwd);
+	set_env_path(&sh->env, "OLDPWD", oldpwd);
+	set_env_path(&sh->env, "PWD", newpwd);
 	if (argv[0] && ft_strcmp(argv[0], "-") == 0)
 		ft_printf("%s\n", newpwd);
 	return (0);

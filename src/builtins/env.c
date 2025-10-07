@@ -6,22 +6,18 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/04 18:44:57 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 12:38:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	print_var(size_t idx, t_value val)
+int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 {
-	(void)idx;
-	ft_printf("%s\n", val.value.str);
-}
-
-int	builtin_env(t_shell *sh, int argc, char **argv)
-{
+	(void)sh;
 	(void)argc;
-	(void)argv; //to beautify
-	ft_vector_foreach(&sh->env.public, print_var);
+	(void)argv;
+	while (*envp)
+		ft_printf("%s\n", *envp++);
 	return (0);
 }
