@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:26:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 22:29:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 01:01:00 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum e_opcode
 	OP_CMD,
 	OP_EXE,
 	OP_ARG,
+	OP_LONGARG,
 	OP_FNAME,
 	OP_PIPE,
 	OP_OUT,

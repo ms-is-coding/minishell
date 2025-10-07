@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:01:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:56:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 20:26:54 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_cli_option
 	char		short_name;
 	bool		is_set;
 	bool		has_value;
+
+	char		reserved[5];
 }	t_cli_option;
 
 typedef struct s_cli

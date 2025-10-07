@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 12:29:46 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 00:26:00 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ struct s_builtin
 static char	*find_exec(char *arg)
 {
 	const char	*paths[] = {
-		"./", "/bin", "/usr/bin", "/usr/local/bin",
+		"./", "/", "/bin", "/usr/bin", "/usr/local/bin",
 		"/sbin", "/usr/sbin", "/usr/local/sbin", NULL};
 	char		*path;
 	int			i;
@@ -53,7 +53,7 @@ static t_builtin_fn	find_builtin(char *arg)
 	static struct s_builtin	builtins[] = {
 	{"cd", builtin_cd}, {"echo", builtin_echo}, {"exec", builtin_exec},
 	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
-	{":", builtin_true}, {"pwd", builtin_pwd},
+	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
 	{NULL, NULL}};
 	int						i;
 
@@ -66,26 +66,9 @@ static t_builtin_fn	find_builtin(char *arg)
 	return (NULL);
 }
 
-static char	**prepare_env(t_vm *vm)
-{
-	static char	*env[256];
-	int			i;
-
-	i = -1;
-	while (++i < (int)((t_shell *)vm->shell)->environ.public.length)
-	{
-		env[i] = ft_vector_at(
-				&(((t_shell *)vm->shell)->environ.public), i).value.str;
-	}
-	env[i] = NULL;
-	return (env);
-}
-
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
-	ft_vector_free(&sh->environ.public);
-	ft_vector_free(&sh->environ.private);
 	ft_vector_free(&sh->vm.exit_codes);
 	ft_vector_free(&sh->vm.pids);
 	allocator_destroy(&sh->allocator);
@@ -109,11 +92,11 @@ void	vm_exec(t_vm *vm, t_program *program)
 	(void)vm;
 	(void)program;
 	sh = vm->shell;
-	env = prepare_env(vm);
+	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.i] = NULL;
 	builtin = find_builtin(vm->frame.argv[0]);
 	if (builtin == builtin_exec || builtin == builtin_exit)
-		exit(builtin(sh, vm->frame.argc, vm->frame.argv));
+		exit(builtin(sh, vm->frame.argc, vm->frame.argv, env));
 	pid = fork();
 	if (pid == 0)
 	{
@@ -130,7 +113,7 @@ void	vm_exec(t_vm *vm, t_program *program)
 		builtin = find_builtin(vm->frame.argv[0]);
 		if (builtin)
 		{
-			exit_code = builtin(sh, vm->frame.argc, vm->frame.argv);
+			exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
 			sh_destroy(sh);
 			exit(exit_code);
 		}
