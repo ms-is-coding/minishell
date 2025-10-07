@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 23:06:36 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 12:13:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ static void	repeat(char c, int count)
 		ft_dprintf(2, "%c", c);
 }
 
+static void	print_line(t_parser *p, t_token token)
+{
+	if (token.pos.len > 15)
+	{
+		ft_dprintf(2, ANSI_RED "%.6s...%.6s" ANSI_RESET,
+			p->lexer->input + token.pos.col - 1,
+			p->lexer->input + token.pos.col - 1 + token.pos.len - 6);
+	}
+	else
+		ft_dprintf(2, ANSI_RED "%.*s" ANSI_RESET, token.pos.len,
+			p->lexer->input + token.pos.col - 1);
+}
+
 void	print_error(t_parser *p, t_token token, const char *message)
 {
 	repeat(' ', ft_intlen(token.pos.row) + 2);
@@ -31,14 +44,16 @@ void	print_error(t_parser *p, t_token token, const char *message)
 	ft_dprintf(2, ANSI_BOLD ANSI_RED " Syntax Error\n" ANSI_RESET);
 	ft_dprintf(2, " " ANSI_BOLD "%d │ " ANSI_RESET, token.pos.row);
 	ft_dprintf(2, "%.*s", token.pos.col - 1, p->lexer->input);
-	ft_dprintf(2, ANSI_RED "%.*s" ANSI_RESET, token.pos.len,
-		p->lexer->input + token.pos.col - 1);
+	print_line(p, token);
 	ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1 + token.pos.len);
 	repeat(' ', ft_intlen(token.pos.row) + 2);
 	ft_dprintf(2, "╵");
 	repeat(' ', token.pos.col);
 	ft_dprintf(2, ANSI_RED "^");
-	repeat('~', token.pos.len - 1);
+	if (token.pos.len > 15)
+		repeat('~', 14);
+	else
+		repeat('~', token.pos.len - 1);
 	ft_dprintf(2, ANSI_RED " %s\n\n" ANSI_RESET, message);
 }
 

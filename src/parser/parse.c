@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 23:59:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_result	parse_error(t_parser *p, t_token token)
 {
 	(void)p;
 	(void)token;
+	ft_printf("Error\n");
+	print_token(token);
 	return (RESULT_ERROR);
 }
 

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 08:39:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/05 20:30:34 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef t_result	(*t_led_fn)(t_parser *, t_token);
 typedef struct s_parse_rule
 {
 	t_precedence	precedence;
+	char			reserved[4];
 	t_nud_fn		nud;
 	t_led_fn		led;
 }	t_parse_rule;
