@@ -6,35 +6,23 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 16:34:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 13:40:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+
+#include "env/env.h"
 #include "builtins.h"
 #include "libft.h"
 #include "libft_printf.h"
-#include <unistd.h>
-
-char *get_env_path(t_env *env, const char *name)
-{
-	(void)env;
-	(void)name;
-	return (NULL);
-}
-
-void	set_env_path(t_env *env, const char *name, const char *value)
-{
-	(void)env;
-	(void)name;
-	(void)value;
-}
 
 static bool	get_path(t_env *env, char *arg, char **path)
 {
 	if (!arg)
-		*path = get_env_path(env, "HOME");
+		*path = env_get(env, "HOME");
 	else if (ft_strcmp(arg, "-") == 0)
-		*path = get_env_path(env, "OLDPWD");
+		*path = env_get(env, "OLDPWD");
 	else
 		*path = arg;
 	if (!*path)
@@ -92,7 +80,7 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	(void)argc;
 	if (argv[1] && argv[2])
 		return (2); //too many args
-	ft_strlcpy(oldpwd, get_env_path(&sh->env, "PWD"), PATH_MAX);
+	ft_strlcpy(oldpwd, env_get(&sh->env, "PWD"), PATH_MAX);
 	if (!oldpwd[0])
 	{
 		if (getcwd(oldpwd, PATH_MAX) == NULL)
@@ -104,8 +92,8 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 		return (1); //path too long
 	if (chdir(newpwd) != 0)
 		return (ft_dprintf(2, "cd: %m\n"), 1);
-	set_env_path(&sh->env, "OLDPWD", oldpwd);
-	set_env_path(&sh->env, "PWD", newpwd);
+	env_set(&sh->env, "OLDPWD", oldpwd, true);
+	env_set(&sh->env, "PWD", newpwd, true);
 	if (argv[0] && ft_strcmp(argv[0], "-") == 0)
 		ft_printf("%s\n", newpwd);
 	return (0);
