@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/04 18:37:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 15:19:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env/env.h"
 #include "libft.h"
 #include <stdbool.h>
 
@@ -78,12 +79,23 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
-static void	print_exported(t_environ env)
+static void	print_exported(char **envp)
 {
-	//placeholder
+	char	*eq;
+
+	while (envp && *envp)
+	{
+		eq = ft_strchr(*envp, '=');
+		if (eq)
+			ft_printf("declare -x %.*s=\"%s\"\n", (int)(eq - *envp), *envp, eq + 1);
+		else
+			ft_printf("declare -x %s\n", *envp);
+		envp++;
+	}
 }
 
-int	builtin_export(t_shell *sh, int argc, char **argv)
+
+int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
 	char	*name;
@@ -102,9 +114,9 @@ int	builtin_export(t_shell *sh, int argc, char **argv)
 	{
 		if (!is_valid_var(*argv))
 			status = 1; //Invalid variable name
-		else if (flags & FLAG_N  && !set_export()) //placeholder
+		else if (flags & FLAG_N  && !env_set()) //placeholder
 			status = 1; //print export -n failed
-		else if (!set_export()) //placeholder
+		else if (!env_set(&sh->env, )) //placeholder
 			status = 1; //print export failed
 		argv++;
 	}

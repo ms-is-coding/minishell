@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:39:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 14:27:58 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static char	*find_exec(char *arg)
 	int			i;
 	size_t		len;
 
-	i = -1;
+	i = 0;
 	if (!arg)
 		return (NULL);
-	while (paths[++i])
+	while (paths[i])
 	{
 		len = ft_strlen(paths[i]) + ft_strlen(arg) + 2;
 		path = ft_malloc(len);
@@ -35,6 +35,7 @@ static char	*find_exec(char *arg)
 		if (access(path, X_OK) == 0)
 			return (path);
 		free(path);
+		i++;
 	}
 	return (NULL);
 }

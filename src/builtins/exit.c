@@ -3,21 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 16:36:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 14:40:53 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include <errno.h>
 
 int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
 {
+	int		exit_code;
+	
 	(void)argv;
 	(void)sh;
-	(void)argc;
 	(void)envp;
-	exit(0);
+	exit_code = 0;
+	if (argc > 2)
+		return (builtin_error(ctx(argv[0], "exit"), ERR_TOO_MANY_ARGS, 1));
+	if (argc == 2)
+		exit_code = ft_atoi_safe(argv[1]);
+	if (errno == ERANGE)
+		return (builtin_error(ctx(argv[0], "exit"), ERR_NOT_NUMERIC, 255));
+	write(1, "exit\n", 5);
+	exit(exit_code);
 	return (0);
 }

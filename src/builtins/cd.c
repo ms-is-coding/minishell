@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 14:04:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 15:08:09 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	(void)envp;
 	(void)argc;
 	if (argv[1] && argv[2])
-		return (2); //too many args
+		return (builtin_error(ctx(argv[0], "cd12345678901234567890"), ERR_TOO_MANY_ARGS, 2));
 	path = NULL;
 	newpwd[0] = 0;
 	oldpwd[0] = 0;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_error.c                                    :+:      :+:    :+:   */
+/*   builtins_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 12:58:05 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 14:36:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static const char	*get_error_info(t_error err)
 		[ERR_NONE] = ": Success",
 		[ERR_INVALID_NAME] = ": invalid name",
 		[ERR_TOO_MANY_ARGS] = ": too many arguments",
+		[ERR_NOT_NUMERIC] = ": numeric argument required",
 		[ERR_NOT_FOUND] = ": not found",
 		[ERR_PERROR] = ": system error",
 		[ERR_UNKNOWN] = ": unknown error"
@@ -87,13 +88,13 @@ t_context	ctx(const char *builtin, const char *subject)
 	return (ctx);
 }
 
-void	builtin_error(t_context ctx, t_error err)
+int	builtin_error(t_context ctx, t_error err, int int_code)
 {
 	char	msg[MSG_LIMIT];
 	size_t	size;
 
 	if (err == ERR_NONE)
-		return ;
+		return (0);
 	if (err == ERR_PERROR)
 	{
 		get_context(msg, ctx);
@@ -104,4 +105,5 @@ void	builtin_error(t_context ctx, t_error err)
 	size = get_error_message(msg, err, ctx);
 	write(2, msg, size);
 	}
+	return (int_code);
 }
