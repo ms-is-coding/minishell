@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/05 12:29:25 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/07 00:26:10 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,21 @@ SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 				  parser/group.c parser/redir.c
 SRC_BYTECODE	= bytecode/write.c
 SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
-				  builtins/false.c builtins/pwd.c builtins/true.c
+				  builtins/false.c builtins/pwd.c builtins/true.c builtins/env.c
 SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
 				  vm/wait.c vm/file.c vm/cmd.c
+SRC_DISASM		= disasm/disasm.c
+SRC_ENV			= env/hash.c env/get.c env/set.c env/remove.c env/find.c \
+				  env/init.c env/build.c
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
-				   $(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) main.c
+				   $(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
+				   $(SRC_ENV) \
+				   main.c
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
