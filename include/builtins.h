@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 13:24:30 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 14:35:54 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef enum e_error
 	ERR_NONE,
 	ERR_INVALID_NAME,
 	ERR_TOO_MANY_ARGS,
+	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,
 	ERR_PERROR,
 	ERR_UNKNOWN,
@@ -46,6 +47,6 @@ int			builtin_true(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_unset(t_shell *sh, int argc, char **argv, char **envp);
 
 t_context	ctx(const char *builtin, const char *subject);
-void		builtin_error(t_context ctx, t_error err);
+int			builtin_error(t_context ctx, t_error err, int int_code);
 
 #endif
