@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 12:23:07 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 16:13:07 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ static void	print_aliases(t_vector aliases)
 int	builtin_alias(t_shell *sh, int argc, char **argv)
 {
 	char	flags;
-	char 	*name;
+	char 	*alias;
 	int		status;
 
 	(void)argc;
-	name = argv[0];
+	alias = argv[0];
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)

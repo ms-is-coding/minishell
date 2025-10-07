@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 14:36:06 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 16:46:40 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static const char	*get_error_info(t_error err)
 		[ERR_NONE] = ": Success",
 		[ERR_INVALID_NAME] = ": invalid name",
 		[ERR_TOO_MANY_ARGS] = ": too many arguments",
+		[ERR_INVALID_OPT] = ": invalid option",
 		[ERR_NOT_NUMERIC] = ": numeric argument required",
 		[ERR_NOT_FOUND] = ": not found",
 		[ERR_PERROR] = ": system error",
@@ -50,12 +51,16 @@ static size_t	get_context(char *buf, t_context ctx)
 		i = BLTN_LIMIT + ft_strlcpy(&buf[BLTN_LIMIT], THREE_DOT, 4);
 	else
 		i += copied;
-	buf[i++] = ':';
-	copied = ft_strlcpy(&buf[i], ctx.subject, SUBJ_LIMIT + 1);
-	if (copied > SUBJ_LIMIT)
-		i = SUBJ_LIMIT + ft_strlcpy(&buf[i], THREE_DOT, 4);
-	else
-		i += copied;
+	if (ctx.subject)
+	{
+		buf[i++] = ':';
+		buf[i++] = ' ';
+		copied = ft_strlcpy(&buf[i], ctx.subject, SUBJ_LIMIT + 1);
+		if (copied > SUBJ_LIMIT)
+			i = SUBJ_LIMIT + ft_strlcpy(&buf[SUBJ_LIMIT], THREE_DOT, 4);
+		else
+			i += copied;
+	}
 	return (i);
 }
 
@@ -82,8 +87,8 @@ t_context	ctx(const char *builtin, const char *subject)
 	if (!builtin || !*builtin)
 		builtin = "unknown";
 	ctx.builtin = builtin;
-	if (!subject || !*subject)
-		subject = "";
+	if (!subject)
+		subject = NULL;
 	ctx.subject = subject;
 	return (ctx);
 }

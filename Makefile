@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
+#    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/07 00:26:10 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/07 16:20:17 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,9 @@ SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 				  parser/command.c parser/expr.c parser/logical.c parser/list.c \
 				  parser/group.c parser/redir.c
 SRC_BYTECODE	= bytecode/write.c
-SRC_BUILTINS 	= builtins/cd.c builtins/echo.c builtins/exec.c builtins/exit.c \
-				  builtins/false.c builtins/pwd.c builtins/true.c builtins/env.c
+SRC_BUILTINS 	= builtins/builtins_error.c builtins/cd.c builtins/echo.c \
+				  builtins/exec.c builtins/exit.c builtins/false.c \
+				  builtins/pwd.c builtins/true.c builtins/env.c builtins/export.c
 SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
 				  vm/wait.c vm/file.c vm/cmd.c
 SRC_DISASM		= disasm/disasm.c

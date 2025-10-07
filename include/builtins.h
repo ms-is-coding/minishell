@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 14:35:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 16:14:40 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef enum e_error
 	ERR_NONE,
 	ERR_INVALID_NAME,
 	ERR_TOO_MANY_ARGS,
+	ERR_INVALID_OPT,
 	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,
 	ERR_PERROR,

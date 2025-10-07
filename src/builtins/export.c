@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 15:19:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 16:39:00 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	set_flags(int *argc, char ***argv)
 
 static bool	is_valid_var(const char *str)
 {
+	ft_printf("Checking validity of variable: %s\n", str);
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (false);
 	str++;
@@ -87,37 +88,60 @@ static void	print_exported(char **envp)
 	{
 		eq = ft_strchr(*envp, '=');
 		if (eq)
-			ft_printf("declare -x %.*s=\"%s\"\n", (int)(eq - *envp), *envp, eq + 1);
+			ft_printf("export %.*s=\"%s\"\n", (int)(eq - *envp), *envp, eq + 1);
 		else
-			ft_printf("declare -x %s\n", *envp);
+			ft_printf("export %s\n", *envp);
 		envp++;
 	}
+}
+
+static void	separate_export(char *arg, char **key, char **value)
+{
+	char	*eq;
+
+	eq = ft_strchr(arg, '=');
+	if (eq)
+		*eq = '\0';
+	else
+		*value = NULL;
+	*key = ft_strdup(arg);
+	if (eq)
+		*value = ft_strdup(eq + 1);
+	else
+		*value = NULL;
 }
 
 
 int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
-	char	*name;
+	char	*alias;
+	char	*key;
+	char	*value;
 	int		status;
 
 	(void)argc;
-	name = argv[0];
+	alias = argv[0];
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
-		return (2); //Invalid option
-	if (!argv)
-		return (print_exported(&sh->env), 0);
+		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
+	if (!(*argv))
+		return (print_exported(envp), 0);
 	status = 0;
 	while (*argv)
 	{
 		if (!is_valid_var(*argv))
-			status = 1; //Invalid variable name
-		else if (flags & FLAG_N  && !env_set()) //placeholder
-			status = 1; //print export -n failed
-		else if (!env_set(&sh->env, )) //placeholder
-			status = 1; //print export failed
+			status = 1;//Invalid variable name
+		else
+		 {
+			separate_export(*argv, &key, &value);
+			ft_printf("Exporting variable: [%s] with value: [%s]\n", *argv, value);
+			if (flags & FLAG_N  && env_set(&sh->env, key, value, false) != RESULT_OK) //placeholder
+				status = 1; //print export -n failed
+			else if (env_set(&sh->env, key, value, true) != RESULT_OK) //placeholder
+				status = 1; //print export failed
+		 }
 		argv++;
 	}
 	return (status);

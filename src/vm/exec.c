@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 00:26:00 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:41:46 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static t_builtin_fn	find_builtin(char *arg)
 	{"cd", builtin_cd}, {"echo", builtin_echo}, {"exec", builtin_exec},
 	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
 	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
+	{"export", builtin_export},
 	{NULL, NULL}};
 	int						i;
 
@@ -95,8 +96,13 @@ void	vm_exec(t_vm *vm, t_program *program)
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.i] = NULL;
 	builtin = find_builtin(vm->frame.argv[0]);
-	if (builtin == builtin_exec || builtin == builtin_exit)
-		exit(builtin(sh, vm->frame.argc, vm->frame.argv, env));
+	if (builtin == builtin_exec
+		|| builtin == builtin_exit
+		|| builtin == builtin_export)
+	{
+		builtin(sh, vm->frame.argc, vm->frame.argv, env);
+		return ;
+	}
 	pid = fork();
 	if (pid == 0)
 	{
