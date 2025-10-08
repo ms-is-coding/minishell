@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:05:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 16:39:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 16:58:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@ t_result	program_write_u8(t_program *program, uint8_t data)
 	if (program->len + sizeof(uint8_t) >= MAX_CHUNK)
 		return (RESULT_ERROR);
 	program->data[program->len++] = data;
+	return (RESULT_OK);
+}
+
+t_result	program_write_u16(t_program *program, uint16_t data)
+{
+	if (program->len + sizeof(uint16_t) >= MAX_CHUNK)
+		return (RESULT_ERROR);
+	ft_memcpy(program->data + program->len, &data, sizeof(uint16_t));
+	program->len += sizeof(uint16_t);
 	return (RESULT_OK);
 }
 
