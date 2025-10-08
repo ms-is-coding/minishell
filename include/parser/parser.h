@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 20:30:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 19:53:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ typedef struct s_parser
 
 	int			argc;
 	bool		in_cmd;
-	char		reserved[3];
+	uint8_t		redirs;
+	char		reserved[2];
 }	t_parser;
 
 typedef enum e_precedence
@@ -66,6 +67,7 @@ t_result		parse_and(t_parser *p, t_token t);
 t_result		parse_or(t_parser *p, t_token t);
 t_result		parse_semi(t_parser *p, t_token t);
 t_result		parse_r_out(t_parser *p, t_token t);
+t_result		parse_r_in(t_parser *p, t_token t);
 
 void			parser_advance(t_parser *p);
 t_result		parser_consume(t_parser *p, t_token_type type, const char *err);

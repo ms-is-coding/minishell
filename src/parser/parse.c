@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 23:59:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:32:25 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@
 
 t_result	parse_error(t_parser *p, t_token token)
 {
-	(void)p;
-	(void)token;
-	ft_printf("Error\n");
-	print_token(token);
+	print_error(p, token, "Unterminated string");
 	return (RESULT_ERROR);
 }
 
@@ -42,6 +39,5 @@ t_result	parser_parse(t_parser *p, char *line)
 		if (result != RESULT_OK)
 			return (result);
 	}
-	program_write_u8(&p->program, OP_WAIT);
 	return (RESULT_OK);
 }

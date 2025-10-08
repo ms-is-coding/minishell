@@ -6,10 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:13:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 19:04:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "common.h"
 #include "parser/parser.h"
 #include "ansi.h"
 
@@ -24,11 +25,12 @@ static void	repeat(char c, int count)
 
 static void	print_line(t_parser *p, t_token token)
 {
-	if (token.pos.len > 15)
+	if (token.pos.len > ERROR_MAX_LENGTH)
 	{
-		ft_dprintf(2, ANSI_RED "%.6s...%.6s" ANSI_RESET,
-			p->lexer->input + token.pos.col - 1,
-			p->lexer->input + token.pos.col - 1 + token.pos.len - 6);
+		ft_dprintf(2, ANSI_RED "%.*s...%.*s" ANSI_RESET,
+			ERROR_CHARACTERS, p->lexer->input + token.pos.col - 1,
+			ERROR_CHARACTERS, p->lexer->input + token.pos.col - 1
+			+ token.pos.len - ERROR_CHARACTERS);
 	}
 	else
 		ft_dprintf(2, ANSI_RED "%.*s" ANSI_RESET, token.pos.len,
@@ -50,8 +52,8 @@ void	print_error(t_parser *p, t_token token, const char *message)
 	ft_dprintf(2, "╵");
 	repeat(' ', token.pos.col);
 	ft_dprintf(2, ANSI_RED "^");
-	if (token.pos.len > 15)
-		repeat('~', 14);
+	if (token.pos.len > ERROR_MAX_LENGTH)
+		repeat('~', ERROR_MAX_LENGTH - 1);
 	else
 		repeat('~', token.pos.len - 1);
 	ft_dprintf(2, ANSI_RED " %s\n\n" ANSI_RESET, message);
@@ -84,7 +86,7 @@ t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 		rule = parser_get_rule(oper_token.type);
 		if (!rule.led)
 		{
-			print_error(p, token, "unexpected operator");
+			print_error(p, oper_token, "Unexpected operator");
 			return (RESULT_ERROR);
 		}
 		parser_advance(p);
