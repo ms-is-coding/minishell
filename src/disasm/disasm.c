@@ -6,92 +6,50 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:47:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 00:57:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 23:00:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "disasm/disasm_internal.h"
 #include "disasm/disasm.h"
-#include <assert.h>
+#include "common.h"
+#include "ansi.h"
 #include <stddef.h>
+#include <stdint.h>
 
-#define MAX_OFFSET 16
-
-static void print_bytes(int bytes, t_program *program, size_t *offset, const char *desc)
+static t_disassembler	disasm_opcode(t_opcode opcode)
 {
-	int	i;
-
-	i = -1;
-	while (++i < bytes)
-	{
-		ft_printf("%02x ", program->data[(*offset)++]);
-		if (((i - 7) & 7) == 0)
-			ft_printf("\n\t\t");
-	}
-	i = bytes - 1;
-	while (++i < MAX_OFFSET)
-		ft_printf("   ");
-	ft_printf("%s\n", desc);
+	if (opcode < 0 || opcode >= OP_COUNT)
+		return (NULL);
+	return ((t_disassembler[OP_COUNT]){
+		[OP_NULL] = disasm_null,
+		[OP_CMD] = disasm_cmd,
+		[OP_ARG] = disasm_arg,
+		[OP_EXEC] = disasm_exec,
+		[OP_PIPE] = disasm_pipe,
+		[OP_OUT] = disasm_out,
+		[OP_IN] = disasm_in,
+		[OP_JZ] = disasm_jz,
+		[OP_JNZ] = disasm_jnz,
+	}[opcode]);
 }
 
 void	disasm(t_program *program)
 {
-	size_t	len;
+	t_disassembler	handler;
+	size_t			offset;
 
-	for (size_t offset = 0; offset < program->len;)
+	offset = 0;
+	while (offset < program->len)
 	{
-		ft_printf("%8lx:\t", offset);
-		switch (program->data[offset])
+		handler = disasm_opcode(program->data[offset] & OPCODE_MASK);
+		disasm_print_addr(offset);
+		disasm_print_opcode(program, &offset);
+		if (!handler)
 		{
-			case OP_NULL:
-				print_bytes(1, program, &offset, "NULL");
-			break ;
-			case OP_EXE:
-				print_bytes(1, program, &offset, "EXEC");
-			break ;
-			case OP_CMD:
-				print_bytes(5, program, &offset, "COMMAND");
-			break ;
-			case OP_ARG:
-				len = program->data[offset + 1];
-			print_bytes((int)len + 2, program, &offset, "ARG");
-			break ;
-			case OP_FNAME:
-				len = program->data[offset + 1];
-			print_bytes((int)len + 2, program, &offset, "FILENAME");
-			break ;
-			case OP_PIPE:
-				print_bytes(1, program, &offset, "PIPE");
-			break ;
-			case OP_OUT:
-				print_bytes(5, program, &offset, "REDIR_OUT");
-			break ;
-			case OP_JZ:
-				print_bytes(5, program, &offset, "JZ");
-			break ;
-			case OP_JNZ:
-				print_bytes(5, program, &offset, "JNZ");
-			break ;
-			case OP_IN:
-				print_bytes(1, program, &offset, "REDIR_IN");
-			break ;
-			case OP_WAIT:
-				print_bytes(1, program, &offset, "WAIT");
-			break ;
-			default :
-				print_bytes(1, program, &offset, "UNKNOWN");
+			ft_dprintf(2, ANSI_RED "\nError while disassembling\n" ANSI_RESET);
+			return ;
 		}
+		handler(program, &offset);
 	}
 }
-
-/*
-void	disassemble(int *program)
-{
-	size_t	offset;
-
-	offset = -1UL;
-	while (++offset < program->len)
-	{
-		
-	}
-}
-*/
