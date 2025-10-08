@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 15:55:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:46:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_vm
 	t_vector		exit_codes;
 	t_exec_frame	frame;
 
-	int				pipedes[2];
+	int				pipe_fd[2];
 	int				prev_fd;
 	int				file_fd;
 	int				file_in;

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 18:22:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:01:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "builtins.h"
 #include "shell.h"
 #include "vm/vm_internal.h"
+#include <stdbool.h>
 #include <unistd.h>
 
 struct s_builtin
@@ -67,18 +68,48 @@ static t_builtin_fn	find_builtin(char *arg)
 	return (NULL);
 }
 
+static void	close_pipes(t_vm *vm)
+{
+	if (vm->prev_fd > 2)
+		close(vm->prev_fd);
+	if (vm->pipe_fd[STDIN_FILENO] > 2)
+		close(vm->pipe_fd[STDIN_FILENO]);
+	if (vm->pipe_fd[STDOUT_FILENO] > 2)
+		close(vm->pipe_fd[STDOUT_FILENO]);
+}
+
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
 	ft_vector_free(&sh->vm.exit_codes);
 	ft_vector_free(&sh->vm.pids);
 	allocator_destroy(&sh->allocator);
-	if (sh->vm.prev_fd != STDIN_FILENO)
-		close(sh->vm.prev_fd);
-	if (sh->vm.pipedes[STDIN_FILENO] != STDIN_FILENO)
-		close(sh->vm.pipedes[STDIN_FILENO]);
-	if (sh->vm.pipedes[STDOUT_FILENO] != STDOUT_FILENO)
-		close(sh->vm.pipedes[STDOUT_FILENO]);
+	close_pipes(&sh->vm);
+}
+
+static void	setup_fds(t_vm *vm)
+{
+	if (vm->prev_fd != STDIN_FILENO)
+		dup2(vm->prev_fd, STDIN_FILENO);
+	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
+		dup2(vm->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+	close_pipes(vm);
+}
+
+static bool	is_special_builtin(t_builtin_fn fn)
+{
+	return (fn == builtin_exec
+		|| fn == builtin_cd
+		|| fn == builtin_exit
+		|| fn == builtin_export
+	);
+}
+
+static bool	is_command_in_pipeline(t_vm *vm)
+{
+	return (vm->prev_fd != STDIN_FILENO
+		|| vm->pipe_fd[STDIN_FILENO] != STDIN_FILENO
+		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
 }
 
 void	vm_exec(t_vm *vm, t_program *program)
@@ -90,16 +121,12 @@ void	vm_exec(t_vm *vm, t_program *program)
 	t_shell			*sh;
 	int				exit_code;
 
-	(void)vm;
 	(void)program;
 	sh = vm->shell;
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.i] = NULL;
 	builtin = find_builtin(vm->frame.argv[0]);
-	if (builtin == builtin_exec
-		|| builtin == builtin_exit
-		|| builtin == builtin_export
-		|| builtin == builtin_cd)
+	if (is_special_builtin(builtin) && !is_command_in_pipeline(vm))
 	{
 		builtin(sh, vm->frame.argc, vm->frame.argv, env);
 		return ;
@@ -107,16 +134,7 @@ void	vm_exec(t_vm *vm, t_program *program)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (vm->prev_fd != STDIN_FILENO)
-			dup2(vm->prev_fd, STDIN_FILENO);
-		if (vm->pipedes[STDOUT_FILENO] != STDOUT_FILENO)
-			dup2(vm->pipedes[STDOUT_FILENO], STDOUT_FILENO);
-		if (vm->prev_fd != STDIN_FILENO)
-			close(vm->prev_fd);
-		if (vm->pipedes[STDIN_FILENO] != STDIN_FILENO)
-			close(vm->pipedes[STDIN_FILENO]);
-		if (vm->pipedes[STDOUT_FILENO] != STDOUT_FILENO)
-			close(vm->pipedes[STDOUT_FILENO]);
+		setup_fds(vm);
 		builtin = find_builtin(vm->frame.argv[0]);
 		if (builtin)
 		{
@@ -141,12 +159,11 @@ void	vm_exec(t_vm *vm, t_program *program)
 		ft_printf("fork failed: %m\n");
 	if (vm->prev_fd != 0)
 		close(vm->prev_fd);
-	if (vm->pipedes[1] != 1)
-		close(vm->pipedes[1]);
-	vm->prev_fd = vm->pipedes[0];
-	vm->pipedes[0] = 0;
-	vm->pipedes[1] = 1;
+	if (vm->pipe_fd[1] != 1)
+		close(vm->pipe_fd[1]);
+	vm->prev_fd = vm->pipe_fd[0];
+	vm->pipe_fd[0] = 0;
+	vm->pipe_fd[1] = 1;
 	ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
 	allocator_arena_free(vm->allocator, vm->frame.arena);
-	(void)program;
 }

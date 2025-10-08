@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 14:58:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:56:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	vm_run(t_vm *vm, t_program *program)
 	t_exec_handler	handler;
 
 	vm->prev_fd = 0;
-	vm->pipedes[0] = STDIN_FILENO;
-	vm->pipedes[1] = STDOUT_FILENO;
+	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
+	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
 	program->pc = 0UL;
 	ft_vector_init(&vm->pids, 16);
 	while (program->pc < program->len)

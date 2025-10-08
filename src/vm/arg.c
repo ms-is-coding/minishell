@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:04:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 00:27:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/07 21:19:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
+#include "libft.h"
 #include "shell.h"
 #include "vm/vm_internal.h"
 #include "common.h"
@@ -43,6 +44,8 @@ static char	*expand_argument(t_vm *vm, const char *arg)
 	if (ft_strcmp("$VERSION", arg) == 0
 		|| ft_strcmp("$TRASH_VERSION", arg) == 0)
 		expanded = (char *)(intptr_t)TRASH_VERSION;
+	else if (ft_strcmp("$?", arg) == 0)
+		expanded = ft_itoa(ft_vector_at(&vm->exit_codes, -1).value.i32);
 	else if (arg[0] == '$')
 		expanded = (char *)(intptr_t)env_get(
 				&((t_shell *)vm->shell)->env, arg + 1);
