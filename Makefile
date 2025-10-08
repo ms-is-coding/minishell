@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/07 21:21:01 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/08 22:34:26 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,18 +20,17 @@ SRC_CLI			= cli/init.c cli/add.c cli/find.c cli/get.c cli/parse.c
 SRC_LEXER		= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
 				  dollar.c eof.c error.c group.c init.c internal.c lex.c \
 				  number.c pipe.c print.c redir.c)
-SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
-				  parser/command.c parser/expr.c parser/logical.c parser/list.c \
-				  parser/group.c parser/redir.c
-SRC_BYTECODE	= bytecode/write.c
-SRC_BUILTINS 	= builtins/builtins_error.c builtins/cd.c builtins/echo.c \
-				  builtins/exec.c builtins/exit.c builtins/false.c \
-				  builtins/pwd.c builtins/true.c builtins/env.c builtins/export.c
+SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
+				   expr.c logical.c list.c group.c redir.c)
+SRC_BYTECODE	= bytecode/write.c bytecode/get.c
+SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
+				   false.c pwd.c true.c env.c export.c)
 SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
-				  vm/wait.c vm/file.c vm/cmd.c
-SRC_DISASM		= disasm/disasm.c
-SRC_ENV			= env/hash.c env/get.c env/set.c env/remove.c env/find.c \
-				  env/init.c env/build.c
+				  vm/wait.c vm/cmd.c
+SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
+				   exec.c pipe.c redir.c jump.c)
+SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
+				   build.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \
