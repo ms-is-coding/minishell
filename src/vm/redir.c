@@ -6,31 +6,86 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 20:44:26 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:56:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "common.h"
+#include "vm/bytecode.h"
 #include "vm/vm_internal.h"
+#include <fcntl.h>
+#include <stdint.h>
 #include <unistd.h>
+
+static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
+{
+	int	i;
+
+	i = 0;
+	while (i < vm->redir_count)
+	{
+		if (vm->redirs[i].target_fd == target_fd)
+		{
+			if (vm->redirs[i].file_fd >= 0)
+				close(vm->redirs[i].file_fd);
+			vm->redirs[i].file_fd = file_fd;
+			return ;
+		}
+		i++;
+	}
+	vm->redirs[i].target_fd = target_fd;
+	vm->redirs[i].file_fd = file_fd;
+	vm->redir_count++;
+}
 
 void	vm_redir_in(t_vm *vm, t_program *program)
 {
-	int	fd;
+	int32_t		file_fd;
+	int32_t		target_fd;
+	uint16_t	len;
+	char		*filename;
 
-	// todo
-	ft_memcpy(&fd, program->data + program->pc + 1, sizeof(int));
-	dup2(vm->file_fd, fd);
-	vm->file_out = fd;
-	program->pc += 4;
+	program->pc++;
+	target_fd = program_get_i32(program);
+	len = program_get_u16(program);
+	if (target_fd == -1)
+		target_fd = 0;
+	filename = ft_strndup((char *)program->data + program->pc, len);
+	file_fd = open(filename, O_RDONLY);
+	if (file_fd == -1)
+	{
+		ft_dprintf(2, "%s: %m\n", filename);
+		vm->had_error = true;
+	}
+	free(filename);
+	redir_insert(vm, target_fd, file_fd);
+	program->pc += len - 1;
 }
 
 void	vm_redir_out(t_vm *vm, t_program *program)
 {
-	int	fd;
+	t_opcode	opcode;
+	int32_t		file_fd;
+	int32_t		target_fd;
+	uint16_t	len;
+	char		*filename;
 
-	(void)vm;
-	ft_memcpy(&fd, program->data + program->pc + 1, sizeof(int));
-	dup2(vm->file_fd, fd);
-	vm->file_in = fd;
-	program->pc += 5;
+	opcode = program->data[program->pc++];
+	target_fd = program_get_i32(program);
+	len = program_get_u16(program);
+	if (target_fd == -1)
+		target_fd = 1;
+	filename = ft_strndup((char *)program->data + program->pc, len);
+	if (opcode & REDIR_APPEND_BIT)
+		file_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		file_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (file_fd == -1)
+	{
+		ft_dprintf(2, "%s: %m\n", filename);
+		vm->had_error = true;
+	}
+	free(filename);
+	redir_insert(vm, target_fd, file_fd);
+	program->pc += len - 1;
 }

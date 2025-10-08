@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 08:21:29 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:54:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	vm_command(t_vm *vm, t_program *program)
 {
 	int	argc;
 
-	(void)vm;
 	ft_memcpy(&argc, program->data + program->pc + 1, sizeof(int));
 	program->pc += sizeof(int);
 	vm->frame.argc = argc;

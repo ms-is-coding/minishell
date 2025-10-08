@@ -6,19 +6,24 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/04 18:05:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:54:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm/vm_internal.h"
 #include <signal.h>
+#include <string.h>
 #include <sys/wait.h>
 
 void	vm_dispatch(t_vm *vm, int sig)
 {
-	for (int i = 0; i < (int)vm->pids.length; i++)
+	int	i;
+
+	i = 0;
+	while (i < (int)vm->pids.length)
 	{
 		kill(ft_vector_at(&vm->pids, i).value.i32, sig);
+		i++;
 	}
 }
 
@@ -46,6 +51,8 @@ void	vm_wait(t_vm *vm, t_program *program)
 			code = 128 + WSTOPSIG(stat);
 		else if (WIFCONTINUED(stat))
 			code = 0;
+		if (WCOREDUMP(stat))
+			ft_printf("[%i] %s (core dumped)\n", pid, strsignal(code - 128));
 		ft_vector_push(&vm->exit_codes,
 			ft_gen_val(TYPE_OTHER, (t_any){.i32 = code}));
 	}

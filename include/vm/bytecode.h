@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:26:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 01:01:00 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 22:09:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,13 @@ typedef enum e_opcode
 {
 	OP_NULL,
 	OP_CMD,
-	OP_EXE,
 	OP_ARG,
-	OP_LONGARG,
-	OP_FNAME,
+	OP_EXEC,
 	OP_PIPE,
 	OP_OUT,
 	OP_IN,
 	OP_JZ,
 	OP_JNZ,
-	OP_WAIT,
 	OP_COUNT
 }	t_opcode;
 
@@ -45,7 +42,11 @@ typedef struct s_program
 }	t_program;
 
 t_result	program_write_u8(t_program *program, uint8_t data);
+t_result	program_write_u16(t_program *program, uint16_t data);
 t_result	program_write_i32(t_program *program, int32_t data);
 t_result	program_write_str(t_program *program, const char *data, size_t len);
+
+uint16_t	program_get_u16(t_program *program);
+int32_t		program_get_i32(t_program *program);
 
 #endif // BYTECODE_H

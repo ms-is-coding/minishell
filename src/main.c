@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 16:25:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 18:15:54 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static int	repl(t_shell *sh)
 
 	while (1)
 	{
+		if (sh->vm.active)
+			continue ;
 		i = -1;
 		prompt_buf[0] = '\0';
 		color = ANSI_RED;
@@ -97,6 +99,12 @@ static int	repl(t_shell *sh)
 			if (cli_is_set(&sh->cli, "disassemble"))
 				disasm(&sh->parser.program);
 			vm_run(&sh->vm, &sh->parser.program);
+		}
+		else
+		{
+			sh->vm.exit_codes.length = 0;
+			ft_vector_push(&sh->vm.exit_codes,
+				ft_gen_val(TYPE_OTHER, (t_any){.i32 = 2}));
 		}
 		free(line);
 	}
@@ -139,18 +147,19 @@ static void	handler(int sig)
 
 	sh = get_shell(0);
 	vm_dispatch(&sh->vm, sig);
-	ft_printf("\n");
+	write(STDOUT_FILENO, "\n", 1);
+	if (sig == SIGINT && !sh->vm.active)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 static void	signal_init(void)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 }
 
 static void	print_version(void)

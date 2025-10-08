@@ -6,16 +6,18 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:04:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 21:19:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:54:39 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
+#include "vm/vm_internal.h"
 #include "libft.h"
 #include "shell.h"
-#include "vm/vm_internal.h"
+#include "vm/bytecode.h"
 #include "common.h"
 #include <stddef.h>
+#include <string.h>
 
 static char	*alloc_strndup(
 	t_vm *vm,
@@ -40,13 +42,16 @@ static char	*expand_argument(t_vm *vm, const char *arg)
 	char	*expanded;
 
 	(void)vm;
-	expanded = (char *)(intptr_t)arg;
+	if (arg[0] != '$')
+		return ((char *)(uintptr_t)arg);
 	if (ft_strcmp("$VERSION", arg) == 0
 		|| ft_strcmp("$TRASH_VERSION", arg) == 0)
 		expanded = (char *)(intptr_t)TRASH_VERSION;
 	else if (ft_strcmp("$?", arg) == 0)
 		expanded = ft_itoa(ft_vector_at(&vm->exit_codes, -1).value.i32);
-	else if (arg[0] == '$')
+	else if (!arg[1])
+		expanded = (char *)(uintptr_t)arg;
+	else
 		expanded = (char *)(intptr_t)env_get(
 				&((t_shell *)vm->shell)->env, arg + 1);
 	return (expanded);
@@ -54,13 +59,14 @@ static char	*expand_argument(t_vm *vm, const char *arg)
 
 void	vm_arg(t_vm *vm, t_program *program)
 {
-	size_t	len;
+	uint16_t	len;
 
-	len = program->data[++program->pc];
+	program->pc++;
+	len = program_get_u16(program);
 	vm->frame.argv[vm->frame.i]
-		= alloc_strndup(vm, (char *)program->data + program->pc + 1, len);
+		= alloc_strndup(vm, (char *)program->data + program->pc, len);
 	vm->frame.argv[vm->frame.i]
 		= expand_argument(vm, vm->frame.argv[vm->frame.i]);
 	vm->frame.i++;
-	program->pc += len;
+	program->pc += len - 1;
 }

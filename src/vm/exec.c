@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 14:01:08 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 21:53:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,48 @@ static void	sh_destroy(t_shell *sh)
 
 static void	setup_fds(t_vm *vm)
 {
+	int	i;
+
+	// i = -1;
+	// ft_printf("--- DEBUG FD ---\n");
+	// ft_printf("prev_fd:    %4i\n", vm->prev_fd);
+	// ft_printf("pipe[0]:    %4i\n", vm->pipe_fd[0]);
+	// ft_printf("pipe[1]:    %4i\n", vm->pipe_fd[1]);
+	// ft_printf("---- REDIRS ----\n");
+	// while (++i < vm->redir_count)
+	// {
+	// 	ft_printf("[%2i].file:  %4i\n", i, vm->redirs[i].file_fd);
+	// 	ft_printf("[%2i].target:%4i\n", i, vm->redirs[i].target_fd);
+	// }
+	// ft_printf("----------------\n");
 	if (vm->prev_fd != STDIN_FILENO)
 		dup2(vm->prev_fd, STDIN_FILENO);
 	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
 		dup2(vm->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
+	i = -1;
+	while (++i < vm->redir_count)
+		dup2(vm->redirs[i].file_fd, vm->redirs[i].target_fd);
 	close_pipes(vm);
+}
+
+static void	reset_fds(t_vm *vm)
+{
+	int	i;
+
+	if (vm->prev_fd != STDIN_FILENO)
+		close(vm->prev_fd);
+	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
+		close(vm->pipe_fd[1]);
+	vm->prev_fd = vm->pipe_fd[STDIN_FILENO];
+	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
+	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
+	i = -1;
+	while (++i < vm->redir_count)
+	{
+		if (vm->redirs[i].file_fd >= 0)
+			close(vm->redirs[i].file_fd);
+	}
+	vm->redir_count = 0;
 }
 
 static bool	is_special_builtin(t_builtin_fn fn)
@@ -112,7 +149,7 @@ static bool	is_command_in_pipeline(t_vm *vm)
 		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
 }
 
-void	vm_exec(t_vm *vm, t_program *program)
+void	vm_spawn(t_vm *vm, t_program *program)
 {
 	char			**env;
 	char			*exec;
@@ -121,6 +158,11 @@ void	vm_exec(t_vm *vm, t_program *program)
 	t_shell			*sh;
 	int				exit_code;
 
+	if (vm->had_error)
+	{
+		vm->had_error = 0;
+		return ;
+	}
 	(void)program;
 	sh = vm->shell;
 	env = env_build(&sh->env, vm->frame.arena);
@@ -145,25 +187,27 @@ void	vm_exec(t_vm *vm, t_program *program)
 		exec = find_exec(vm->frame.argv[0]);
 		if (!exec)
 		{
-			ft_printf("command not found: %s\n", vm->frame.argv[0]);
+			ft_dprintf(2, "command not found: %s\n", vm->frame.argv[0]);
 			sh_destroy(sh);
 			exit(127);
 		}
 		execve(exec, vm->frame.argv, env);
 		free(exec);
-		ft_printf("execve failed: %m\n");
+		ft_dprintf(2, "execve failed: %m\n");
 		sh_destroy(sh);
 		exit(1);
 	}
 	else if (pid < 0)
-		ft_printf("fork failed: %m\n");
-	if (vm->prev_fd != 0)
-		close(vm->prev_fd);
-	if (vm->pipe_fd[1] != 1)
-		close(vm->pipe_fd[1]);
-	vm->prev_fd = vm->pipe_fd[0];
-	vm->pipe_fd[0] = 0;
-	vm->pipe_fd[1] = 1;
+		ft_dprintf(2, "fork failed: %m\n");
+	reset_fds(vm);
 	ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
 	allocator_arena_free(vm->allocator, vm->frame.arena);
+	return ;
+}
+
+void	vm_exec(t_vm *vm, t_program *program)
+{
+	vm_spawn(vm, program);
+	vm_wait(vm, program);
+	vm->pids.length = 0;
 }
