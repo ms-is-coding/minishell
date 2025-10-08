@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   eof.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 22:27:16 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 13:40:31 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/07 18:48:30 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/07 18:48:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer/lexer.h"
-#include "libft.h"
+#include "lexer/lexer_internal.h"
 
-t_result	lexer_init(t_lexer *lexer, char *input)
+t_token	lex_eof(t_lexer *lexer)
 {
-	lexer->input = input;
-	lexer->i = -1;
-	lexer->col = 1;
-	lexer->row = 1;
-	lexer->len = 0;
-	lexer->fd = 1;
-	return (RESULT_OK);
+	return (lexer_emit(lexer, TOK_EOF));
 }

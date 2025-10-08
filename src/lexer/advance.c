@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 00:03:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/08 13:40:02 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_token	lexer_advance(t_lexer *lexer)
 	t_lex_fn	fn;
 
 	lexer->len = 0;
-	if (lexer->input[lexer->i] == '\0')
+	if (lexer->input[lexer->i + 1] == '\0')
 		return (lexer_emit(lexer, TOK_EOF));
 	while (true)
 	{

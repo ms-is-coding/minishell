@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/07 16:20:17 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/10/07 21:21:01 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,9 @@ SRC_DIR			= src
 OBJ_DIR			= obj
 
 SRC_CLI			= cli/init.c cli/add.c cli/find.c cli/get.c cli/parse.c
-SRC_LEXER		= lexer/init.c lexer/lex.c lexer/advance.c
+SRC_LEXER		= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
+				  dollar.c eof.c error.c group.c init.c internal.c lex.c \
+				  number.c pipe.c print.c redir.c)
 SRC_PARSER		= parser/init.c parser/parse.c parser/util.c parser/rules.c \
 				  parser/command.c parser/expr.c parser/logical.c parser/list.c \
 				  parser/group.c parser/redir.c
