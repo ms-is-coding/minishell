@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:00:35 by macarnie          #+#    #+#             */
-/*   Updated: 2025/10/02 13:00:59 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/07 18:40:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define ANSI_RESET			"\033[0m"
 # define ANSI_BOLD			"\033[1m"
+# define ANSI_ITALIC		"\033[3m"
 # define ANSI_UNDERLINE		"\033[4m"
 # define ANSI_BLINK			"\033[5m"
 # define ANSI_REVERSE		"\033[7m"
