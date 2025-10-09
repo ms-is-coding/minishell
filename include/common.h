@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 20:02:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:26:46 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 # define TRASH_VERSION "0.0.1"
 
 # define OPCODE_MASK 0x3f
+
 # define REDIR_APPEND_BIT 0x80
 # define REDIR_FD_BIT 0x40
+# define JUMP_NEG_BIT 0x80
+# define EXEC_PIPELINE_BIT 0x80
+# define EXEC_WAIT_BIT 0x40
 
 # define MAX_REDIRS 64
 

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:33:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:52:39 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:28:41 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	vm_pipe(t_vm *vm, t_program *program);
 void	vm_background(t_vm *vm, t_program *program);
 void	vm_redir_out(t_vm *vm, t_program *program);
 void	vm_redir_in(t_vm *vm, t_program *program);
-void	vm_jnz(t_vm *vm, t_program *program);
-void	vm_jz(t_vm *vm, t_program *program);
+void	vm_jump(t_vm *vm, t_program *program);
 
 #endif // VM_INTERNAL_H

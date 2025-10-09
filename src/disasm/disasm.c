@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:47:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 23:00:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:35:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@ static t_disassembler	disasm_opcode(t_opcode opcode)
 		[OP_CMD] = disasm_cmd,
 		[OP_ARG] = disasm_arg,
 		[OP_EXEC] = disasm_exec,
-		[OP_PIPE] = disasm_pipe,
 		[OP_OUT] = disasm_out,
 		[OP_IN] = disasm_in,
-		[OP_JZ] = disasm_jz,
-		[OP_JNZ] = disasm_jnz,
+		[OP_JUMP] = disasm_jump,
 	}[opcode]);
 }
 

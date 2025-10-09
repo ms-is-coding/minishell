@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/08 22:34:26 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/09 00:46:45 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,10 +25,10 @@ SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
 SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
 				   false.c pwd.c true.c env.c export.c)
-SRC_VM			= vm/run.c vm/jump.c vm/redir.c vm/arg.c vm/exec.c vm/pipe.c \
-				  vm/wait.c vm/cmd.c
+SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
+				   cmd.c exec.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
-				   exec.c pipe.c redir.c jump.c)
+				   exec.c redir.c jump.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 				   build.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \

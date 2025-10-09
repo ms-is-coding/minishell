@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 19:04:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 09:39:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 #include "parser/parser.h"
 #include "ansi.h"
+#include "vm/bytecode.h"
 
 static void	repeat(char c, int count)
 {
@@ -93,5 +94,7 @@ t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 		if (rule.led(p, oper_token) != RESULT_OK)
 			return (RESULT_ERROR);
 	}
+	if (p->program.data[p->program.len - 1] == OP_EXEC)
+		p->program.data[p->program.len - 1] |= EXEC_WAIT_BIT;
 	return (RESULT_OK);
 }

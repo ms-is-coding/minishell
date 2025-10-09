@@ -6,13 +6,15 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:32:25 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:55:02 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "common.h"
 #include "libft.h"
 #include "parser/parser.h"
 #include "token.h"
+#include "vm/bytecode.h"
 
 t_result	parse_error(t_parser *p, t_token token)
 {
@@ -22,7 +24,10 @@ t_result	parse_error(t_parser *p, t_token token)
 
 t_result	parse_pipe(t_parser *p, t_token token)
 {
-	p->program.data[p->program.len - 1] = OP_PIPE;
+	if ((p->program.data[p->program.len - 1] & OPCODE_MASK) == OP_EXEC)
+		p->program.data[p->program.len - 1] = OP_EXEC | EXEC_PIPELINE_BIT;
+	else
+		program_write_u8(&p->program, OP_EXEC | EXEC_PIPELINE_BIT);
 	return (parser_parse_expr(p, parser_get_rule(token.type).precedence));
 }
 

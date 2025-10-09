@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:15:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 22:57:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:39:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ void	disasm_print_opcode(t_program *program, size_t *offset)
 	t_opcode	opcode;
 
 	opcode = program->data[(*offset)++];
-	if (opcode == (opcode & OPCODE_MASK))
-		ft_printf(ANSI_CYAN "%02x " ANSI_RESET, opcode);
-	else
+	if (opcode & 0x80)
+		ft_printf(ANSI_BOLD ANSI_BLUE "%02x " ANSI_RESET, opcode);
+	else if (opcode & 0x40)
 		ft_printf(ANSI_BLUE "%02x " ANSI_RESET, opcode);
+	else
+		ft_printf(ANSI_CYAN "%02x " ANSI_RESET, opcode);
 }
 
 int32_t	disasm_print_i32(t_program *program, size_t *offset_ptr, int start)

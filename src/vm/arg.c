@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:04:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:54:39 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:44:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ void	vm_arg(t_vm *vm, t_program *program)
 	vm->frame.argv[vm->frame.i]
 		= expand_argument(vm, vm->frame.argv[vm->frame.i]);
 	vm->frame.i++;
-	program->pc += len - 1;
+	program->pc += len;
 }

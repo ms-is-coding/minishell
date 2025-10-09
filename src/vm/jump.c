@@ -6,40 +6,30 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:12:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:55:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:42:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "common.h"
 #include "vm/bytecode.h"
 #include "vm/vm_internal.h"
 #include "libft.h"
+#include <stdbool.h>
 #include <stdint.h>
 
-void	vm_jz(t_vm *vm, t_program *program)
+void	vm_jump(t_vm *vm, t_program *program)
 {
-	int32_t	jmp_pos;
+	int32_t		jmp_pos;
+	t_opcode	op;
+	int			exit_code;
+	bool		should_jump;
 
-	program->pc++;
+	op = program->data[program->pc++];
 	jmp_pos = program_get_i32(program);
-	if (ft_vector_at(&vm->exit_codes, -1).value.i32 != 0)
-	{
-		program->pc--;
-		return ;
-	}
-	program->pc = (size_t)jmp_pos - 1;
-	return ;
-}
-
-void	vm_jnz(t_vm *vm, t_program *program)
-{
-	int32_t	jmp_pos;
-
-	program->pc++;
-	jmp_pos = program_get_i32(program);
-	if (ft_vector_at(&vm->exit_codes, -1).value.i32 == 0)
-	{
-		program->pc--;
-		return ;
-	}
-	program->pc = (size_t)jmp_pos - 1;
+	exit_code = ft_vector_at(&vm->exit_codes, -1).value.i32;
+	should_jump = (exit_code == 0);
+	if (op & JUMP_NEG_BIT)
+		should_jump = !should_jump;
+	if (should_jump)
+		program->pc = (size_t)jmp_pos;
 }

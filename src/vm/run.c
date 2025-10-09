@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 22:09:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:43:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,12 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
 	if (opcode < 0 || opcode >= OP_COUNT)
 		return (NULL);
 	return ((t_exec_handler[OP_COUNT]){
-		[OP_NULL] = vm_wait,
 		[OP_CMD] = vm_command,
 		[OP_ARG] = vm_arg,
 		[OP_EXEC] = vm_exec,
-		[OP_PIPE] = vm_pipe,
 		[OP_OUT] = vm_redir_out,
 		[OP_IN] = vm_redir_in,
-		[OP_JZ] = vm_jz,
-		[OP_JNZ] = vm_jnz,
+		[OP_JUMP] = vm_jump,
 	}[opcode]);
 }
 
@@ -55,7 +52,6 @@ void	vm_run(t_vm *vm, t_program *program)
 			exit(128 + SIGILL);
 		}
 		handler(vm, program);
-		program->pc++;
 	}
 	ft_vector_free(&vm->pids);
 	vm->active = false;

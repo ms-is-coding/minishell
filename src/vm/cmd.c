@@ -6,19 +6,20 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:54:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 00:43:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vm/bytecode.h"
 #include "vm/vm_internal.h"
 #include "allocator/allocator.h"
 
 void	vm_command(t_vm *vm, t_program *program)
 {
-	int	argc;
+	int32_t	argc;
 
-	ft_memcpy(&argc, program->data + program->pc + 1, sizeof(int));
-	program->pc += sizeof(int);
+	program->pc++;
+	argc = program_get_i32(program);
 	vm->frame.argc = argc;
 	vm->frame.i = 0;
 	vm->frame.arena = allocator_arena_new(vm->allocator);

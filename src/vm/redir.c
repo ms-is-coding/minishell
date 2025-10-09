@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:56:23 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 01:02:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,9 @@ static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 {
 	int	i;
 
-	i = 0;
-	while (i < vm->redir_count)
-	{
-		if (vm->redirs[i].target_fd == target_fd)
-		{
-			if (vm->redirs[i].file_fd >= 0)
-				close(vm->redirs[i].file_fd);
-			vm->redirs[i].file_fd = file_fd;
-			return ;
-		}
-		i++;
-	}
+	i = vm->redir_count++;
 	vm->redirs[i].target_fd = target_fd;
 	vm->redirs[i].file_fd = file_fd;
-	vm->redir_count++;
 }
 
 void	vm_redir_in(t_vm *vm, t_program *program)
@@ -59,7 +47,7 @@ void	vm_redir_in(t_vm *vm, t_program *program)
 	}
 	free(filename);
 	redir_insert(vm, target_fd, file_fd);
-	program->pc += len - 1;
+	program->pc += len;
 }
 
 void	vm_redir_out(t_vm *vm, t_program *program)
@@ -87,5 +75,5 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 	}
 	free(filename);
 	redir_insert(vm, target_fd, file_fd);
-	program->pc += len - 1;
+	program->pc += len;
 }
