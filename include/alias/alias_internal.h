@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   alias_internal.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 15:32:37 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/10/06 00:33:01 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/08 17:23:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef ALIAS_INTERNAL_H
+# define ALIAS_INTERNAL_H
 
-# include "allocator/allocator.h"
-# include "parser/parser.h"
-# include "lexer/lexer.h"
-# include "cli/cli.h"
-# include "env/env.h"
-# include "alias/alias.h"
-# include "vm/vm.h"
+# include "alias.h"
 
-typedef struct s_shell
-{
-	t_allocator	allocator;
-	t_parser	parser;
-	t_lexer		lexer;
-	t_cli		cli;
-	t_env		env;
-	t_alias		alias;
-	t_vm		vm;
-}	t_shell;
+size_t			alias_hash(t_alias *alias, const char *data);
+t_alias_bucket	*alias_find_key(t_alias *alias, const char *key);
+t_alias_bucket	*alias_find_empty(t_alias *alias, const char *key);
 
-#endif
+#endif // ALIAS_INTERNAL_H

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 16:39:00 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/09 15:32:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	separate_export(char *arg, char **key, char **value)
 		*value = NULL;
 	*key = ft_strdup(arg);
 	if (eq)
-		*value = ft_strdup(eq + 1);
+		*value = ft_strdup(eq + 1); //no sanity checks
 	else
 		*value = NULL;
 }

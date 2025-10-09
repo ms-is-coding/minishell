@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 18:15:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:20:10 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ static void	handler(int sig)
 	if (sig == SIGINT && !sh->vm.active)
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
+//		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }

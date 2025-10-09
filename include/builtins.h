@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 16:14:40 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/09 15:24:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_context
 
 typedef int	(*t_builtin_fn)(t_shell	*sh, int argc, char **argv, char **envp);
 
+int			builtin_alias(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_cd(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_echo(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_env(t_shell *sh, int argc, char **argv, char **envp);
