@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:56:07 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 14:54:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 01:57:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cli/cli.h"
+#include "cli/cli_internal.h"
 
 void	cli_add(
 	t_cli *cli,

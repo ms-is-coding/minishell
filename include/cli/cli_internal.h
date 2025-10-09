@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:37:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 14:51:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 01:58:01 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 t_cli_option	*cli_find(t_cli *cli, const char *name);
 t_cli_option	*cli_find_short(t_cli *cli, char short_name);
 
-t_result		cli_add(t_cli *cli, const char *long_name,
+void			cli_add(t_cli *cli, const char *long_name,
 					char short_name, bool has_value);
 t_result		cli_parse(t_cli *cli, int argc, char **argv);
 
