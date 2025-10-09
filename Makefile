@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/09 15:47:33 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/10/09 17:22:51 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
 					exec.c redir.c jump.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 					build.c)
-SRC_ENV			:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
+SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
 					init.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
@@ -40,7 +40,7 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
-					$(SRC_ENV) \
+					$(SRC_ENV) $(SRC_ALIAS) \
 					main.c
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))

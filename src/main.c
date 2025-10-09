@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 15:20:10 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/09 17:28:42 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int	main(int argc, char **argv, char **envp)
 	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
 		|| env_init(&sh.env, &sh.allocator, envp) != RESULT_OK
 		|| parser_init(&sh.parser, &sh.lexer) != RESULT_OK
-		|| ft_vector_init(&sh.vm.exit_codes, 16) != RESULT_OK)
+		|| ft_vector_init(&sh.vm.exit_codes, 16) != RESULT_OK
+		|| alias_init(&sh.alias, &sh.allocator) != RESULT_OK)
 	{
 		sh_destroy(&sh);
 		return (2);
