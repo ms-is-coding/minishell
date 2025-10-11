@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:10:56 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:34:48 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 11:07:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_result	parse_word(t_parser *p, t_token token)
 {
 	if (!p->in_cmd)
 		return (parse_command(p, token));
-	if (token.pos.len > 0xffff)
+	if (token.pos.len > 0xff)
 	{
 		print_error(p, token, "Command too long");
 		return (RESULT_ERROR);

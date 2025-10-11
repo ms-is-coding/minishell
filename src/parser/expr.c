@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 09:39:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 23:58:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,25 @@ void	print_error(t_parser *p, t_token token, const char *message)
 		token.pos.col);
 	ft_dprintf(2, ANSI_BOLD ANSI_RED " Syntax Error\n" ANSI_RESET);
 	ft_dprintf(2, " " ANSI_BOLD "%d │ " ANSI_RESET, token.pos.row);
-	ft_dprintf(2, "%.*s", token.pos.col - 1, p->lexer->input);
+	if (token.pos.col - 1 > ERROR_CHARACTERS + 3)
+		ft_dprintf(2, "...%.*s", ERROR_CHARACTERS,
+			p->lexer->input + token.pos.col - 1 - ERROR_CHARACTERS);
+	else
+		ft_dprintf(2, "%.*s", token.pos.col - 1, p->lexer->input);
 	print_line(p, token);
-	ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1 + token.pos.len);
+	if (ft_strlen(p->lexer->input + token.pos.col - 1 + token.pos.len)
+		> ERROR_CHARACTERS + 3)
+		ft_dprintf(2, "%.*s...\n", ERROR_CHARACTERS,
+			p->lexer->input + token.pos.col - 1 + token.pos.len);
+	else
+		ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1
+			+ token.pos.len);
 	repeat(' ', ft_intlen(token.pos.row) + 2);
 	ft_dprintf(2, "╵");
-	repeat(' ', token.pos.col);
+	if (token.pos.col - 1 > ERROR_CHARACTERS + 3)
+		repeat(' ', ERROR_CHARACTERS + 4);
+	else
+		repeat(' ', token.pos.col);
 	ft_dprintf(2, ANSI_RED "^");
 	if (token.pos.len > ERROR_MAX_LENGTH)
 		repeat('~', ERROR_MAX_LENGTH - 1);
