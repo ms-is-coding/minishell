@@ -6,17 +6,19 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 17:28:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 23:37:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <termios.h>
 #include <time.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -51,6 +53,34 @@ static const char	*kill_signals(int sig)
 		[64] = "RTMAX"}[sig]);
 }
 
+static bool	had_newline(void)
+{
+	struct termios	oldt;
+	struct termios	newt;
+	int				row;
+	int				col;
+	char			buf[32];
+
+	tcgetattr(STDIN_FILENO, &oldt);
+	newt = oldt;
+	newt.c_lflag &= ~(unsigned)(ICANON | ECHO);
+	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	ft_printf("\033[6n");
+	if (read(STDIN_FILENO, buf, sizeof(buf) - 1) > 0)
+	{
+		buf[sizeof(buf) - 1] = 0;
+		if (sscanf(buf, "\033[%d;%dR", &row, &col) == 2
+			&& col != 1)
+		{
+			tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+			ft_printf("\n");
+			return (false);
+		}
+	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	return (true);
+}
+
 static int	repl(t_shell *sh)
 {
 	char		*line;
@@ -66,6 +96,8 @@ static int	repl(t_shell *sh)
 			continue ;
 		i = -1;
 		prompt_buf[0] = '\0';
+		if (!had_newline())
+			ft_snprintf(prompt_buf, PROMPT_SIZE, ANSI_MAGENTA "⤶ " ANSI_RESET);
 		color = ANSI_RED;
 		if (ft_vector_at(&sh->vm.exit_codes, -1).value.i32 == 0)
 			color = ANSI_GREEN;
@@ -151,7 +183,7 @@ static void	handler(int sig)
 	if (sig == SIGINT && !sh->vm.active)
 	{
 		rl_on_new_line();
-//		rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
