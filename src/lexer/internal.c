@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:33:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 13:40:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/09 23:31:17 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	is_operator(char sc)
 	return (ft_isspace(c) || c == '|' || c == '&'
 		|| c == '<' || c == '>' || c == ';'
 		|| c == '`' || c == '(' || c == ')'
-		|| c == '\\' || c == '\0' || c == 0x7fu);
+		|| c == '\0' || c == 0x7fu);
 }
 
 char	lexer_next(t_lexer *lexer)
