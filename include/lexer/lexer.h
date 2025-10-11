@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 13:40:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 12:20:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ typedef struct s_lexer
 	int		len;
 	int		fd;
 
-	char	reserved[4];
+	char	curr_char;
+	char	next_char;
+	bool	end;
+
+	char	reserved[1];
 }	t_lexer;
 
 t_result	lexer_init(t_lexer *lexer, char *line);

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:49:18 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 19:24:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 12:25:41 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_token	lex_number(t_lexer *lexer)
 {
-	lexer->fd = lexer->input[lexer->i] - '0';
-	while (lexer->input[lexer->i + 1] >= '0'
-		&& lexer->input[lexer->i + 1] <= '9')
+	lexer->fd = lexer->curr_char - '0';
+	while (lexer->next_char >= '0'
+		&& lexer->next_char <= '9')
 	{
 		if (lexer->fd > INT_MAX / 10 || (
-				lexer->fd == INT_MAX / 10 && lexer->input[lexer->i + 1] > '7'))
+				lexer->fd == INT_MAX / 10 && lexer->next_char > '7'))
 		{
 			lexer->fd = -1;
 			return (lex_word(lexer));

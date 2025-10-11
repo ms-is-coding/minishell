@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:33:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 23:31:17 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 12:37:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,28 @@ bool	is_operator(char sc)
 
 char	lexer_next(t_lexer *lexer)
 {
-	if (lexer->input[lexer->i + 1] == '\0')
+	if (lexer->end)
 		return ('\0');
-	lexer->i++;
+	lexer->curr_char = lexer->next_char;
+	if (lexer->curr_char == '\0')
+	{
+		lexer->end = true;
+		return ('\0');
+	}
 	lexer->col++;
 	lexer->len++;
-	if (lexer->input[lexer->i] == '\n')
+	if (lexer->curr_char == '\n')
 	{
 		lexer->row++;
 		lexer->col = 1;
 	}
-	return (lexer->input[lexer->i]);
+	lexer->next_char = lexer->input[++lexer->i];
+	return (lexer->curr_char);
 }
 
 bool	lexer_match(t_lexer *lexer, char c)
 {
-	if (lexer->input[lexer->i + 1] == c)
+	if (lexer->next_char == c)
 	{
 		lexer_next(lexer);
 		return (true);
@@ -55,7 +61,7 @@ t_token	lexer_emit(t_lexer *lexer, t_token_type type)
 
 	tok.type = type;
 	tok.fd = lexer->fd;
-	tok.pos.start = lexer->i - lexer->len + 1;
+	tok.pos.start = lexer->i - lexer->len;
 	tok.pos.col = lexer->col - lexer->len;
 	tok.pos.row = lexer->row;
 	tok.pos.len = lexer->len;

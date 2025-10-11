@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:27:16 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 16:37:26 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 12:21:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 t_result	lexer_init(t_lexer *lexer, char *input)
 {
 	lexer->input = input;
-	lexer->i = -1;
+	lexer->end = false;
+	lexer->curr_char = '\0';
+	lexer->next_char = input[0];
+	lexer->i = 0;
 	lexer->col = 1;
 	lexer->row = 1;
 	lexer->len = 0;
