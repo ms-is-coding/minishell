@@ -6,12 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:08:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 20:26:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 14:45:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.h"
-#include "token.h"
 
 t_parse_rule	parser_get_rule(t_token_type type)
 {

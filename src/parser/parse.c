@@ -6,14 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:55:02 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 14:45:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 #include "libft.h"
 #include "parser/parser.h"
-#include "token.h"
 #include "vm/bytecode.h"
 
 t_result	parse_error(t_parser *p, t_token token)
