@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 21:42:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:37:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 	cli->name = argv[0];
 	cli->opt_i = 0;
 	cli->pos_i = 0;
-	// ft_vector_init(&cli->positional, (size_t)size) != RESULT_OK
+	cli->positional = malloc(sizeof(char *) * 8);
+	if (!cli->positional)
+		return (RESULT_ERROR);
+	cli->pos_capacity = 8;
 	cli_add(cli, "posix", 0, 0);
 	cli_add(cli, "verbose", 'v', 0);
 	cli_add(cli, "version", 0, 0);
@@ -48,6 +51,5 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 
 void	cli_destroy(t_cli *cli)
 {
-	(void)cli;
-	// ft_vector_free(&cli->positional);
+	free(cli->positional);
 }

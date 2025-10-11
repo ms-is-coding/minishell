@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 22:42:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:36:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 static t_result	parse_positional(t_cli *cli, const char *arg)
 {
-	(void)cli;
-	(void)arg;
-	//return (ft_vector_push(&cli->positional,
-	//	ft_gen_val(TYPE_OTHER, (t_any){.str = (char *)arg})));
+	cli->positional[cli->pos_i++] = arg;
 	return (RESULT_OK);
 }
 

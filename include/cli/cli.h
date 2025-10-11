@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:01:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 20:26:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:37:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ typedef struct s_cli_option
 typedef struct s_cli
 {
 	char			*name;
-	char			**positional;
+	const char		**positional;
 	t_cli_option	options[CLI_OPTION_COUNT];
 
 	int				opt_i;
 	int				pos_i;
+	int				pos_capacity;
+
+	char			reserved[4];
 }	t_cli;
 
 t_result	cli_init(t_cli *cli, int argc, char **argv);
