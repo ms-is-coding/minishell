@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 15:24:13 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/11 01:20:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,6 @@ static void	reset_fds(t_vm *vm)
 	vm->redir_count = 0;
 }
 
-static bool	is_special_builtin(t_builtin_fn fn)
-{
-	return (fn == builtin_exec
-		|| fn == builtin_cd
-		|| fn == builtin_exit
-		|| fn == builtin_export
-	);
-}
-
 static bool	is_command_in_pipeline(t_vm *vm)
 {
 	return (vm->prev_fd != STDIN_FILENO
@@ -184,7 +175,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.i] = NULL;
 	builtin = find_builtin(vm->frame.argv[0]);
-	if (is_special_builtin(builtin) && !is_command_in_pipeline(vm))
+	if (builtin && !is_command_in_pipeline(vm))
 	{
 		builtin(sh, vm->frame.argc, vm->frame.argv, env);
 		return ;
@@ -193,7 +184,6 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	if (pid == 0)
 	{
 		setup_fds(vm);
-		builtin = find_builtin(vm->frame.argv[0]);
 		if (builtin)
 		{
 			exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);

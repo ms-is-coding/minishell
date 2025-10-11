@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:04:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:44:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 00:21:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,19 @@ static char	*expand_argument(t_vm *vm, const char *arg)
 
 	(void)vm;
 	if (arg[0] != '$')
-		return ((char *)(uintptr_t)arg);
+		return ((char *)(intptr_t)arg);
 	if (ft_strcmp("$VERSION", arg) == 0
 		|| ft_strcmp("$TRASH_VERSION", arg) == 0)
 		expanded = (char *)(intptr_t)TRASH_VERSION;
 	else if (ft_strcmp("$?", arg) == 0)
 		expanded = ft_itoa(ft_vector_at(&vm->exit_codes, -1).value.i32);
 	else if (!arg[1])
-		expanded = (char *)(uintptr_t)arg;
+		expanded = (char *)(intptr_t)arg;
 	else
 		expanded = (char *)(intptr_t)env_get(
 				&((t_shell *)vm->shell)->env, arg + 1);
+	if (!expanded)
+		return ((char *)(intptr_t)arg);
 	return (expanded);
 }
 
