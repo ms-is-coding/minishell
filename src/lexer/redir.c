@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:34:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 18:34:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:29:11 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_token	lex_redir_in(t_lexer *lexer)
 {
+	if (lexer_match(lexer, '>'))
+		return (lexer_emit(lexer, TOK_REDIR_BOTH));
 	if (lexer_match(lexer, '<'))
 	{
 		if (lexer_match(lexer, '<'))

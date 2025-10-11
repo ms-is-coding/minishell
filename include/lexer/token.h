@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:29:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/26 17:00:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:25:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef enum e_token_type
 	TOK_ASSIGNMENT,
 	TOK_REDIR_IN,
 	TOK_REDIR_OUT,
+	TOK_REDIR_BOTH,
 	TOK_REDIR_APPEND,
 	TOK_REDIR_HEREDOC,
 	TOK_REDIR_HEREDOC_QUOTED,

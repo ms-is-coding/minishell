@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:37:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 18:45:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 17:25:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 
 static const char	*get_data(t_token t)
 {
-	return ((const char *[]){"error", "word", "var", "asgn", "<", ">", ">>",
-		"<<", "<<??", "<<<", "<&", ">&", "<(", ">(", "|", "&&", "||", ";", "&",
-		"\\n", "$(", "(", ")", "$((", "))", "[", "]", "[[", "]]", ";;", ";&",
-		";;&", "if", "then", "else", "fi", "while", "do", "done", "for", "in",
-		"case", "esac", "select", "time", "function", "coproc", "until", "elif",
-		"comment", "EOF"}[t.type]);
+	return ((const char *[]){"error", "word", "var", "asgn", "<", ">", "<>",
+		">>", "<<", "<<??", "<<<", "<&", ">&", "<(", ">(", "|", "&&", "||", ";",
+		"&", "\\n", "$(", "(", ")", "$((", "))", "[", "]", "[[", "]]", ";;",
+		";&", ";;&", "if", "then", "else", "fi", "while", "do", "done", "for",
+		"in", "case", "esac", "select", "time", "function", "coproc", "until",
+		"elif", "comment", "EOF"}[t.type]);
 }
 
 void	print_token(t_token token)

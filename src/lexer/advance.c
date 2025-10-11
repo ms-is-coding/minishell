@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 12:24:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:58:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_lex_fn	get_fn(int idx)
 {
 	return ((t_lex_fn[128]){lex_eof, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, lex_error, lex_error, NULL, lex_error, lex_error,
+		lex_error, lex_error, lex_error, lex_error, NULL, lex_delim, lex_error,
 		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
 		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
 		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
