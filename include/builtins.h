@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 15:24:32 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/11 11:42:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			builtin_export(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_false(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_pwd(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_true(t_shell *sh, int argc, char **argv, char **envp);
+int			builtin_type(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_unset(t_shell *sh, int argc, char **argv, char **envp);
 
 t_context	ctx(const char *builtin, const char *subject);

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 01:20:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 11:58:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static t_builtin_fn	find_builtin(char *arg)
 	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
 	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
 	{"export", builtin_export}, {"alias", builtin_alias},
+	{"type", builtin_type},
 	{NULL, NULL}};
 	int						i;
 
@@ -177,7 +178,9 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	builtin = find_builtin(vm->frame.argv[0]);
 	if (builtin && !is_command_in_pipeline(vm))
 	{
-		builtin(sh, vm->frame.argc, vm->frame.argv, env);
+		exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
+		ft_vector_push(&vm->exit_codes,
+			ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code}));
 		return ;
 	}
 	pid = fork();
