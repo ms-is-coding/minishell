@@ -6,10 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 23:37:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:57:49 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <signal.h>
 
 #include <stdbool.h>
@@ -18,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <sys/types.h>
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
@@ -199,6 +201,42 @@ static void	print_version(void)
 	ft_printf("trash, version " TRASH_VERSION "\n");
 }
 
+static void	test(t_shell *sh)
+{
+	char		buffer[1024];
+	const char	*filename;
+	int			fd;
+	ssize_t		read_size;
+
+	for (int i = 0; i < sh->cli.pos_i; i++)
+	{
+		filename = sh->cli.positional[i];
+		ft_printf("==> FILE %s <==\n", filename);
+		fd = open(filename, O_RDONLY);
+		if (fd == -1)
+		{
+			ft_printf("----- OPEN ERROR -----\n");
+			continue ;
+		}
+		read_size = read(fd, buffer, 1024);
+		if (read_size == -1)
+		{
+			ft_printf("----- READ ERROR -----\n");
+			continue ;
+		}
+		if (read_size == 1024)
+		{
+			ft_printf("----- PARTIAL DATA -----\n");
+			continue ;
+		}
+		buffer[read_size] = 0;
+		parser_parse(&sh->parser, buffer);
+		vm_run(&sh->vm, &sh->parser.program);
+		close(fd);
+	}
+
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell				sh;
@@ -207,6 +245,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_memset(&sh, 0, sizeof(t_shell));
 	get_shell(&sh);
 	allocator_init(&sh.allocator);
+	expander_init(&sh.expander, &sh);
 	signal_init();
 	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
 		|| env_init(&sh.env, &sh.allocator, envp) != RESULT_OK
@@ -227,6 +266,13 @@ int	main(int argc, char **argv, char **envp)
 	{
 		print_version();
 		exit_code = 0;
+	}
+	else if (sh.cli.pos_i > 0)
+	{
+		ft_printf("script\n");
+		test(&sh);
+		sh_destroy(&sh);
+		exit(0);
 	}
 	else
 		exit_code = repl(&sh);
