@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:57:29 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:10:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_exec_frame
 {
 	t_arena			*arena;
 	char			**argv;
+	int				capacity;
 	int				argc;
 	int				i;
 }	t_exec_frame;

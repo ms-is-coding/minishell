@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:43:55 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/11 16:11:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	vm_command(t_vm *vm, t_program *program)
 	program->pc++;
 	argc = program_get_i32(program);
 	vm->frame.argc = argc;
+	vm->frame.capacity = argc;
 	vm->frame.i = 0;
 	vm->frame.arena = allocator_arena_new(vm->allocator);
 	if (!vm->frame.arena)
