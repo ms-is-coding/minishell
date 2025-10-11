@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 14:43:15 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/11 14:44:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_alias_bucket
 	const char	*value;
 	bool		is_tombstone;
 
-	char		reserved[6];
+	char		reserved[7];
 }	t_alias_bucket;
 
 typedef struct s_alias
