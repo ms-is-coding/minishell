@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/11 16:24:55 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/13 16:49:28 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
 					expr.c logical.c list.c group.c redir.c)
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
 SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
-					false.c pwd.c true.c env.c export.c alias.c type.c)
+					false.c pwd.c true.c env.c export.c alias.c unalias.c \
+					type.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 					cmd.c exec.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
@@ -32,7 +33,7 @@ SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 					build.c)
 SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
-					init.c)
+					init.c clear.c print.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \

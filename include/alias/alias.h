@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 14:44:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:49:17 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void		alias_destroy(t_alias *alias);
 
 t_result	alias_set(t_alias *alias, const char *key, const char *value);
 const char	*alias_get(t_alias *alias, const char *key);
-void		alias_remove(t_alias *alias, const char *key);
+t_result	alias_print(t_alias *alias, const char *key);
+void		alias_print_all(t_alias *alias);
+t_result	alias_remove(t_alias *alias, const char *key);
+void		alias_clear(t_alias *alias);
 
 #endif // ALIAS_H

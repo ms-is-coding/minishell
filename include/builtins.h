@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 11:42:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:16:17 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ typedef enum e_error
 	ERR_INVALID_NAME,
 	ERR_TOO_MANY_ARGS,
 	ERR_INVALID_OPT,
+	ERR_INVALID_ALIAS,
+	ERR_INVALID_UNALIAS,
 	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,
 	ERR_PERROR,
@@ -47,6 +49,7 @@ int			builtin_false(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_pwd(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_true(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_type(t_shell *sh, int argc, char **argv, char **envp);
+int			builtin_unalias(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_unset(t_shell *sh, int argc, char **argv, char **envp);
 
 t_context	ctx(const char *builtin, const char *subject);

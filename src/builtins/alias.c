@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/09 15:44:46 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/14 16:53:30 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alias/alias.h"
 #include "builtins.h"
 #include "libft.h"
+#include "libft_printf.h"
 #include "shell.h"
 #include <stdbool.h>
 
@@ -77,24 +78,6 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
-static void	print_aliases(t_alias *alias)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < alias->capacity)
-	{
-		if (alias->buckets[i].key && !alias->buckets[i].is_tombstone)
-		{
-			if (alias->buckets[i].value)
-				ft_printf("alias %s='%s'\n", alias->buckets[i].key, alias->buckets[i].value);
-			else
-				ft_printf("alias %s\n", alias->buckets[i].key);
-		}
-		i++;
-	}
-}
-
 static int	seperate_alias(char *arg, char **key, char **value)
 {
 	char	*eq;
@@ -128,28 +111,19 @@ int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
-		return (print_aliases(&sh->alias), 0); //print all aliases
+		return (alias_print_all(&sh->alias), 0); //print all aliases
 	status = 0;
 	while (*argv)
 	{
 		if (!is_valid_var(*argv))
-			status = 1; //invalid alias name
+			return (builtin_error(ctx(alias, NULL), ERR_INVALID_ALIAS, 2)); //invalid alias name
 		else
 		{
 			seperate_alias(*argv, &key, &value);
-			if (value)
-			{
-				if (alias_set(&sh->alias, key, value) != RESULT_OK) // strchr for '=' ?
-					status = 1; //failed to set alias
-			}
-			else
-			{
-				value = ft_strdup(alias_get(&sh->alias, key)); //is this an issue ?
-				if (value)
-					ft_printf("alias %s='%s'\n", key, value);
-				else
-					status = 1; //alias not found
-			}
+			if (value && alias_set(&sh->alias, key, value) != RESULT_OK)
+				status = builtin_error(ctx(alias, key), ERR_UNKNOWN, 1); //failed to set alias, what int_code, what error ?
+			if (!value && alias_print(&sh->alias, key) != RESULT_OK)
+				status = builtin_error(ctx(alias, key), ERR_NOT_FOUND, 1); //alias not found
 		}
 		argv++;
 	}

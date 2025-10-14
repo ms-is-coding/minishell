@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 11:58:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:16:00 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_builtin_fn	find_builtin(char *arg)
 	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
 	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
 	{"export", builtin_export}, {"alias", builtin_alias},
-	{"type", builtin_type},
+	{"unalias", builtin_unalias}, {"type", builtin_type},
 	{NULL, NULL}};
 	int						i;
 

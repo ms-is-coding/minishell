@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:49:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 12:34:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/14 17:01:47 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@ t_alias_bucket	*alias_find_key(t_alias *alias, const char *key)
 	while (bucket)
 	{
 		bucket = &alias->buckets[i];
-		if (!bucket->key && !bucket->is_tombstone)
-			return (NULL);
-		if (ft_strcmp(key, bucket->key) == 0)
+		if (!bucket->key)
+		{
+			if (!bucket->is_tombstone)
+				return (NULL);
+		}
+		else if (ft_strcmp(key, bucket->key) == 0)
 			return (bucket);
 		i = (i + 1) % alias->capacity;
 	}

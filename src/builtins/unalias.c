@@ -6,14 +6,16 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:16:58 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/07 16:12:50 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/13 17:10:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdbool.h>
+
+#include "alias/alias.h"
 #include "builtins.h"
 #include "libft.h"
 #include "shell.h"
-#include <stdbool.h>
 
 #define FLAG_A		1
 #define FLAG_ERR	2
@@ -62,26 +64,27 @@ static char	set_flags(int *argc, char ***argv)
 	return (flags);
 }
 
-int	builtin_unalias(t_shell *sh, int argc, char **argv)
+int	builtin_unalias(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
 	char 	*alias;
 	int		status;
 
 	(void)argc;
+	(void)envp;
 	alias = argv[0];
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
-		return (2); //invalid option
+		return (builtin_error(ctx(alias, *argv),  ERR_INVALID_OPT, 2)); //invalid option
 	if (flags & FLAG_A)
-		return (alias_clear(), 0);
-	if (!argv)
-		return (1); //invalid use, needs args or -a flag
+		return (alias_clear(&sh->alias), 0);
+	if (!(*argv))
+		return (builtin_error(ctx(alias, NULL), ERR_INVALID_UNALIAS, 2)); //invalid use, needs args or -a flag
 	while (*argv)
 	{
-		if (!alias_remove()) // strchr for '=' ?
-			status = 1; //failed to unset alias
+		if (alias_remove(&sh->alias, *argv) != RESULT_OK) // strchr for '=' ?
+			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1); //failed to unset alias
 		argv++;
 	}
 	return (status);

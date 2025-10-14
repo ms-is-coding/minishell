@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove.c                                           :+:      :+:    :+:   */
+/*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/06 00:47:51 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/13 17:41:01 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/10/11 17:08:52 by mattcarniel       #+#    #+#             */
+/*   Updated: 2025/10/11 17:55:13 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
+
 #include "alias/alias_internal.h"
+#include "libft.h"
 
-t_result	alias_remove(t_alias *alias, const char *key)
+void	alias_clear(t_alias *alias)
 {
-	t_alias_bucket	*bucket;
+	size_t	i;
 
-	bucket = alias_find_key(alias, key);
-	if (!bucket)
-		return (RESULT_ERROR);
-	bucket->key = NULL;
-	bucket->value = NULL;
-	bucket->is_tombstone = 1;
-	return (RESULT_OK);
+	i = 0;
+	while (i < alias->capacity)
+		ft_memset(&alias->buckets[i++], 0, sizeof(t_alias_bucket));
 }
