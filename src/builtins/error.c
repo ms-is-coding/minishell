@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/13 17:14:08 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/15 15:54:22 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ static const char	*get_error_info(t_error err)
 		[ERR_INVALID_OPT] = ": invalid option",
 		[ERR_INVALID_ALIAS] = ": usage: alias [-p] [name[=value] ... ]",
 		[ERR_INVALID_UNALIAS] = ": usage: unalias [-a] name [name ...]",
+		[ERR_TOO_LONG] = ": path too long",
 		[ERR_NOT_NUMERIC] = ": numeric argument required",
 		[ERR_NOT_FOUND] = ": not found",
+		[ERR_NO_PERM] = ": Permission denied",
 		[ERR_PERROR] = ": system error",
 		[ERR_UNKNOWN] = ": unknown error"
 	};

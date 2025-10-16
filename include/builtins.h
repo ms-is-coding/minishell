@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/13 17:16:17 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/15 15:54:12 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ typedef enum e_error
 	ERR_INVALID_OPT,
 	ERR_INVALID_ALIAS,
 	ERR_INVALID_UNALIAS,
+	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,
+	ERR_NO_PERM,
 	ERR_PERROR,
 	ERR_UNKNOWN,
 	ERR_COUNT

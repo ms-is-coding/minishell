@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 18:22:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:52:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,62 +17,104 @@
 #include "libft.h"
 #include "libft_printf.h"
 
-static bool	get_path(t_env *env, char *arg, const char **path)
+static void normalize_path(char *path)
 {
-	if (!arg)
-		*path = env_get(env, "HOME");
-	else if (ft_strcmp(arg, "-") == 0)
-		*path = env_get(env, "OLDPWD");
-	else
-		*path = arg;
+	char	*src;
+	char	*dst;
+	bool	is_abs;
+
+	is_abs = false;
+	if (!*path || *path == '/')
+		is_abs = true;
+	src = path;
+	dst = path;
+	while (*src)
+	{
+		if (*src == '/')
+		{
+			*dst++ = '/';
+			while (*src == '/')
+				src++;
+		}
+		else if (src[0] == '.' && (src[1] == '/' || src[1] == '\0'))
+			src += (src[1] == '/') ? 2 : 1;
+		else if (src[0] == '.' && src[1] == '.' && (src[2] == '/' || src[2] == '\0'))
+		{
+			src += (src[2] == '/') ? 3 : 2;
+			if (dst > path && *(dst - 1) == '/')
+			{
+				dst--;
+				while (dst > path && *(dst - 1) != '/')
+					dst--;
+				if (dst[0] == '.' && dst[1] == '.' && dst[2] == '/')
+				{
+					dst += 3;
+					*dst++ = '.';
+					*dst++ = '.';
+					if (*src)
+						*dst++ = '/';
+				}
+			}
+			else
+			{
+				if (dst != path && *(dst - 1) != '/')
+					*dst++ = '/';
+				*dst++ = '.';
+				*dst++ = '.';
+				if (*src)
+					*dst++ = '/';
+			}
+		}
+		else while (*src && *src != '/')
+			*dst++ = *src++;
+	}
+	if (dst > path + 1 && *(dst - 1) == '/')
+		dst--;
+	*dst = '\0';
+	if (is_abs && (!path[0] || (path[0] == '.'
+		&& (path[1] == '\0' || (path[1] == '.' && path[2] == '\0')))))
+	{
+		path[0] = '/';
+		path[1] = '\0';
+	}
 	if (!*path)
-		return (false);
-	return (true);
-}
-
-static void	normalize_path(char *path)
-{
-	char	*seg[PATH_MAX];
-	char	tmp[PATH_MAX];
-	char	*token;
-	int		top;
-	int		i;
-
-	ft_memcpy(tmp, path, PATH_MAX);
-	top = 0;
-	token = ft_strtok(tmp, "/");
-	while (token)
 	{
-		if (ft_strcmp(token, "..") == 0 && top > 0)
-			top--;
-		else if (ft_strcmp(token, ".") != 0)
-			seg[top++] = token;
-		token = ft_strtok(NULL, "/");
-	}
-	path[0] = '\0';
-	i = 0;
-	if (top == 0)
-		ft_strlcpy(path, "/", PATH_MAX);
-	while (i < top)
-	{
-		ft_strlcat(path, "/", PATH_MAX);
-		ft_strlcat(path, seg[i++], PATH_MAX);
+		path[0] = '.';
+		path[1] = '\0';
 	}
 }
 
-static bool	resolve_path(char *newpwd, const char *oldpwd, const char *path)
+static t_error	resolve_pwd(t_env *env, char *newpwd, char *oldpwd, const char *path)
 {
-	if (path[0] == '/')
+	if (!getcwd(oldpwd, PATH_MAX))
+		return (ERR_UNKNOWN);
+	if (!path)
+	{
+		if (!ft_strlcpy(newpwd, env_get(env, "HOME"), PATH_MAX))
+			return (ERR_UNKNOWN);
+	}
+	else if (ft_strcmp(path, "-") == 0)
+	{
+		if (!ft_strlcpy(newpwd, env_get(env, "OLDPWD"), PATH_MAX))
+			return (ERR_UNKNOWN);
+		ft_printf("%s\n", newpwd);
+	}
+	else if (path[0] == '/')
 		ft_strlcpy(newpwd, path, PATH_MAX);
-	else if (ft_snprintf(newpwd, PATH_MAX, "%s/%s", oldpwd, path) >= PATH_MAX)
-		return (false);
-	normalize_path(newpwd);
-	return (true);
+	else
+	{
+		if (ft_strlen(oldpwd) + 1 + ft_strlen(path) + 1 > PATH_MAX)
+			return (ERR_UNKNOWN);
+		ft_strlcpy(newpwd, oldpwd, PATH_MAX);
+		if (newpwd[ft_strlen(newpwd) - 1] != '/')
+			ft_strlcat(newpwd, "/", PATH_MAX);
+		ft_strlcat(newpwd, path, PATH_MAX);
+	}
+	return (ERR_NONE);
 }
 
 int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 {
-	const char	*path;
 	char		oldpwd[PATH_MAX];
 	char		newpwd[PATH_MAX];
 
@@ -80,24 +122,17 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	(void)argc;
 	if (argv[1] && argv[2])
 		return (builtin_error(ctx(argv[0], NULL), ERR_TOO_MANY_ARGS, 2));
-	path = NULL;
-	newpwd[0] = 0;
-	oldpwd[0] = 0;
-	ft_strlcpy(oldpwd, env_get(&sh->env, "PWD"), PATH_MAX);
-	if (!oldpwd[0])
-	{
-		if (getcwd(oldpwd, PATH_MAX) == NULL)
-			return (1); //perror
-	}
-	if (!get_path(&sh->env, argv[1], &path))
-		return (1); //HOME or OLDPWD not set
-	if (!resolve_path(newpwd, oldpwd, path))
-		return (1); //path too long
+	newpwd[0] = '\0'; //memset ?
+	oldpwd[0] = '\0';
+	resolve_pwd(&sh->env, newpwd, oldpwd, argv[1]);
+	ft_printf("cd from: %s\n", oldpwd); //debug
+	ft_printf("cd to: %s\n", newpwd); //debug
 	if (chdir(newpwd) != 0)
-		return (ft_dprintf(2, "cd: %m\n"), 1);
+		return (builtin_error(ctx(argv[0], argv[1]), ERR_PERROR, 1));
+	normalize_path(newpwd);
 	env_set(&sh->env, "OLDPWD", oldpwd, true);
 	env_set(&sh->env, "PWD", newpwd, true);
-	if (argv[0] && ft_strcmp(argv[0], "-") == 0)
-		ft_printf("%s\n", newpwd);
+	if (argv[1] && ft_strcmp(argv[1], "-") == 0)
+		ft_printf("%s\n", newpwd); //necessary ?
 	return (0);
 }
