@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/09 15:32:50 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/16 12:49:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static char	set_flags(int *argc, char ***argv)
 
 static bool	is_valid_var(const char *str)
 {
-	ft_printf("Checking validity of variable: %s\n", str);
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
 		return (false);
 	str++;
@@ -136,7 +135,6 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 		else
 		 {
 			separate_export(*argv, &key, &value);
-			ft_printf("Exporting variable: [%s] with value: [%s]\n", *argv, value);
 			if (flags & FLAG_N  && env_set(&sh->env, key, value, false) != RESULT_OK) //placeholder
 				status = 1; //print export -n failed
 			else if (env_set(&sh->env, key, value, true) != RESULT_OK) //placeholder
