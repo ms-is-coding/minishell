@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/16 12:49:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 02:30:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
-static void	print_exported(char **envp)
+static void	print_exported(t_env *env)
 {
-	char	*eq;
+	size_t	i;
 
-	while (envp && *envp)
+	i = -1lu;
+	while (++i < env->capacity)
 	{
-		eq = ft_strchr(*envp, '=');
-		if (eq)
-			ft_printf("export %.*s=\"%s\"\n", (int)(eq - *envp), *envp, eq + 1);
-		else
-			ft_printf("export %s\n", *envp);
-		envp++;
+		if (env->buckets[i].key && env->buckets[i].value)
+			ft_printf("export %s=\"%s\"\n",
+				env->buckets[i].key, env->buckets[i].value);
+		else if (env->buckets[i].key)
+			ft_printf("export %s\n", env->buckets[i].key);
 	}
 }
 
@@ -110,7 +110,6 @@ static void	separate_export(char *arg, char **key, char **value)
 		*value = NULL;
 }
 
-
 int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
@@ -120,26 +119,28 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	int		status;
 
 	(void)argc;
+	(void)envp;
 	alias = argv[0];
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
-		return (print_exported(envp), 0);
+		return (print_exported(&sh->env), 0);
 	status = 0;
 	while (*argv)
 	{
 		if (!is_valid_var(*argv))
 			status = 1;//Invalid variable name
 		else
-		 {
+		{
 			separate_export(*argv, &key, &value);
-			if (flags & FLAG_N  && env_set(&sh->env, key, value, false) != RESULT_OK) //placeholder
+			if (flags & FLAG_N
+				&& env_set(&sh->env, key, value, false) != RESULT_OK)
 				status = 1; //print export -n failed
-			else if (env_set(&sh->env, key, value, true) != RESULT_OK) //placeholder
+			else if (env_set(&sh->env, key, value, true) != RESULT_OK)
 				status = 1; //print export failed
-		 }
+		}
 		argv++;
 	}
 	return (status);

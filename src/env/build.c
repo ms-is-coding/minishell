@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 16:39:19 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:54:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 02:25:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ char	**env_build(t_env *env, t_arena *arena)
 	pos = 0;
 	while (++i < env->capacity)
 	{
-		if (!env->buckets[i].key)
+		if (!env->buckets[i].key || !env->buckets[i].value)
 			continue ;
-		len = ft_strlen(env->buckets[i].key) + ft_strlen(env->buckets[i].value) + 2;
+		len = ft_strlen(env->buckets[i].key)
+			+ ft_strlen(env->buckets[i].value) + 2;
 		e[pos] = allocator_alloc(env->allocator, len, arena).data;
 		if (!e[pos])
 			return (NULL);
