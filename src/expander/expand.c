@@ -6,24 +6,34 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 16:39:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 09:42:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expander/expander.h"
-#include <stdint.h>
+#include "expander/expander_internal.h"
 
-// compute length
-// allocate string
-// expand string
-void	expander_expand(
-	t_expander *exp,
-	t_exec_frame *frame,
-	const char *arg,
-	size_t len)
+void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 {
-	exp->arg = arg;
-	exp->len = len;
-	exp->frame = frame;
-	frame->argv[frame->i++] = ft_strndup(arg, len);
+	int	prev_argc;
+
+	if (mode == VEXPM_PREPARE)
+		prev_argc = exp->frame->argc;
+	// if (exp->next_char == '~')
+	// 	expander_user(exp, mode != VEXPM_EXTRACT);
+	while (exp->next_char)
+	{
+		expander_next(exp);
+		if (exp->curr_char == '$')
+			expander_var(exp, mode);
+		else if (exp->curr_char == '"')
+			expander_dquote(exp, mode != VEXPM_EXTRACT);
+		else if (exp->curr_char == '\'')
+			expander_squote(exp, mode != VEXPM_EXTRACT);
+		else
+			expander_char(exp, mode != VEXPM_EXTRACT);
+	}
+	if (exp->len > 0)
+		expander_var_extract(exp, mode);
+	if (mode == VEXPM_PREPARE)
+		exp->frame->argc = prev_argc;
 }

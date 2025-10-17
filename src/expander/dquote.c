@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   dquote.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/11 16:13:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:20:51 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/17 00:45:44 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/17 02:13:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
-#include "shell.h"
 
-void	expander_init(t_expander *exp, void *sh)
+void	expander_dquote(t_expander *exp, bool dry_run)
 {
-	exp->sh = sh;
-}
-
-void	expander_setup(
-	t_expander *exp,
-	t_exec_frame *frame,
-	const char *arg,
-	size_t len)
-{
-	exp->frame = frame;
-	exp->arg = arg;
-	exp->arg_len = len;
-	exp->i = 1;
-	exp->curr_char = '\0';
-	exp->next_char = arg[0];
-	exp->end = false;
-	exp->ifs = env_get(&((t_shell *)exp->sh)->env, "IFS");
-	if (!exp->ifs)
-		exp->ifs = " \t\n";
-	exp->len = 0;
+	while (exp->next_char && exp->next_char != '"')
+	{
+		expander_next(exp);
+		if (exp->curr_char == '$')
+			expander_var_no_ifs(exp, dry_run);
+		else
+		{
+			if (exp->curr_char == '\\' && dquote_escape(exp->next_char))
+				expander_next(exp);
+			if (!dry_run)
+				ft_strncat(exp->frame->argv[exp->frame->argc],
+					&exp->curr_char, 1);
+			exp->len++;
+		}
+	}
+	expander_next(exp);
 }
