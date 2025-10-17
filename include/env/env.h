@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 16:46:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 09:50:37 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		env_destroy(t_env *env);
 t_result	env_set(t_env *env, const char *key, const char *value,
 				bool is_public);
 const char	*env_get(t_env *env, const char *key);
-void		env_remove(t_env *env, const char *key);
+t_result	env_remove(t_env *env, const char *key);
 char		**env_build(t_env *env, t_arena *arena);
 
 #endif // ENV_H
