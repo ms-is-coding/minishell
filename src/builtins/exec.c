@@ -6,53 +6,84 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 14:27:58 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/15 16:36:00 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
-#include "libft_printf.h"
+#include <unistd.h>
+#include <stdlib.h>
 
-static char	*find_exec(char *arg)
+#include "builtins.h"
+#include "libft.h"
+
+static char **get_paths(char **envp)
 {
-	const char	*paths[] = {
-		"./", "/bin", "/usr/bin", "/usr/local/bin",
-		"/sbin", "/usr/sbin", "/usr/local/sbin", NULL};
+	int		i;
+
+	i = 0;
+	if (!envp)
+		return (NULL);
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (ft_split(envp[i] + 5, ':'));
+		i++;
+	}
+	return (NULL);
+}
+
+static char	*find_cmd_path(char *cmd, char **envp)
+{
+	char		**paths;
 	char		*path;
 	int			i;
 	size_t		len;
 
 	i = 0;
-	if (!arg)
+	if (!cmd)
+		return (NULL);
+	paths = get_paths(envp);
+	if (!paths)
 		return (NULL);
 	while (paths[i])
 	{
-		len = ft_strlen(paths[i]) + ft_strlen(arg) + 2;
-		path = ft_malloc(len);
+		len = ft_strlen(paths[i]) + ft_strlen(cmd) + 2;
+		path = malloc(sizeof(char) * len);
 		if (!path)
-			return (NULL);
-		ft_snprintf(path, len, "%s/%s", paths[i], arg);
-		if (access(path, X_OK) == 0)
+			return (NULL); //to be looked at
+		ft_strlcpy(path, paths[i++], len);
+		ft_strlcat(path, "/", len);
+		ft_strlcat(path, cmd, len);
+		if (access(path, F_OK) == 0)
 			return (path);
 		free(path);
-		i++;
 	}
 	return (NULL);
 }
 
 int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 {
-	char	*cmd;
+	char	*path;
 
-// todo:
-// - decrement shlvl
 	(void)sh;
-	if (argc == 1)
+	(void)argc;
+	if (!*(argv + 1))
 		return (0);
-	cmd = find_exec(argv[1]);
-	if (!cmd)
-		ft_printf("exec: %s: command not found\n", argv[1]);
-	execve(cmd, argv + 1, envp);
-	exit(0);
+	if (ft_strchr(argv[1], '/'))
+	{
+		if (access(argv[1], F_OK) == -1)
+			builtin_error(ctx(argv[0], argv[1]), ERR_NOT_FOUND, 127);
+		else if (access(argv[1], X_OK) == -1 || execve(argv[1], argv + 1, envp) == -1)
+			builtin_error(ctx(argv[0], argv[1]), ERR_NO_PERM, 126);
+	}
+	else
+	{
+		path = find_cmd_path(argv[1], envp);
+		if (!path)
+			builtin_error(ctx(argv[0], argv[1]), ERR_NOT_FOUND, 127);
+		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
+			builtin_error(ctx(argv[0], argv[1]), ERR_NO_PERM, 126);
+		free(path);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/04 18:42:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/17 09:49:25 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,20 @@
 #include "libft.h"
 #include <stdbool.h>
 
-int	builtin_unset(t_shell *sh, int argc, char **argv)
+int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
 {
+	char	*alias;
+	int		status;
+	
 	(void)argc;
+	(void)envp;
+	alias = argv[0];
 	argv++;
 	while (*argv)
 	{
-		env_delete(); //placeholder
+		if (env_remove(&sh->env, *argv) != RESULT_OK)
+			status = builtin_error(ctx(alias, *argv), ERR_UNKNOWN, 1); //placeholder ERR
 		argv++;
 	}
-	return (0);
+	return (status);
 }
