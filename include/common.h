@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:26:46 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 02:32:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define EXEC_WAIT_BIT 0x40
 
 # define MAX_REDIRS 64
+# define MAX_ALIASES 64
 
 # define CLI_OPTION_COUNT 8
 
