@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 01:02:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/16 23:57:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,16 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 	}
 	free(filename);
 	redir_insert(vm, target_fd, file_fd);
+	program->pc += len;
+}
+
+void	vm_redir_dummy(t_vm *vm, t_program *program)
+{
+	uint16_t	len;
+
+	(void)vm;
+	program->pc++;
+	program_get_i32(program);
+	len = program_get_u16(program);
 	program->pc += len;
 }

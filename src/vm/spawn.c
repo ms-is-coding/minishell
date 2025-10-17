@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/13 14:16:00 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/17 02:39:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,6 @@ static void	setup_fds(t_vm *vm)
 {
 	int	i;
 
-	// i = -1;
-	// ft_printf("--- DEBUG FD ---\n");
-	// ft_printf("prev_fd:    %4i\n", vm->prev_fd);
-	// ft_printf("pipe[0]:    %4i\n", vm->pipe_fd[0]);
-	// ft_printf("pipe[1]:    %4i\n", vm->pipe_fd[1]);
-	// ft_printf("---- REDIRS ----\n");
-	// while (++i < vm->redir_count)
-	// {
-	// 	ft_printf("[%2i].file:  %4i\n", i, vm->redirs[i].file_fd);
-	// 	ft_printf("[%2i].target:%4i\n", i, vm->redirs[i].target_fd);
-	// }
-	// ft_printf("----------------\n");
 	if (vm->prev_fd != STDIN_FILENO)
 		dup2(vm->prev_fd, STDIN_FILENO);
 	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
@@ -157,7 +145,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	}
 	(void)program;
 	sh = vm->shell;
-	if (vm->frame.i == 0)
+	if (vm->frame.argc == 0)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -174,7 +162,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 		return ;
 	}
 	env = env_build(&sh->env, vm->frame.arena);
-	vm->frame.argv[vm->frame.i] = NULL;
+	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = find_builtin(vm->frame.argv[0]);
 	if (builtin && !is_command_in_pipeline(vm))
 	{

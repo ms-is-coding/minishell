@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/13 16:49:28 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/10/17 09:44:05 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_DIR			= src
 OBJ_DIR			= obj
 
 SRC_CLI			= cli/init.c cli/add.c cli/find.c cli/get.c cli/parse.c
-SRC_LEXER		= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
+SRC_LEXER		:= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
 					dollar.c eof.c error.c group.c init.c internal.c lex.c \
 					number.c pipe.c print.c redir.c)
 SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
@@ -38,7 +38,10 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
-SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c var.c)
+SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
+					char.c dquote.c squote.c)
+# user.c
+# SRC_EXEC		:= exec/exec.c
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \

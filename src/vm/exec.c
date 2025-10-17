@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 00:41:34 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:46:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/16 18:27:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ void	vm_exec(t_vm *vm, t_program *program)
 		vm_wait(vm, program);
 		vm->pids.length = 0;
 	}
-	vm->frame.i = 0;
+	vm->frame.argc = 0;
 }
