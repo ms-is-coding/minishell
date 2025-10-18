@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/17 02:30:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/18 14:50:54 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,3 +145,6 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	}
 	return (status);
 }
+
+
+//function needs work, not printing exports when offered as args, not error handling properly
