@@ -6,14 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/15 11:12:58 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/17 13:05:01 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alias/alias.h"
 #include "builtins.h"
 #include "libft.h"
-#include "libft_printf.h"
 #include "shell.h"
 #include <stdbool.h>
 
