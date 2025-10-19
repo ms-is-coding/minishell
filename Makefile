@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/17 09:44:05 by smamalig         ###   ########.fr        #
+#    Updated: 2025/10/19 14:17:57 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
 SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
 					false.c pwd.c true.c env.c export.c alias.c unalias.c \
-					type.c)
+					type.c cd_internal.c echo_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 					cmd.c exec.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \

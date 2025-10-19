@@ -6,11 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:20:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 14:54:11 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:29:45 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "env/env.h"
 #include <stddef.h>
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/15 15:54:12 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:07:01 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ typedef enum e_error
 	ERR_INVALID_OPT,
 	ERR_INVALID_ALIAS,
 	ERR_INVALID_UNALIAS,
+	ERR_INVALID_ID,
+	ERR_NO_HOME,
+	ERR_NO_OLDPWD,
+	ERR_BAD_SET,
 	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,

@@ -6,11 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 16:43:45 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:30:20 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include <errno.h>
 
 int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)

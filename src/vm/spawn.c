@@ -6,12 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:39:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/18 18:27:49 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "shell.h"
 #include "vm/vm_internal.h"
 #include <stdbool.h>

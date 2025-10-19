@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   true.c                                             :+:      :+:    :+:   */
+/*   echo_internal.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/01 22:15:39 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:29:56 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/10/18 18:32:27 by mattcarniel       #+#    #+#             */
+/*   Updated: 2025/10/18 18:36:20 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins/builtins.h"
+#ifndef ECHO_INTERNAL_H
+# define ECHO_INTERNAL_H
 
-int	builtin_true(t_shell *sh, int argc, char **argv, char **envp)
-{
-	(void)sh;
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	return (0);
-}
+int	get_escape_char(const char **s);
+
+#endif

@@ -6,13 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 14:27:06 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:29:11 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 
 int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 {

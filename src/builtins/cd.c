@@ -6,110 +6,57 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 14:44:33 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:04:05 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdbool.h>
 #include <unistd.h>
 
 #include "env/env.h"
-#include "builtins.h"
+#include "builtins/builtins.h"
+#include "builtins/cd_internal.h"
 #include "libft.h"
 #include "libft_printf.h"
 
-static void normalize_path(char *path)
+static bool	get_relative_path(char *newbuf, const char *oldbuf, const char *path)
 {
-	char	*src;
-	char	*dst;
-	bool	is_abs;
-
-	is_abs = false;
-	if (!*path || *path == '/')
-		is_abs = true;
-	src = path;
-	dst = path;
-	while (*src)
-	{
-		if (*src == '/')
-		{
-			*dst++ = '/';
-			while (*src == '/')
-				src++;
-		}
-		else if (src[0] == '.' && (src[1] == '/' || src[1] == '\0'))
-			src += (src[1] == '/') ? 2 : 1;		else if (src[0] == '.' && src[1] == '.' && (src[2] == '/' || src[2] == '\0'))
-		{
-			src += (src[2] == '/') ? 3 : 2;
-			if (dst > path && *(dst - 1) == '/')
-			{
-				dst--;
-				while (dst > path && *(dst - 1) != '/')
-					dst--;
-				if (dst[0] == '.' && dst[1] == '.' && dst[2] == '/')
-				{
-					dst += 3;
-					*dst++ = '.';
-					*dst++ = '.';
-					if (*src)
-						*dst++ = '/';
-				}
-			}
-			else
-			{
-				if (dst != path && *(dst - 1) != '/')
-					*dst++ = '/';
-				*dst++ = '.';
-				*dst++ = '.';
-				if (*src)
-					*dst++ = '/';
-			}
-		}
-		else while (*src && *src != '/')
-			*dst++ = *src++;
-	}
-	if (dst > path + 1 && *(dst - 1) == '/')
-		dst--;
-	*dst = '\0';
-	if (is_abs && (!path[0] || (path[0] == '.'
-		&& (path[1] == '\0' || (path[1] == '.' && path[2] == '\0')))))
-	{
-		path[0] = '/';
-		path[1] = '\0';
-	}
-	if (!*path)
-	{
-		path[0] = '.';
-		path[1] = '\0';
-	}
+	if (ft_strlen(oldbuf) + 1 + ft_strlen(path) + 1 > PATH_MAX)
+		return (false);
+	ft_strlcpy(newbuf, oldbuf, PATH_MAX);
+	if (newbuf[ft_strlen(newbuf) - 1] != '/')
+		ft_strlcat(newbuf, "/", PATH_MAX);
+	ft_strlcat(newbuf, path, PATH_MAX);
+	return (true);
 }
 
-static t_error	resolve_pwd(t_env *env, char *newbuf, const char *oldbuf, char **argv)
+static int	resolve_pwd(t_env *env, char *newbuf, const char *oldbuf, char **argv)
 {
+	const char	*ptr;
+
 	if (!argv[1])
 	{
-		if (!ft_strlcpy(newbuf, env_get(env, "HOME"), PATH_MAX))
+		ptr = env_get(env, "HOME");
+		if (!ptr || !*ptr)
 			return (builtin_error(ctx(argv[0], NULL), ERR_NO_HOME, 1));
 	}
 	else if (ft_strcmp(argv[1], "-") == 0)
 	{
-		if (!ft_strlcpy(newbuf, env_get(env, "OLDPWD"), PATH_MAX))
+		ptr = env_get(env, "OLDPWD");
+		if (!ptr || !*ptr)
 			return (builtin_error(ctx(argv[0], NULL), ERR_NO_OLDPWD, 1));
 	}
 	else if (argv[1][0] == '/')
-	{
-		if (ft_strlcpy(newbuf, argv[1], PATH_MAX) > PATH_MAX)
-			return (builtin_error(ctx(argv[0], argv[1]), ERR_TOO_LONG, 1));
-	}
+		ptr = argv[1];
 	else
 	{
-		if (ft_strlen(oldbuf) + 1 + ft_strlen(argv[1]) + 1 > PATH_MAX)
-			return (builtin_error(ctx(argv[0], argv[1]), ERR_TOO_LONG, 1));
-		ft_strlcpy(newbuf, oldbuf, PATH_MAX);
-		if (newbuf[ft_strlen(newbuf) - 1] != '/')
-			ft_strlcat(newbuf, "/", PATH_MAX);
-		ft_strlcat(newbuf, argv[1], PATH_MAX);
+		if (!get_relative_path(newbuf, oldbuf, argv[1]))
+			return (builtin_error(ctx(argv[0], ptr), ERR_TOO_LONG, 1));
+		return (0);
 	}
-	return (ERR_NONE);
+	if (ft_strlcpy(newbuf, ptr, PATH_MAX) > PATH_MAX)
+		return (builtin_error(ctx(argv[0], ptr), ERR_TOO_LONG, 1));
+	return (0);
 }
 
 int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)

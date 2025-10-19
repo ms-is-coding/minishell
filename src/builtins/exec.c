@@ -6,14 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/15 16:36:00 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:30:29 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "libft.h"
 
 static char **get_paths(char **envp)

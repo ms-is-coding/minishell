@@ -6,12 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/17 13:05:01 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:30:16 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alias/alias.h"
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "libft.h"
 #include "shell.h"
 #include <stdbool.h>
@@ -96,7 +96,6 @@ static int	seperate_alias(char *arg, char **key, char **value)
 
 int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 {
-	char	flags;
 	char 	*alias;
 	char	*key;
 	char	*value;
@@ -104,25 +103,23 @@ int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)envp;
-	alias = argv[0];
-	argv++;
-	flags = set_flags(&argc, &argv);
-	if (flags & FLAG_ERR)
+	alias = *(argv++);
+	if (set_flags(&argc, &argv) & FLAG_ERR)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
-		return (alias_print_all(&sh->alias), 0); //print all aliases
+		return (alias_print_all(&sh->alias), 0);
 	status = 0;
 	while (*argv)
 	{
 		if (!is_valid_var(*argv))
-			return (builtin_error(ctx(alias, NULL), ERR_INVALID_ALIAS, 2)); //invalid alias name
+			status = builtin_error(ctx(alias, *argv), ERR_INVALID_ID, 2);
 		else
 		{
 			seperate_alias(*argv, &key, &value);
 			if (value && alias_set(&sh->alias, key, value) != RESULT_OK)
-				status = builtin_error(ctx(alias, key), ERR_UNKNOWN, 1); //failed to set alias, what int_code, what error ?
+				status = builtin_error(ctx(alias, key), ERR_BAD_SET, 1);
 			if (!value && alias_print(&sh->alias, key) != RESULT_OK)
-				status = builtin_error(ctx(alias, key), ERR_NOT_FOUND, 1); //alias not found
+				status = builtin_error(ctx(alias, key), ERR_NOT_FOUND, 1);
 		}
 		argv++;
 	}

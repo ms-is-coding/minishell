@@ -6,11 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 14:50:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:31:18 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "env/env.h"
 #include "libft.h"
 #include <stdbool.h>
@@ -131,15 +131,15 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	while (*argv)
 	{
 		if (!is_valid_var(*argv))
-			status = 1;//Invalid variable name
+			status = builtin_error(ctx(alias, *argv), ERR_INVALID_ID, 1);
 		else
 		{
 			separate_export(*argv, &key, &value);
 			if (flags & FLAG_N
 				&& env_set(&sh->env, key, value, false) != RESULT_OK)
-				status = 1; //print export -n failed
+				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1); // correct int code ?
 			else if (env_set(&sh->env, key, value, true) != RESULT_OK)
-				status = 1; //print export failed
+				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1); // correct int code ?
 		}
 		argv++;
 	}

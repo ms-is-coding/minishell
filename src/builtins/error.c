@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 14:41:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/18 18:29:28 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include "libft.h"
 
 #define THREE_DOT	"..."
@@ -32,8 +32,10 @@ static const char	*get_error_info(t_error err)
 		[ERR_INVALID_OPT] = ": invalid option",
 		[ERR_INVALID_ALIAS] = ": usage: alias [-p] [name[=value] ... ]",
 		[ERR_INVALID_UNALIAS] = ": usage: unalias [-a] name [name ...]",
+		[ERR_INVALID_ID] = ": not a valid identifier",
 		[ERR_NO_HOME] = ": HOME not found",
 		[ERR_NO_OLDPWD] = ": OLDPWD not found",
+		[ERR_BAD_SET] = ": could not set variable",
 		[ERR_TOO_LONG] = ": path too long",
 		[ERR_NOT_NUMERIC] = ": numeric argument required",
 		[ERR_NOT_FOUND] = ": not found",

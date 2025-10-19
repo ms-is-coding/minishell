@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 11:56:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/18 18:29:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alias/alias.h"
-#include "builtins.h"
+#include "builtins/builtins.h"
 #include <stdbool.h>
 
 static bool	try_alias(t_alias *alias, const char *cmd)

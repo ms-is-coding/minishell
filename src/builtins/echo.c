@@ -6,14 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:10:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 11:36:26 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/18 18:54:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "builtins.h"
+#include "builtins/builtins.h"
+#include "builtins/echo_internal.h"
 #include "libft.h"
 
 #define FLAG_N		1
@@ -21,80 +22,6 @@
 #define FLAG_S		4
 
 #define BUF_SIZE	4096
-
-static int	get_escape_octal(const char **s)
-{
-	int		i;
-	int		val;
-
-	if (!*s)
-		return (0);
-	if (**s != '0')
-		return (**s);
-	val = 0;
-	i = 0;
-	while (i < 3 && **s && **s >= '0' && **s <= '7')
-	{
-		val = val * 8 + (**s - '0');
-		(*s)++;
-	}
-	return (val);
-}
-
-static int	get_escape_hex(const char **s)
-{
-	int		i;
-	int		val;
-
-	if (!*s)
-		return (0);
-	if (**s != 'x')
-		return (**s);
-	val = 0;
-	i = 0;
-	while (i < 2 && **s && ((**s >= '0' && **s <= '9')
-			|| (**s >= 'a' && **s <= 'f')
-			|| (**s >= 'A' && **s <= 'F')))
-	{
-		if (**s >= '0' && **s <= '9')
-			val = val * 16 + (**s - '0');
-		else if (**s >= 'a' && **s <= 'f')
-			val = val * 16 + (**s - 'a' + 10);
-		else if (**s >= 'A' && **s <= 'F')
-			val = val * 16 + (**s - 'A' + 10);
-		i++;
-	}
-	return (val);
-}
-
-static int	get_escape_char(const char **s)
-{
-	if (**s == 'a')
-		return ('\a');
-	else if (**s == 'b')
-		return ('\b');
-	else if (**s == 'c')
-		return (-1);
-	else if (**s == 'e')
-		return ('\033');
-	else if (**s == 'f')
-		return ('\f');
-	else if (**s == 'n')
-		return ('\n');
-	else if (**s == 'r')
-		return ('\r');
-	else if (**s == 't')
-		return ('\t');
-	else if (**s == 'v')
-		return ('\v');
-	else if (**s == '\\')
-		return ('\\');
-	else if (**s == '0')
-		return (get_escape_octal(s));
-	else if (**s == 'x')
-		return (get_escape_hex(s));
-	return (**s);
-}
 
 static bool	get_flags(const char *opt, char *flags)
 {
@@ -144,11 +71,11 @@ static char	set_flags(char ***argv)
 	return (flags);
 }
 
-static void	flush_full_buffer(char *buf, char **ptr)
+static void	flush_buffer(char *buf, char **ptr)
 {
-	if ((size_t)(*ptr - buf) >= BUF_SIZE)
+	if (*ptr > buf)
 	{
-		write(1, buf, BUF_SIZE);
+		write(1, buf, (size_t)(*ptr - buf));
 		*ptr = buf;
 	}
 }
@@ -164,7 +91,10 @@ static bool	fill_buffer(const char *src, char *buf, char **ptr, char flags)
 			src++;
 			c = get_escape_char(&src);
 			if (c == -1)
+			{
+				flush_buffer(buf, ptr);
 				return (true);
+			}
 			**ptr = (char)c;
 		}
 		else
@@ -173,7 +103,8 @@ static bool	fill_buffer(const char *src, char *buf, char **ptr, char flags)
 			src++;
 		}
 		(*ptr)++;
-		flush_full_buffer(buf, ptr);
+		if ((size_t)(*ptr - buf) >= BUF_SIZE)
+			flush_buffer(buf, ptr);
 	}
 	return (false);
 }
@@ -183,7 +114,6 @@ int	builtin_echo(t_shell *sh, int argc, char **argv, char **envp)
 	char	buf[BUF_SIZE];
 	char	*ptr;
 	char	flags;
-	bool	stop;
 
 	(void)envp;
 	(void)sh;
@@ -191,20 +121,17 @@ int	builtin_echo(t_shell *sh, int argc, char **argv, char **envp)
 	argv++;
 	flags = set_flags(&argv);
 	ptr = buf;
-	stop = 0;
 	while (*argv)
 	{
-		stop = fill_buffer(*argv, buf, &ptr, flags);
-		if (stop)
-			break ;
-		if (!stop && argv[1] && !(flags & FLAG_S))
+		if (fill_buffer(*argv, buf, &ptr, flags))
+			return (0);
+		if (argv[1] && !(flags & FLAG_S))
 			*ptr++ = ' ';
-		flush_full_buffer(buf, &ptr);
+		flush_buffer(buf, &ptr);
 		argv++;
 	}
-	if (!stop && !(flags & FLAG_N))
+	if (!(flags & FLAG_N))
 		*ptr++ = '\n';
-	if (ptr > buf)
-		write(1, buf, (size_t)(ptr - buf));
+	flush_buffer(buf, &ptr);
 	return (0);
 }
