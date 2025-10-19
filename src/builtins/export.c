@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 18:31:18 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:22:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
+#include "builtins/export_internal.h"
 #include "env/env.h"
 #include "libft.h"
 #include <stdbool.h>
@@ -79,37 +80,6 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
-static void	print_exported(t_env *env)
-{
-	size_t	i;
-
-	i = -1lu;
-	while (++i < env->capacity)
-	{
-		if (env->buckets[i].key && env->buckets[i].value)
-			ft_printf("export %s=\"%s\"\n",
-				env->buckets[i].key, env->buckets[i].value);
-		else if (env->buckets[i].key)
-			ft_printf("export %s\n", env->buckets[i].key);
-	}
-}
-
-static void	separate_export(char *arg, char **key, char **value)
-{
-	char	*eq;
-
-	eq = ft_strchr(arg, '=');
-	if (eq)
-		*eq = '\0';
-	else
-		*value = NULL;
-	*key = ft_strdup(arg);
-	if (eq)
-		*value = ft_strdup(eq + 1); //no sanity checks
-	else
-		*value = NULL;
-}
-
 int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
@@ -137,14 +107,11 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 			separate_export(*argv, &key, &value);
 			if (flags & FLAG_N
 				&& env_set(&sh->env, key, value, false) != RESULT_OK)
-				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1); // correct int code ?
+				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
 			else if (env_set(&sh->env, key, value, true) != RESULT_OK)
-				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1); // correct int code ?
+				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
 		}
 		argv++;
 	}
 	return (status);
 }
-
-
-//function needs work, not printing exports when offered as args, not error handling properly

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 15:04:05 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:24:44 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@
 #include "libft.h"
 #include "libft_printf.h"
 
-static bool	get_relative_path(char *newbuf, const char *oldbuf, const char *path)
+static bool	get_relative_path(char *new, const char *old, const char *path)
 {
-	if (ft_strlen(oldbuf) + 1 + ft_strlen(path) + 1 > PATH_MAX)
+	if (ft_strlen(old) + 1 + ft_strlen(path) + 1 > PATH_MAX)
 		return (false);
-	ft_strlcpy(newbuf, oldbuf, PATH_MAX);
-	if (newbuf[ft_strlen(newbuf) - 1] != '/')
-		ft_strlcat(newbuf, "/", PATH_MAX);
-	ft_strlcat(newbuf, path, PATH_MAX);
+	ft_strlcpy(new, old, PATH_MAX);
+	if (new[ft_strlen(new) - 1] != '/')
+		ft_strlcat(new, "/", PATH_MAX);
+	ft_strlcat(new, path, PATH_MAX);
 	return (true);
 }
 
-static int	resolve_pwd(t_env *env, char *newbuf, const char *oldbuf, char **argv)
+static int	resolve_pwd(t_env *env, char *new, const char *old, char **argv)
 {
 	const char	*ptr;
 
@@ -50,11 +50,11 @@ static int	resolve_pwd(t_env *env, char *newbuf, const char *oldbuf, char **argv
 		ptr = argv[1];
 	else
 	{
-		if (!get_relative_path(newbuf, oldbuf, argv[1]))
+		if (!get_relative_path(new, old, argv[1]))
 			return (builtin_error(ctx(argv[0], ptr), ERR_TOO_LONG, 1));
 		return (0);
 	}
-	if (ft_strlcpy(newbuf, ptr, PATH_MAX) > PATH_MAX)
+	if (ft_strlcpy(new, ptr, PATH_MAX) > PATH_MAX)
 		return (builtin_error(ctx(argv[0], ptr), ERR_TOO_LONG, 1));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:16:58 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 18:30:38 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:16:54 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	set_flags(int *argc, char ***argv)
 int	builtin_unalias(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
-	char 	*alias;
+	char	*alias;
 	int		status;
 
 	(void)argc;
@@ -76,15 +76,15 @@ int	builtin_unalias(t_shell *sh, int argc, char **argv, char **envp)
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
-		return (builtin_error(ctx(alias, *argv),  ERR_INVALID_OPT, 2)); //invalid option
+		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (flags & FLAG_A)
 		return (alias_clear(&sh->alias), 0);
 	if (!(*argv))
-		return (builtin_error(ctx(alias, NULL), ERR_INVALID_UNALIAS, 2)); //invalid use, needs args or -a flag
+		return (builtin_error(ctx(alias, NULL), ERR_INVALID_UNALIAS, 2));
 	while (*argv)
 	{
-		if (alias_remove(&sh->alias, *argv) != RESULT_OK) // strchr for '=' ?
-			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1); //failed to unset alias
+		if (alias_remove(&sh->alias, *argv) != RESULT_OK)
+			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1);
 		argv++;
 	}
 	return (status);

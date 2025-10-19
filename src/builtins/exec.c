@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:30:29 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:11:19 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "builtins/builtins.h"
 #include "libft.h"
 
-static char **get_paths(char **envp)
+static char	**get_paths(char **envp)
 {
 	int		i;
 
@@ -73,7 +73,8 @@ int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 	{
 		if (access(argv[1], F_OK) == -1)
 			builtin_error(ctx(argv[0], argv[1]), ERR_NOT_FOUND, 127);
-		else if (access(argv[1], X_OK) == -1 || execve(argv[1], argv + 1, envp) == -1)
+		else if (access(argv[1], X_OK) == -1
+			|| execve(argv[1], argv + 1, envp) == -1)
 			builtin_error(ctx(argv[0], argv[1]), ERR_NO_PERM, 126);
 	}
 	else

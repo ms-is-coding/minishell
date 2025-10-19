@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:30:20 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:12:16 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
 {
 	int		exit_code;
-	
+
 	(void)argv;
 	(void)sh;
 	(void)envp;

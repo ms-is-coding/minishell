@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:07:01 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:13:51 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef enum e_error
 	ERR_NO_HOME,
 	ERR_NO_OLDPWD,
 	ERR_BAD_SET,
+	ERR_BAD_RM,
 	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
 	ERR_NOT_FOUND,

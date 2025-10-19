@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 18:30:16 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 15:17:20 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	seperate_alias(char *arg, char **key, char **value)
 
 int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 {
-	char 	*alias;
+	char	*alias;
 	char	*key;
 	char	*value;
 	int		status;

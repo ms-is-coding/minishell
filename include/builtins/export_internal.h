@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   export_internal.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 15:15:53 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/10/19 15:21:19 by mattcarniel       #+#    #+#             */
+/*   Updated: 2025/10/19 15:23:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins/builtins.h"
-#include "libft.h"
-#include <stdbool.h>
+#ifndef EXPORT_INTERNAL_H
+# define EXPORT_INTERNAL_H
 
-int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
-{
-	char	*alias;
-	int		status;
+# include "env/env.h"
 
-	(void)argc;
-	(void)envp;
-	alias = argv[0];
-	argv++;
-	while (*argv)
-	{
-		if (env_remove(&sh->env, *argv) != RESULT_OK)
-			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1);
-		argv++;
-	}
-	return (status);
-}
+void	print_exported(t_env *env);
+void	separate_export(char *arg, char **key, char **value);
+
+#endif
