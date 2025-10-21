@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 09:42:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:36:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 
 	if (mode == VEXPM_PREPARE)
 		prev_argc = exp->frame->argc;
-	// if (exp->next_char == '~')
-	// 	expander_user(exp, mode != VEXPM_EXTRACT);
+	if (exp->next_char == '~')
+		expander_user(exp, mode != VEXPM_EXTRACT);
 	while (exp->next_char)
 	{
 		expander_next(exp);
@@ -32,8 +32,7 @@ void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 		else
 			expander_char(exp, mode != VEXPM_EXTRACT);
 	}
-	if (exp->len > 0)
-		expander_var_extract(exp, mode);
+	expander_var_extract(exp, mode);
 	if (mode == VEXPM_PREPARE)
 		exp->frame->argc = prev_argc;
 }

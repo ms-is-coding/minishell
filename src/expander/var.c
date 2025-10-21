@@ -6,13 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:04:26 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:39:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
+#include "libft.h"
 #include "shell.h"
-#include <stddef.h>
+#include <stdlib.h>
 
 // $VERSION
 // $TRASH_VERSION ?
@@ -21,6 +22,8 @@
 // $RANDOM
 // others TBD
 // regular variables
+
+#include "libft.h"
 
 static const char	*extract_var(t_expander *exp)
 {
@@ -32,6 +35,9 @@ static const char	*extract_var(t_expander *exp)
 		&& k < sizeof(key) - 1)
 		key[k++] = expander_next(exp);
 	key[k] = '\0';
+	if (ft_strcmp("?", key) == 0)
+		return (ft_itoa_unsafe(ft_vector_at(&((t_shell *)exp->sh)
+					->vm.exit_codes, -1).value.i32));
 	return (env_get(&((t_shell *)exp->sh)->env, key));
 }
 
@@ -71,6 +77,8 @@ void	expander_var(t_expander *exp, t_var_expansion_mode mode)
 	value = extract_var(exp);
 	if (!value)
 		return ;
+	if (ft_strspn(value, exp->ifs))
+		expander_var_extract(exp, mode);
 	while (*value)
 	{
 		value += ft_strspn(value, exp->ifs);
