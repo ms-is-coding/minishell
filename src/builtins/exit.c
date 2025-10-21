@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 15:12:16 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/21 23:10:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
+#include "libft.h"
 #include <errno.h>
 
 int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
@@ -21,13 +22,17 @@ int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
 	(void)sh;
 	(void)envp;
 	exit_code = 0;
+	// FIX this is still not working
+	if (argc == 1)
+		exit_code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;
 	if (argc > 2)
-		return (builtin_error(ctx(argv[0], NULL), ERR_TOO_MANY_ARGS, 1));
+		return (builtin_error(ctx(argv[0], NULL), ERR_TOO_MANY_ARGS, 2));
 	if (argc == 2)
 		exit_code = ft_atoi_safe(argv[1]);
-	if (errno == ERANGE)
-		return (builtin_error(ctx(argv[0], argv[1]), ERR_NOT_NUMERIC, 255));
+	if (argc == 2 && (errno == ERANGE
+		|| argv[1][ft_strspn(argv[1], "0123456789")] != '\0'))
+		return (builtin_error(ctx(argv[0], argv[1]), ERR_NOT_NUMERIC, 2));
 	write(1, "exit\n", 5);
 	exit(exit_code);
-	return (0);
+	return (exit_code);
 }

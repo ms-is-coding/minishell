@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 15:22:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/21 22:42:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 #include "builtins/export_internal.h"
 #include "env/env.h"
+#include "help/help.h"
 #include "libft.h"
 #include <stdbool.h>
 
@@ -80,6 +81,7 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
+// When no arguments are given, the results are unspecified.
 int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
@@ -96,7 +98,10 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
+	{
+		help_warn(HELP_EXPORT_NOARG);
 		return (print_exported(&sh->env), 0);
+	}
 	status = 0;
 	while (*argv)
 	{
@@ -106,9 +111,9 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 		{
 			separate_export(*argv, &key, &value);
 			if (flags & FLAG_N
-				&& env_set(&sh->env, key, value, false) != RESULT_OK)
+				&& env_set(&sh->env, key, value, 0) != RESULT_OK)
 				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
-			else if (env_set(&sh->env, key, value, true) != RESULT_OK)
+			else if (env_set(&sh->env, key, value, ENV_FLAG_EXPORT) != RESULT_OK)
 				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
 		}
 		argv++;

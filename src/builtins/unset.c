@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 15:15:53 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/21 22:42:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,21 @@
 
 int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
 {
-	char	*alias;
-	int		status;
+	int			status;
+	t_result	result;
 
 	(void)argc;
 	(void)envp;
-	alias = argv[0];
 	argv++;
+	status = 0;
 	while (*argv)
 	{
-		if (env_remove(&sh->env, *argv) != RESULT_OK)
-			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1);
+		result = env_remove(&sh->env, *argv);
+		if (result == RESULT_RDONLY)
+		{
+			ft_dprintf(2, "unset: %s: cannot unset: readonly variable\n", *argv);
+			status = 1;
+		}
 		argv++;
 	}
 	return (status);
