@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 22:46:00 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 23:36:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,12 @@ static char	*extract_user(t_expander *exp)
 static const char	*extract_home(const char *user)
 {
 	const char	*str;
-	char		buf[34];
 	int			i;
 
-	ft_snprintf(buf, 34, "^%s:", user);
 	str = exec_with_output((char *[]){
-			(char *)(intptr_t)"/usr/bin/grep",
-			(char *)(intptr_t)"-E",
-			(char *)(intptr_t)buf,
-			(char *)(intptr_t)"/etc/passwd", NULL});
+			(char *)(intptr_t)"/usr/bin/getent",
+			(char *)(intptr_t)"passwd",
+			(char *)(intptr_t)user, NULL});
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -82,19 +79,10 @@ static void	get_user_home(t_expander *exp, const char *user, bool dry_run)
 
 static void	get_self_home(t_expander *exp, bool dry_run)
 {
-	const char	*user;
 	const char	*home;
-	char		user_buf[32];
 
 	help_warn(HELP_HOME_EXPAND);
-	user = exec_with_output((char *[]){
-			(char *)(intptr_t)"/usr/bin/id",
-			(char *)(intptr_t)"-nu", NULL});
-	if (!user)
-		return ;
-	ft_strchr(user, '\n')[0] = '\0';
-	ft_strlcpy(user_buf, user, 32);
-	home = extract_home(user);
+	home = extract_home(env_get(&((t_shell *)exp->sh)->env, "UID"));
 	if (!home)
 		return ;
 	exp->len += ft_strlen(home);

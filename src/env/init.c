@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 23:24:23 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 23:30:48 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	env_init_default_values(t_env *env)
 {
 	if (!env_get(env, "PATH"))
 		env_set(env, "PATH", DEFAULT_PATH, ENV_FLAG_EXPORT);
+	// FIXME: get actual UID
+	env_set(env, "UID", "1000", ENV_FLAG_RDONLY | ENV_FLAG_INTEGER);
 }
 
 static inline size_t	scale_1_25_fast(size_t x)
