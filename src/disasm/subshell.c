@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 00:41:34 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:31:40 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/19 23:37:37 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/20 00:45:06 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "disasm/disasm_internal.h"
 #include "vm/bytecode.h"
-#include "vm/vm_internal.h"
 
-void	vm_exec(t_vm *vm, t_program *program)
+void	disasm_subshell(t_program *program, size_t *offset_ptr)
 {
-	t_opcode	op;
-
-	op = program->data[program->pc++];
-	if (op & EXEC_PIPELINE_BIT)
-	{
-		if (pipe(vm->pipe_fd) < 0)
-		{
-			ft_printf("pipe failed: %m\n");
-			return ;
-		}
-	}
-	vm_spawn(vm, program);
-	if (op & EXEC_WAIT_BIT)
-	{
-		vm_wait(vm, program);
-		vm->pids.length = 0;
-	}
-	vm->frame.argc = 0;
+	disasm_print_i32(program, offset_ptr, 1);
+	disasm_print_desc("SUBSHELL");
 }

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:33:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/16 23:58:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/20 00:16:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ typedef void	(*t_exec_handler)(t_vm *vm, t_program *program);
 
 void	vm_dispatch(t_vm *vm, int sig);
 
+void	vm_run_range(t_vm *vm, t_program *program, size_t end);
+
 void	vm_spawn(t_vm *vm, t_program *program);
 void	vm_wait(t_vm *vm, t_program *program);
 
+void	vm_subshell(t_vm *vm, t_program *program);
 void	vm_command(t_vm *vm, t_program *program);
 void	vm_exec(t_vm *vm, t_program *program);
 void	vm_arg(t_vm *vm, t_program *program);
@@ -32,6 +35,7 @@ void	vm_background(t_vm *vm, t_program *program);
 void	vm_redir_out(t_vm *vm, t_program *program);
 void	vm_redir_in(t_vm *vm, t_program *program);
 void	vm_jump(t_vm *vm, t_program *program);
+void	vm_heredoc(t_vm *vm, t_program *program);
 
 void	vm_arg_dummy(t_vm *vm, t_program *program);
 void	vm_redir_dummy(t_vm *vm, t_program *program);

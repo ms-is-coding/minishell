@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:27:49 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/21 23:04:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "shell.h"
 #include "vm/vm_internal.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <unistd.h>
 
 struct s_builtin
@@ -23,30 +24,22 @@ struct s_builtin
 	t_builtin_fn	fn;
 };
 
-static char	*find_exec(char *arg)
+static char	*find_exec(const char *arg, const char *env_path)
 {
-	const char	*paths[] = {
-		"./", "/", "/bin", "/usr/bin", "/usr/local/bin",
-		"/sbin", "/usr/sbin", "/usr/local/sbin", NULL};
-	char		*path;
-	int			i;
+	static char	path[PATH_MAX];
 	size_t		len;
 
-	i = -1;
 	if (!arg)
 		return (NULL);
-	while (paths[++i])
+	while (ft_strchr(env_path, ':'))
 	{
-		len = ft_strlen(paths[i]) + ft_strlen(arg) + 2;
-		path = ft_malloc(len);
-		if (!path)
-			return (NULL);
-		ft_snprintf(path, len, "%s/%s", paths[i], arg);
+		len = ft_strcspn(env_path, ":");
+		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
 		if (access(path, X_OK) == 0)
 			return (path);
-		free(path);
+		env_path += len + 1;
 	}
-	return (NULL);
+	return ((char *)(intptr_t)arg);
 }
 
 static t_builtin_fn	find_builtin(char *arg)
@@ -57,7 +50,7 @@ static t_builtin_fn	find_builtin(char *arg)
 	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
 	{"export", builtin_export}, {"alias", builtin_alias},
 	{"unalias", builtin_unalias}, {"type", builtin_type},
-	{NULL, NULL}};
+	{"unset", builtin_unset}, {"readonly", builtin_readonly}, {NULL, NULL}};
 	int						i;
 
 	i = -1;
@@ -92,6 +85,18 @@ static void	setup_fds(t_vm *vm)
 {
 	int	i;
 
+	/*
+	ft_dprintf(2, "===== FDS =====\n");
+	ft_dprintf(2, "prev_fd: %6i\n", vm->prev_fd);
+	ft_dprintf(2, "pipe[0]: %6i\n", vm->pipe_fd[0]);
+	ft_dprintf(2, "pipe[1]: %6i\n", vm->pipe_fd[1]);
+	i = -1;
+	while (++i < vm->redir_count)
+	{
+		ft_dprintf(2, "[%i].file: %5i\n", i, vm->redirs[i].file_fd);
+		ft_dprintf(2, "[%i].target: %3i\n", i, vm->redirs[i].target_fd);
+	}
+	*/
 	if (vm->prev_fd != STDIN_FILENO)
 		dup2(vm->prev_fd, STDIN_FILENO);
 	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
@@ -138,9 +143,13 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	t_shell			*sh;
 	int				exit_code;
 
+	if (vm->pids.length == 0)
+		vm->exit_codes.length = 0;
 	if (vm->had_error)
 	{
 		vm->had_error = false;
+		ft_vector_push(&vm->exit_codes,
+			ft_gen_val(TYPE_OTHER, (t_any){.i32 = 1}));
 		return ;
 	}
 	(void)program;
@@ -166,9 +175,21 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	builtin = find_builtin(vm->frame.argv[0]);
 	if (builtin && !is_command_in_pipeline(vm))
 	{
+		auto int saved_stdin = dup(STDIN_FILENO);
+		auto int saved_stdout = dup(STDOUT_FILENO);
+		auto int saved_stderr = dup(STDERR_FILENO);
+		setup_fds(vm);
 		exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stderr, STDERR_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
+		close(saved_stderr);
 		ft_vector_push(&vm->exit_codes,
 			ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code}));
+		close_pipes(vm);
+		vm->redir_count = 0;
 		return ;
 	}
 	pid = fork();
@@ -181,7 +202,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			sh_destroy(sh);
 			exit(exit_code);
 		}
-		exec = find_exec(vm->frame.argv[0]);
+		exec = find_exec(vm->frame.argv[0], env_get(&sh->env, "PATH"));
 		if (!exec)
 		{
 			ft_dprintf(2, "command not found: %s\n", vm->frame.argv[0]);
@@ -189,7 +210,8 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			exit(127);
 		}
 		execve(exec, vm->frame.argv, env);
-		free(exec);
+		if (exec != vm->frame.argv[0])
+			free(exec);
 		ft_dprintf(2, "execve failed: %m\n");
 		sh_destroy(sh);
 		exit(1);
