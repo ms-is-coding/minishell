@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 22:46:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 23:24:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 		value = ft_strchr(entry, '=');
 		value[0] = '\0';
 		value++;
-		env_set(env, entry, value, true);
+		env_set(env, entry, value, ENV_FLAG_EXPORT);
 		i++;
 	}
 	env_init_default_values(env);
