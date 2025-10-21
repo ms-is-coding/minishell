@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:26:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:27:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/20 00:45:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,27 @@
 
 # define MAX_CHUNK 0x10000
 
+# define OPCODE_MASK 0x3f
+
+# define REDIR_APPEND_BIT 0x80
+# define REDIR_FD_BIT 0x40
+
+# define JUMP_NEG_BIT 0x80
+
+# define EXEC_PIPELINE_BIT 0x80
+# define EXEC_WAIT_BIT 0x40
+
 typedef enum e_opcode
 {
 	OP_NULL,
+	OP_SUBSHELL,
 	OP_CMD,
 	OP_ARG,
 	OP_EXEC,
 	OP_OUT,
 	OP_IN,
 	OP_JUMP,
+	OP_HEREDOC,
 	OP_COUNT
 }	t_opcode;
 

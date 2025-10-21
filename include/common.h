@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:32:15 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/19 22:38:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,10 @@
 
 # define TRASH_VERSION "0.0.1"
 
-# define OPCODE_MASK 0x3f
-
-# define REDIR_APPEND_BIT 0x80
-# define REDIR_FD_BIT 0x40
-# define JUMP_NEG_BIT 0x80
-# define EXEC_PIPELINE_BIT 0x80
-# define EXEC_WAIT_BIT 0x40
-
 # define MAX_REDIRS 64
 # define MAX_ALIASES 64
+
+# define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/bin"
 
 # define CLI_OPTION_COUNT 8
 

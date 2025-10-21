@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 21:54:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/20 00:26:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	vm_wait(t_vm *vm, t_program *program)
 
 	i = -1;
 	(void)program;
-	vm->exit_codes.length = 0;
 	while (++i < (int)vm->pids.length)
 	{
 		pid = ft_vector_at(&vm->pids, i).value.i32;
@@ -56,4 +55,5 @@ void	vm_wait(t_vm *vm, t_program *program)
 		ft_vector_push(&vm->exit_codes,
 			ft_gen_val(TYPE_OTHER, (t_any){.i32 = code}));
 	}
+	vm->pids.length = 0;
 }
