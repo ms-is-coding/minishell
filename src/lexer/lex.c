@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:02:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 14:45:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:28:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ static t_result	squote_loop(t_lexer *lexer)
 
 t_token	lex_word(t_lexer *lexer)
 {
-	while (true)
+	lexer_back(lexer);
+	while (lexer->next_char && !is_operator(lexer->next_char))
 	{
+		lexer_next(lexer);
 		if (lexer->curr_char == '\\')
 		{
 			if (lexer->next_char == '\0')
 				return (lexer_emit(lexer, TOK_ERROR));
-			lexer_next(lexer);
 			lexer_next(lexer);
 			continue ;
 		}
@@ -56,10 +57,6 @@ t_token	lex_word(t_lexer *lexer)
 		if (lexer->curr_char == '\''
 			&& squote_loop(lexer) != RESULT_OK)
 			return (lexer_emit(lexer, TOK_ERROR));
-		if (is_operator(lexer->next_char)
-			|| lexer->next_char == '\0')
-			break ;
-		lexer_next(lexer);
 	}
 	return (lexer_emit(lexer, TOK_WORD));
 }

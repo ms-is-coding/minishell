@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:33:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 17:00:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:30:41 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ char	lexer_next(t_lexer *lexer)
 	}
 	lexer->next_char = lexer->input[++lexer->i];
 	return (lexer->curr_char);
+}
+
+void	lexer_back(t_lexer *lexer)
+{
+	lexer->next_char = lexer->curr_char;
+	lexer->len--;
+	lexer->col--;
+	if (lexer->i == 0)
+		lexer->curr_char = '\0';
+	else
+		lexer->curr_char = lexer->input[--lexer->i];
 }
 
 bool	lexer_match(t_lexer *lexer, char c)

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:49:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/05 20:32:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:28:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 bool		is_operator(char c);
 
 char		lexer_next(t_lexer *lexer);
+void		lexer_back(t_lexer *lexer);
 bool		lexer_match(t_lexer *lexer, char c);
 t_token		lexer_emit(t_lexer *lexer, t_token_type type);
 
