@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:49:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 00:57:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 22:35:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ t_env_bucket	*env_find_key(t_env *env, const char *key)
 	while (bucket)
 	{
 		bucket = &env->buckets[i];
-		if (!bucket->key && !bucket->is_tombstone)
-			return (NULL);
-		if (ft_strcmp(key, bucket->key) == 0)
+		if (!bucket->key)
+		{
+			if (!bucket->is_tombstone)
+				return (NULL);
+		}
+		// if hashtable is full, this will create an infinite loop
+		else if (ft_strcmp(key, bucket->key) == 0)
 			return (bucket);
 		i = (i + 1) % env->capacity;
 	}

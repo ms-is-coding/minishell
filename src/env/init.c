@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 14:43:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 22:46:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
+#include "common.h"
 #include "libft.h"
 
 static size_t	envp_count(char **envp)
@@ -21,6 +22,12 @@ static size_t	envp_count(char **envp)
 	while (envp[count])
 		count++;
 	return (count);
+}
+
+static void	env_init_default_values(t_env *env)
+{
+	if (!env_get(env, "PATH"))
+		env_set(env, "PATH", DEFAULT_PATH, ENV_FLAG_EXPORT);
 }
 
 static inline size_t	scale_1_25_fast(size_t x)
@@ -50,5 +57,6 @@ t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 		env_set(env, entry, value, true);
 		i++;
 	}
+	env_init_default_values(env);
 	return (RESULT_OK);
 }

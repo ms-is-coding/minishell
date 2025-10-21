@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_internal.h                                     :+:      :+:    :+:   */
+/*   readonly.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/06 00:33:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 22:36:39 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/21 22:38:06 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_INTERNAL_H
-# define ENV_INTERNAL_H
+#include "builtins/builtins.h"
+#include "env/env.h"
 
-# include "env.h"
+int	builtin_readonly(t_shell *sh, int argc, char **argv, char **envp)
+{
+	t_env_bucket	*bucket;
+	int				i;
 
-size_t			env_hash(t_env *env, const char *data);
-t_env_bucket	*env_find_empty(t_env *env, const char *key);
-
-#endif // ENV_INTERNAL_H
+	i = 1;
+	(void)envp;
+	while (i < argc)
+	{
+		bucket = env_find_key(&sh->env, argv[i]);
+		if (!bucket)
+		{
+			// create empty variable
+			i++;
+			continue ;
+		}
+		bucket->flags |= ENV_FLAG_RDONLY;
+		i++;
+	}
+	return (0);
+}

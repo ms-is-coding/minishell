@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/19 15:19:54 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/10/21 22:38:42 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,12 @@ SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
 SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
 					false.c pwd.c true.c env.c export.c alias.c unalias.c \
-					type.c cd_internal.c echo_internal.c export_internal.c)
+					type.c cd_internal.c echo_internal.c export_internal.c \
+					unset.c readonly.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
-					cmd.c exec.c)
+					cmd.c exec.c heredoc.c subshell.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
-					exec.c redir.c jump.c)
+					exec.c redir.c jump.c subshell.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 					build.c)
 SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
@@ -39,14 +40,18 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					arena/destroy.c arena/find.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
 SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
-					char.c dquote.c squote.c)
-# user.c
-# SRC_EXEC		:= exec/exec.c
+					char.c dquote.c squote.c user.c)
+SRC_EXEC		:= exec/exec.c
+SRC_HELP		:= $(addprefix help/, warn.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
-					$(SRC_ENV) $(SRC_ALIAS) $(SRC_EXPANDER) \
+					$(SRC_ENV) $(SRC_ALIAS) $(SRC_EXPANDER) $(SRC_EXEC) \
+					$(SRC_HELP) \
 					main.c
+
+TEST_DIR		:= tests
+TEST_BIN		:= $(TEST_DIR)/runner
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
@@ -67,7 +72,7 @@ LIBFT_DIR		= ./libft
 
 LDFLAGS			:= $(LIBFT_FLAGS) -lreadline
 
-ifeq ($(DEBUG), 1)
+ifeq ($(MODE), debug)
 	CFLAGS += -Og -g3 -DDEBUG \
 			  -Wpedantic -Wpacked -Wstrict-prototypes -Wshadow -Wpadded \
 			  -Wconversion -Wmissing-prototypes -Wmissing-declarations \
@@ -82,8 +87,8 @@ else
 	CFLAGS += -Werror -DNDEBUG
 endif
 
-ifeq ($(RELEASE), 1)
-	CFLAGS += -O3 -DNDEBUG -Werror -march=native
+ifeq ($(MODE), release)
+	CFLAGS += -O2 -D__is_42sh -DNDEBUG -Werror -march=native
 endif
 
 all: $(NAME)
@@ -114,6 +119,22 @@ re: fclean
 	@$(MAKE) all --no-print-directory
 
 -include $(DEPS)
+
+$(TEST_BIN): $(TEST_DIR)/main.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+test: $(TEST_BIN)
+	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+		echo "Usage: make test <suite>"; \
+		echo "Available suites: internal, subject, posix, crazy"; \
+	else \
+		suite=$(filter-out $@,$(MAKECMDGOALS)); \
+		echo "Running test suite: $$suite"; \
+		$(TEST_BIN) $$suite; \
+	fi
+
+%:
+	@:
 
 .PHONY: all clean fclean re bonus
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/13 14:15:00 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/19 22:30:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,15 @@ static bool	had_newline(void)
 	return (true);
 }
 
+static void	reset_prompt(void)
+{
+	struct termios	def;
+
+	tcgetattr(STDIN_FILENO, &def);
+	def.c_lflag |= (ICANON | ECHO);
+	tcsetattr(STDIN_FILENO, TCSANOW, &def);
+}
+
 static int	repl(t_shell *sh)
 {
 	char		*line;
@@ -122,11 +131,12 @@ static int	repl(t_shell *sh)
 			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i " ANSI_RESET
 				ANSI_BOLD ANSI_CYAN " " ANSI_RESET,
 				prompt_buf, color, code);
+		reset_prompt();
 		line = readline(prompt_buf);
 		if (!line)
 			break ;
 		add_history(line);
-		ft_printf(ANSI_RESET); // what the fuck
+		ft_printf(ANSI_RESET);
 		result = parser_parse(&sh->parser, line);
 		if (result == RESULT_OK)
 		{
@@ -152,7 +162,7 @@ static int	command(t_shell *sh, char *command)
 
 	result = parser_parse(&sh->parser, command);
 	if (result != RESULT_OK)
-		return (RESULT_ERROR);
+		return (2);
 	vm_run(&sh->vm, &sh->parser.program);
 	return (ft_vector_at(&sh->vm.exit_codes, -1).value.i32);
 }
@@ -181,11 +191,12 @@ static void	handler(int sig)
 
 	sh = get_shell(0);
 	vm_dispatch(&sh->vm, sig);
-	write(STDOUT_FILENO, "\n", 1);
-	if (sig == SIGINT && !sh->vm.active)
+	if (!sh->vm.active)
 	{
-		rl_on_new_line();
-//		rl_replace_line("", 0);
+		if (sig == SIGINT)
+			rl_replace_line("", 0);
+		rl_clear_visible_line();
+		rl_redraw_prompt_last_line();
 		rl_redisplay();
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:27:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 17:18:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 22:28:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_result	env_set(
 	t_env *env,
 	const char *key,
 	const char *value,
-	bool is_public)
+	t_env_flags flags)
 {
 	t_env_bucket	*bucket;
 	t_env_bucket	*existing;
@@ -28,9 +28,11 @@ t_result	env_set(
 		bucket = existing;
 	else
 		env->count++;
+	if (bucket->flags & ENV_FLAG_RDONLY)
+		return (RESULT_RDONLY);
 	bucket->is_tombstone = 0;
 	bucket->key = key;
 	bucket->value = value;
-	bucket->is_public = is_public;
+	bucket->flags = flags;
 	return (RESULT_OK);
 }
