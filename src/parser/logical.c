@@ -6,11 +6,10 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:20:53 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 00:27:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/21 17:31:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
 #include "libft.h"
 #include "parser/parser.h"
 
@@ -19,6 +18,8 @@ t_result	parse_and(t_parser *p, t_token token)
 	size_t		pos;
 	t_result	result;
 
+	if (p->program.data[p->program.len - 1] == OP_EXEC)
+		p->program.data[p->program.len - 1] |= EXEC_WAIT_BIT;
 	program_write_u8(&p->program, OP_JUMP | JUMP_NEG_BIT);
 	pos = p->program.len;
 	program_write_i32(&p->program, 0);
@@ -32,6 +33,8 @@ t_result	parse_or(t_parser *p, t_token token)
 	size_t		pos;
 	t_result	result;
 
+	if (p->program.data[p->program.len - 1] == OP_EXEC)
+		p->program.data[p->program.len - 1] |= EXEC_WAIT_BIT;
 	program_write_u8(&p->program, OP_JUMP);
 	pos = p->program.len;
 	program_write_i32(&p->program, 0);
