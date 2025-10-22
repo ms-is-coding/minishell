@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_internal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
+/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 18:33:22 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/18 18:33:30 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/22 19:41:21 by macarnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,25 @@ static int	get_escape_hex(const char **s)
 int	get_escape_char(const char **s)
 {
 	if (**s == 'a')
-		return ('\a');
+		return ((*s)++, '\a');
 	else if (**s == 'b')
-		return ('\b');
+		return ((*s)++, '\b');
 	else if (**s == 'c')
-		return (-1);
+		return ((*s)++, -1);
 	else if (**s == 'e')
-		return ('\033');
+		return ((*s)++, '\033');
 	else if (**s == 'f')
-		return ('\f');
+		return ((*s)++, '\f');
 	else if (**s == 'n')
-		return ('\n');
+		return ((*s)++, '\n');
 	else if (**s == 'r')
-		return ('\r');
+		return ((*s)++, '\r');
 	else if (**s == 't')
-		return ('\t');
+		return ((*s)++, '\t');
 	else if (**s == 'v')
-		return ('\v');
+		return ((*s)++, '\v');
 	else if (**s == '\\')
-		return ('\\');
+		return ((*s)++, '\\');
 	else if (**s == '0')
 		return (get_escape_octal(s));
 	else if (**s == 'x')

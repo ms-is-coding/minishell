@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
+/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 22:49:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/22 20:59:05 by macarnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,20 @@
 #include "libft.h"
 #include "libft_printf.h"
 
+static bool get_current_path(t_env *env, char *cwd)
+{
+	const char	*ptr;
+
+	if (!getcwd(cwd, PATH_MAX))
+	{
+		ptr = env_get(env, "PWD");
+		if (!ptr || !*ptr)
+			return (false);
+		ft_strlcpy(cwd, ptr, PATH_MAX);
+	}
+	return (true);
+}
+
 static bool	get_relative_path(char *new, const char *old, const char *path)
 {
 	if (ft_strlen(old) + 1 + ft_strlen(path) + 1 > PATH_MAX)
@@ -30,10 +44,12 @@ static bool	get_relative_path(char *new, const char *old, const char *path)
 	return (true);
 }
 
-static int	resolve_pwd(t_env *env, char *new, const char *old, char **argv)
+static int	resolve_pwd(t_env *env, char *new, char *old, char **argv)
 {
-	const char	*ptr = NULL;
+	const char	*ptr;
 
+	if (!get_current_path(env, old))
+		return (builtin_error(ctx(argv[0], NULL), ERR_PERROR, 1));
 	if (!argv[1])
 	{
 		ptr = env_get(env, "HOME");
@@ -71,14 +87,12 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	(void)argc;
 	if (argv[1] && argv[2])
 		return (builtin_error(ctx(argv[0], NULL), ERR_TOO_MANY_ARGS, 2));
-	if (!getcwd(oldbuf, PATH_MAX))
-		return (builtin_error(ctx(argv[0], NULL), ERR_PERROR, 1));
 	status = resolve_pwd(&sh->env, newbuf, oldbuf, argv);
 	if (status)
 		return (status);
 	normalize_path(newbuf);
 	if (chdir(newbuf) != 0)
-		return (builtin_error(ctx(argv[0], argv[1]), ERR_PERROR, 1));
+		return (builtin_error(ctx(argv[0], newbuf), ERR_PERROR, 1));
 	ft_strlcpy(oldpwd, oldbuf, PATH_MAX);
 	ft_strlcpy(newpwd, newbuf, PATH_MAX);
 	env_set(&sh->env, "OLDPWD", oldpwd, ENV_FLAG_EXPORT);
