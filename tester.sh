@@ -22,6 +22,18 @@ VERBOSE=0
 [[ "$1" == "--verbose" ]] && VERBOSE=1
 
 # ===============================
+# Timeout command check
+# ===============================
+if command -v timeout >/dev/null 2>&1; then
+	TIMEOUT="timeout"
+elif command -v gtimeout >/dev/null 2>&1; then
+	TIMEOUT="gtimeout"
+else
+	echo "Error: timeout or gtimeout not found."
+	exit 1
+fi
+
+# ===============================
 # UI Helpers
 # ===============================
 hr() { echo $BLUE$BOLD$'\n'"━━━━━━━━━━━━━ $1 ━━━━━━━━━━━━━"$RESET; }
@@ -46,7 +58,7 @@ summary() {
 		printf $CYAN"│ "$RESET"Score:%6d%% "$CYAN"│\n"$RESET $PERCENT
 	fi
 	echo $CYAN"╰───────────────╯"$RESET
-	[ $FAILED -eq 0 ] && echo $GREEN$BOLD"\n[PASS] All tests passed"$RESET || echo $RED$BOLD$'\n'"[FAIL] Some tests failed"$RESET
+	[ $FAILED -eq 0 ] && echo $GREEN$BOLD$'\n'"[PASS] All tests passed"$RESET || echo $RED$BOLD$'\n'"[FAIL] Some tests failed"$RESET
 }
 
 # ===============================
@@ -57,9 +69,9 @@ test_cmd() {
 	local cmd="$2"
 	TOTAL=$((TOTAL + 1))
 
-	timeout 3s ./minishell -c "$cmd" 1>/tmp/msh_out 2>/tmp/msh_err
+	$TIMEOUT 3s ./minishell -c "$cmd" 1>/tmp/msh_out 2>/tmp/msh_err
 	local mshexit=$?
-	timeout 3s bash --posix -c "$cmd" 1>/tmp/bash_out 2>/tmp/bash_err
+	$TIMEOUT 3s bash --posix -c "$cmd" 1>/tmp/bash_out 2>/tmp/bash_err
 	local bashexit=$?
 
 	if [ "$mshexit" -ne "$bashexit" ]; then

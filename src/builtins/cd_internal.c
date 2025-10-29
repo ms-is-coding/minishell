@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 13:50:17 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 13:59:45 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/24 15:15:30 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	normalize_path(char *path) //needs to be separated into norminette complian
 	{
 		if (*src == '/')
 		{
-			*dst++ = '/';
+			if (dst == path || *(dst - 1) != '/')
+				*dst++ = '/';
 			while (*src == '/')
 				src++;
 		}
@@ -67,7 +68,7 @@ void	normalize_path(char *path) //needs to be separated into norminette complian
 		dst--;
 	*dst = '\0';
 	if (is_abs && (!path[0] || (path[0] == '.'
-		&& (path[1] == '\0' || (path[1] == '.' && path[2] == '\0')))))
+		&& (path[1] == '\0' || path[1] == '.'))))
 	{
 		path[0] = '/';
 		path[1] = '\0';
