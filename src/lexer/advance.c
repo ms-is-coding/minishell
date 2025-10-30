@@ -6,36 +6,32 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:55:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:42:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
-static t_lex_fn	get_fn(int idx)
-{
-	return ((t_lex_fn[128]){lex_eof, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, lex_error, lex_error, NULL, NULL, lex_error,
-		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, lex_error, lex_error, lex_error, lex_error,
-		lex_error, lex_error, NULL, lex_error, lex_word, lex_comment,
-		lex_dollar, lex_error, lex_amp, lex_word, lex_group, lex_group,
-		lex_word, lex_word, lex_error, lex_word, lex_word, lex_word, lex_number,
-		lex_number, lex_number, lex_number, lex_number, lex_number, lex_number,
-		lex_number, lex_number, lex_number, lex_word, lex_delim, lex_redir_in,
-		lex_word, lex_redir_out, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_error, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_word, lex_word, lex_word,
-		lex_word, lex_word, lex_word, lex_error, lex_pipe, lex_error,
-		lex_word, lex_error}[idx]);
-}
+#define LEX_NIL NULL
+
+static t_lex_fn	g_lex_fns[128] = {
+	lex_eof, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err,
+	lex_err, LEX_NIL, LEX_NIL, lex_err, lex_err, lex_err, lex_err, lex_err,
+	lex_err, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err,
+	lex_err, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err, lex_err,
+	LEX_NIL, lex_err, lex_wrd, lex_cmt, lex_dlr, lex_err, lex_amp, lex_wrd,
+	lex_grp, lex_grp, lex_wrd, lex_wrd, lex_err, lex_wrd, lex_wrd, lex_wrd,
+	lex_nbr, lex_nbr, lex_nbr, lex_nbr, lex_nbr, lex_nbr, lex_nbr, lex_nbr,
+	lex_nbr, lex_nbr, lex_wrd, lex_dlm, lex_rin, lex_wrd, lex_out, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_err, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd, lex_wrd,
+	lex_wrd, lex_wrd, lex_wrd, lex_err, lex_pip, lex_err, lex_wrd, lex_err
+};
 
 t_token	lexer_advance(t_lexer *lexer)
 {
@@ -52,7 +48,7 @@ t_token	lexer_advance(t_lexer *lexer)
 		c = lexer_next(lexer);
 		if ((unsigned char)c > (unsigned char)0x7f)
 			return (lexer_emit(lexer, TOK_ERROR));
-		fn = get_fn(c);
+		fn = g_lex_fns[(int)c];
 		if (fn)
 			return (fn(lexer));
 	}

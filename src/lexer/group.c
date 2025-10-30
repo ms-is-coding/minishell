@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:36:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 12:26:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:42:54 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define UNREACHABLE TOK_ERROR
 
-t_token	lex_group(t_lexer *lexer)
+t_token	lex_grp(t_lexer *lexer)
 {
 	if (lexer->curr_char == '(')
 		return (lexer_emit(lexer, TOK_PAREN_OPEN));

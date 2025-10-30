@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:49:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 15:28:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:56:11 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ typedef t_token	(*t_lex_fn)(t_lexer *lexer);
 
 // Lexing functions
 
-t_token		lex_error(t_lexer *lexer);
+t_token		lex_err(t_lexer *lexer);
 t_token		lex_eof(t_lexer *lexer);
-t_token		lex_comment(t_lexer *lexer);
-t_token		lex_word(t_lexer *lexer);
-t_token		lex_number(t_lexer *lexer);
-t_token		lex_delim(t_lexer *lexer);
-t_token		lex_redir_out(t_lexer *lexer);
-t_token		lex_redir_in(t_lexer *lexer);
-t_token		lex_squote(t_lexer *lexer);
-t_token		lex_dquote(t_lexer *lexer);
-t_token		lex_group(t_lexer *lexer);
+t_token		lex_cmt(t_lexer *lexer);
+t_token		lex_wrd(t_lexer *lexer);
+t_token		lex_nbr(t_lexer *lexer);
+t_token		lex_dlm(t_lexer *lexer);
+t_token		lex_out(t_lexer *lexer);
+t_token		lex_rin(t_lexer *lexer);
+t_token		lex_sqt(t_lexer *lexer);
+t_token		lex_dqt(t_lexer *lexer);
+t_token		lex_grp(t_lexer *lexer);
 t_token		lex_amp(t_lexer *lexer);
-t_token		lex_pipe(t_lexer *lexer);
-t_token		lex_dollar(t_lexer *lexer);
+t_token		lex_pip(t_lexer *lexer);
+t_token		lex_dlr(t_lexer *lexer);
 
 #endif // LEXER_INTERNAL_H

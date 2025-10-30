@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:34:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 17:29:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:44:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
-t_token	lex_redir_in(t_lexer *lexer)
+t_token	lex_rin(t_lexer *lexer)
 {
 	if (lexer_match(lexer, '>'))
 		return (lexer_emit(lexer, TOK_REDIR_BOTH));
@@ -27,7 +27,7 @@ t_token	lex_redir_in(t_lexer *lexer)
 	return (lexer_emit(lexer, TOK_REDIR_IN));
 }
 
-t_token	lex_redir_out(t_lexer *lexer)
+t_token	lex_out(t_lexer *lexer)
 {
 	if (lexer_match(lexer, '>'))
 		return (lexer_emit(lexer, TOK_REDIR_APPEND));
