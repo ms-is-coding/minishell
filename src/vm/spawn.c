@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 23:04:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 20:09:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static t_builtin_fn	find_builtin(char *arg)
 	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
 	{"export", builtin_export}, {"alias", builtin_alias},
 	{"unalias", builtin_unalias}, {"type", builtin_type},
-	{"unset", builtin_unset}, {"readonly", builtin_readonly}, {NULL, NULL}};
+	{"unset", builtin_unset}, {"readonly", builtin_readonly},
+	{"return", builtin_return}, {NULL, NULL}};
 	int						i;
 
 	i = -1;
@@ -210,7 +211,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			exit(127);
 		}
 		execve(exec, vm->frame.argv, env);
-		if (exec != vm->frame.argv[0])
+		if (exec && exec != vm->frame.argv[0])
 			free(exec);
 		ft_dprintf(2, "execve failed: %m\n");
 		sh_destroy(sh);

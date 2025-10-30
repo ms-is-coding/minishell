@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 22:43:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 19:55:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 21:27:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ void	vm_subshell(t_vm *vm, t_program *program)
 	ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
 	reset_fds(vm);
 	program->pc = end_pc;
-	if (!is_command_in_pipeline(vm))
+	if (!is_command_in_pipeline(vm))
 		vm_wait(vm, program);
 }
