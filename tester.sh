@@ -36,7 +36,7 @@ fi
 # ===============================
 # UI Helpers
 # ===============================
-hr() { echo $BLUE$BOLD$'\n'"━━━━━━━━━━━━━ $1 ━━━━━━━━━━━━━"$RESET; }
+hr() { echo $BLUE$BOLD\n"━━━━━━━━━━━━━ $1 ━━━━━━━━━━━━━"$RESET; }
 
 print_header() {
 	echo $CYAN"╭──────────────────────╮"$RESET
@@ -120,7 +120,7 @@ run_tests() {
 	test_cmd "builtin exit with code" "exit 42"
 	test_cmd "single redirection input" "echo foo > /tmp/mshell_out && cat < /tmp/mshell_out"
 	test_cmd "single redirection output append" "echo a > /tmp/mshell_app && echo b >> /tmp/mshell_app && cat /tmp/mshell_app"
-	test_cmd "here-doc simple" "cat <<EOF\nline1\nline2\nEOF"
+	test_cmd "here-doc simple" "cat <<EOF"$'\n'"line1"$'\n'"line2"$'\n'"EOF"
 	test_cmd "pipe single" "echo hi | tr H h"
 	test_cmd "pipe multiple" "echo a b c | wc -w"
 	test_cmd "variable expansion simple" "export X=123 && echo \$X"
