@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/21 22:42:08 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:26:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
 	{
-		help_warn(HELP_EXPORT_NOARG);
+		if (!(flags & FLAG_P))
+			help_warn(HELP_EXPORT_NOARG);
 		return (print_exported(&sh->env), 0);
 	}
 	status = 0;

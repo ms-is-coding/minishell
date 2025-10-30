@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/24 11:49:57 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 09:36:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
 	if (argc == 2 && (errno == ERANGE
 		|| argv[1][ft_strspn(argv[1], "0123456789")] != '\0'))
 		return (builtin_error(ctx(argv[0], argv[1]), ERR_NOT_NUMERIC, 2));
-	
-
 	if (1) // need a check for interactive mode
-		write(1, "exit\n", 5);
+		write(2, "exit\n", 5);
 	exit(exit_code);
 	return (exit_code);
 }

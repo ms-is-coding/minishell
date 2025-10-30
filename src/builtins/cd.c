@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/24 15:17:08 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 09:36:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static bool	get_relative_path(char *new, const char *old, const char *path)
 
 static int	resolve_pwd(t_env *env, char *new, char *old, char **argv)
 {
-	const char	*ptr;
+	const char	*ptr = NULL;
 
 	if (!get_current_path(env, old))
 		return (builtin_error(ctx(argv[0], NULL), ERR_PERROR, 1));
