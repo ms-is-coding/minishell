@@ -6,10 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 23:36:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 19:40:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expander/expander.h"
 #include "expander/expander_internal.h"
 #include "exec/exec.h"
 #include "help/help.h"
@@ -59,7 +60,8 @@ static const char	*extract_home(const char *user)
 	return (str);
 }
 
-static void	get_user_home(t_expander *exp, const char *user, bool dry_run)
+static void	get_user_home(t_expander *exp, const char *user,
+				t_var_expansion_mode mode)
 {
 	const char	*home;
 
@@ -67,17 +69,17 @@ static void	get_user_home(t_expander *exp, const char *user, bool dry_run)
 	if (!home)
 	{
 		exp->len += 1 + ft_strlen(user);
-		if (!dry_run)
+		if (mode == VEXPM_EXTRACT)
 			ft_sprintf(exp->frame->argv[exp->frame->argc], "%s~%s",
 				exp->frame->argv[exp->frame->argc], user);
 		return ;
 	}
 	exp->len += ft_strlen(home);
-	if (!dry_run)
+	if (mode == VEXPM_EXTRACT)
 		ft_strcat(exp->frame->argv[exp->frame->argc], home);
 }
 
-static void	get_self_home(t_expander *exp, bool dry_run)
+static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)
 {
 	const char	*home;
 
@@ -86,12 +88,12 @@ static void	get_self_home(t_expander *exp, bool dry_run)
 	if (!home)
 		return ;
 	exp->len += ft_strlen(home);
-	if (!dry_run)
+	if (mode == VEXPM_EXTRACT)
 		ft_strcat(exp->frame->argv[exp->frame->argc], home);
 	env_set(&((t_shell *)exp->sh)->env, "HOME", home, ENV_FLAG_EXPORT);
 }
 
-void	expander_user(t_expander *exp, bool dry_run)
+void	expander_user(t_expander *exp, t_var_expansion_mode mode)
 {
 	t_shell		*sh;
 	const char	*home;
@@ -102,13 +104,13 @@ void	expander_user(t_expander *exp, bool dry_run)
 	user = extract_user(exp);
 	home = env_get(&sh->env, "HOME");
 	if (user)
-		get_user_home(exp, user, dry_run);
+		get_user_home(exp, user, mode);
 	else if (!home)
-		get_self_home(exp, dry_run);
+		get_self_home(exp, mode);
 	else
 	{
 		exp->len += ft_strlen(home);
-		if (!dry_run)
+		if (mode == VEXPM_EXTRACT)
 			ft_strcat(exp->frame->argv[exp->frame->argc], home);
 	}
 }
