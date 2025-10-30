@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:10:56 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 17:58:36 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 08:38:34 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static t_result	parse_command(t_parser *p, t_token t)
 	while (p->curr_token.type == TOK_WORD
 		|| p->curr_token.type == TOK_REDIR_OUT
 		|| p->curr_token.type == TOK_REDIR_APPEND
+		|| p->curr_token.type == TOK_REDIR_HEREDOC
 		|| p->curr_token.type == TOK_REDIR_IN)
 		if (parser_parse_expr(p, PREC_REDIR) != RESULT_OK)
 			return (RESULT_ERROR);

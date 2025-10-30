@@ -6,13 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:47:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:07:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 08:25:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "disasm/disasm_internal.h"
 #include "disasm/disasm.h"
-#include "common.h"
 #include "ansi.h"
 #include "vm/bytecode.h"
 #include <stddef.h>
@@ -31,6 +30,7 @@ static t_disassembler	disasm_opcode(t_opcode opcode)
 		[OP_OUT] = disasm_out,
 		[OP_IN] = disasm_in,
 		[OP_JUMP] = disasm_jump,
+		[OP_HEREDOC] = disasm_heredoc,
 	}[opcode]);
 }
 

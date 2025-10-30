@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:05:07 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 23:37:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 08:25:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ void		disasm_exec(t_program *program, size_t *offset_ptr);
 void		disasm_out(t_program *program, size_t *offset_ptr);
 void		disasm_in(t_program *program, size_t *offset_ptr);
 void		disasm_jump(t_program *program, size_t *offset_ptr);
+void		disasm_heredoc(t_program *program, size_t *offset_ptr);
 
 #endif // DISASM_INTERNAL_H

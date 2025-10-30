@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:08:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 18:56:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:20:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ t_parse_rule	parser_get_rule(t_token_type type)
 		[TOK_REDIR_APPEND] = {PREC_REDIR, {0}, parse_r_out, parse_r_out},
 		[TOK_REDIR_IN] = {PREC_REDIR, {0}, parse_r_in, parse_r_in},
 		[TOK_REDIR_BOTH] = {PREC_REDIR, {0}, parse_r_in, parse_r_in},
+		[TOK_REDIR_HEREDOC] = {PREC_REDIR, {0}, parse_heredoc, parse_heredoc},
 	}[type]);
 }

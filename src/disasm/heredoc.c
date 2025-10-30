@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   help.h                                             :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/20 17:05:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:50:01 by smamalig         ###   ########.fr       */
+/*   Created: 2025/10/30 08:15:08 by smamalig          #+#    #+#             */
+/*   Updated: 2025/10/30 08:26:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HELP_H
-# define HELP_H
+#include "disasm/disasm_internal.h"
 
-typedef enum e_help_code
-{
-	HELP_HOME_EXPAND,
-	HELP_EXPORT_NOARG,
-	HELP_HEREDOC_EOF,
-	HELP_COUNT
-}	t_help_code;
+void	disasm_heredoc(t_program *program, size_t *offset_ptr)
 
-void	help_warn(t_help_code);
+{	
+	uint16_t	len;
 
-#endif // HELP_H
+	disasm_print_i32(program, offset_ptr, 1);
+	len = disasm_print_u16(program, offset_ptr, 1);
+	disasm_print_str(program, offset_ptr, len, 7);
+	disasm_print_desc("HERE-DOC");
+}

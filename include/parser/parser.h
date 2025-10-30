@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 14:45:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:23:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_result		parse_or(t_parser *p, t_token t);
 t_result		parse_semi(t_parser *p, t_token t);
 t_result		parse_r_out(t_parser *p, t_token t);
 t_result		parse_r_in(t_parser *p, t_token t);
+t_result		parse_heredoc(t_parser *p, t_token t);
 
 void			parser_advance(t_parser *p);
 t_result		parser_consume(t_parser *p, t_token_type type, const char *err);
