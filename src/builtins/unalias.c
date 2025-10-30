@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:16:58 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 15:16:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 16:50:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	builtin_unalias(t_shell *sh, int argc, char **argv, char **envp)
 	while (*argv)
 	{
 		if (alias_remove(&sh->alias, *argv) != RESULT_OK)
-			status = builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 1);
+			status = builtin_error(ctx(alias, *argv), ERR_404, 1);
 		argv++;
 	}
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/19 15:17:20 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 16:50:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 			if (value && alias_set(&sh->alias, key, value) != RESULT_OK)
 				status = builtin_error(ctx(alias, key), ERR_BAD_SET, 1);
 			if (!value && alias_print(&sh->alias, key) != RESULT_OK)
-				status = builtin_error(ctx(alias, key), ERR_NOT_FOUND, 1);
+				status = builtin_error(ctx(alias, key), ERR_404, 1);
 		}
 		argv++;
 	}

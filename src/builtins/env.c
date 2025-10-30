@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:18:19 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 17:18:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	is_existing_var(char **envp, const char *assignment)
 	while (assignment[len] && assignment[len] != '=')
 		len++;
 	i = 0;
-	while (envp && envp[i])
+	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], assignment, len) == 0
 			&& (envp[i][len] == '=' || envp[i][len] == '\0'))
@@ -125,6 +125,7 @@ int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 	(void)sh;
 	(void)argc;
 	alias = argv[0];
+	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 125));
@@ -139,6 +140,8 @@ int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 		i++;
 	}
 	envp_copy = malloc(sizeof(char *) * (count + 1)); //sanity check ?
+	if (!envp_copy)
+		return (125);
 	i = 0;
 	if (!(flags & FLAG_I) && envp)
 	{
@@ -148,6 +151,7 @@ int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 			i++;
 		}
 	}
+		envp_copy[i] = NULL;
 	while (argv && *argv && is_valid_assignment(*argv))
 	{
 		exist = is_existing_var(envp_copy, *argv);
@@ -155,9 +159,9 @@ int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 			envp_copy[i++] = *argv;
 		else
 			envp_copy[exist] = *argv;
+		envp_copy[i] = NULL;
 		argv++;
 	}
-	envp_copy[i] = NULL;
 	if (!*argv)
 	{
 		print_env(envp_copy);
@@ -169,7 +173,7 @@ int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
 			return (builtin_error(ctx(alias, *argv), ERR_FILE_EXISTS, 126));
 		execve(*argv, argv, envp_copy);
 		free(envp_copy);
-		return (builtin_error(ctx(alias, *argv), ERR_NOT_FOUND, 127)); // correct error msg ? how to 126 ?
+		return (builtin_error(ctx(alias, *argv), ERR_NO_FILE, 127)); // correct error msg ? how to 126 ?
 
 	}
 	return (0);

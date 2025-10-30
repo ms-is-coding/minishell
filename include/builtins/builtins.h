@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 19:28:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:49:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ typedef enum e_error
 	ERR_BAD_RM,
 	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
-	ERR_NOT_FOUND,
+	ERR_404,
+	ERR_NO_FILE,
 	ERR_NO_PERM,
 	ERR_PERROR,
 	ERR_UNKNOWN,
+	ERR_FILE_EXISTS,
 	ERR_COUNT
 }	t_error;
 
