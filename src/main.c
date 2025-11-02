@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/24 11:02:18 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/01 11:12:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <strings.h>
 #include <sys/types.h>
 #include <termios.h>
-#include <time.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <readline/readline.h>
@@ -31,6 +30,7 @@
 
 #include "allocator/allocator.h"
 #include "env/env.h"
+#include "help/help.h"
 #include "parser/parser.h"
 #include "disasm/disasm.h"
 #include "cli/cli.h"
@@ -116,19 +116,19 @@ static int	repl(t_shell *sh)
 		{
 			code = ft_vector_at(&sh->vm.exit_codes, i).value.i32;
 			if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
-				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s ",
+				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s |",
 					prompt_buf, color, kill_signals(code - 128));
 			else
-				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i ",
+				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i |",
 					prompt_buf, color, code);
 		}
 		code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;
 		if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
-			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s " ANSI_RESET
+			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s $" ANSI_RESET
 				ANSI_BOLD ANSI_CYAN " " ANSI_RESET,
 				prompt_buf, color, kill_signals(code - 128));
 		else
-			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i " ANSI_RESET
+			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i $" ANSI_RESET
 				ANSI_BOLD ANSI_CYAN " " ANSI_RESET,
 				prompt_buf, color, code);
 		reset_prompt();
@@ -194,9 +194,9 @@ static void	handler(int sig)
 	if (!sh->vm.active)
 	{
 		if (sig == SIGINT)
-			//rl_replace_line("", 0);
-		//rl_clear_visible_line();
-		//rl_redraw_prompt_last_line();
+			rl_replace_line("", 0);
+		rl_clear_visible_line();
+		rl_redraw_prompt_last_line();
 		rl_redisplay();
 	}
 }
@@ -205,11 +205,6 @@ static void	signal_init(void)
 {
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
-}
-
-static void	print_version(void)
-{
-	ft_printf("trash, version " TRASH_VERSION "\n");
 }
 
 static void	test(t_shell *sh)
@@ -222,7 +217,7 @@ static void	test(t_shell *sh)
 	for (int i = 0; i < sh->cli.pos_i; i++)
 	{
 		filename = sh->cli.positional[i];
-		ft_printf("==> FILE %s <==\n", filename);
+		// ft_printf("==> FILE %s <==\n", filename);
 		fd = open(filename, O_RDONLY);
 		if (fd == -1)
 		{
@@ -267,6 +262,8 @@ int	main(int argc, char **argv, char **envp)
 		sh_destroy(&sh);
 		return (2);
 	}
+	rl_outstream = stderr;
+	rl_instream = stdin;
 	sh.vm.shell = &sh;
 	sh.vm.allocator = &sh.allocator;
 	if (cli_is_set(&sh.cli, "login"))
@@ -275,12 +272,11 @@ int	main(int argc, char **argv, char **envp)
 		exit_code = command(&sh, cli_get_short(&sh.cli, 'c'));
 	else if (cli_is_set(&sh.cli, "version"))
 	{
-		print_version();
+		help_version();
 		exit_code = 0;
 	}
 	else if (sh.cli.pos_i > 0)
 	{
-		ft_printf("script\n");
 		test(&sh);
 		sh_destroy(&sh);
 		exit(0);

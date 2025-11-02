@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:20:15 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/24 15:22:18 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/10/30 21:33:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	print_exported(t_env *env)
 	i = -1lu;
 	while (++i < env->capacity)
 	{
+		if (!(env->buckets[i].flags & ENV_FLAG_EXPORT))
+			continue ;
 		if (env->buckets[i].key && env->buckets[i].value)
 			ft_printf("export %s=\"%s\"\n",
 				env->buckets[i].key, env->buckets[i].value);

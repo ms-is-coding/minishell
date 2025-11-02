@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:49:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/02 12:59:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,11 @@ int			builtin_exec(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_exit(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_export(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_false(t_shell *sh, int argc, char **argv, char **envp);
+int			builtin_logout(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_pwd(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_readonly(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_return(t_shell *sh, int argc, char **argv, char **envp);
+int			builtin_set(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_true(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_type(t_shell *sh, int argc, char **argv, char **envp);
 int			builtin_unalias(t_shell *sh, int argc, char **argv, char **envp);

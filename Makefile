@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/10/30 09:22:10 by smamalig         ###   ########.fr        #
+#    Updated: 2025/11/02 12:59:22 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,10 +49,10 @@ SRC_LEXER		:= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
 SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
 					expr.c logical.c list.c group.c redir.c)
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
-SRC_BUILTINS 	:= $(addprefix builtins/, error.c cd.c echo.c exec.c exit.c \
-					false.c pwd.c true.c env.c export.c alias.c unalias.c \
-					type.c cd_internal.c echo_internal.c export_internal.c \
-					unset.c readonly.c return.c)
+SRC_BUILTINS 	:= $(addprefix builtins/, alias.c cd.c echo.c env.c error.c \
+					exec.c exit.c export.c false.c logout.c pwd.c readonly.c \
+					return.c set.c true.c type.c unalias.c unset.c \
+					cd_internal.c echo_internal.c export_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 					cmd.c exec.c heredoc.c subshell.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
@@ -68,7 +68,7 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
 					char.c dquote.c squote.c user.c)
 SRC_EXEC		:= exec/exec.c
-SRC_HELP		:= $(addprefix help/, warn.c)
+SRC_HELP		:= $(addprefix help/, warn.c version.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
