@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 20:09:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/02 13:14:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <unistd.h>
-
-struct s_builtin
-{
-	const char		*cmd;
-	t_builtin_fn	fn;
-};
 
 static char	*find_exec(const char *arg, const char *env_path)
 {
@@ -35,30 +29,9 @@ static char	*find_exec(const char *arg, const char *env_path)
 	{
 		len = ft_strcspn(env_path, ":");
 		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
-		if (access(path, X_OK) == 0)
+		if (access(path, F_OK) == 0)
 			return (path);
 		env_path += len + 1;
-	}
-	return ((char *)(intptr_t)arg);
-}
-
-static t_builtin_fn	find_builtin(char *arg)
-{
-	static struct s_builtin	builtins[] = {
-	{"cd", builtin_cd}, {"echo", builtin_echo}, {"exec", builtin_exec},
-	{"exit", builtin_exit}, {"false", builtin_false}, {"true", builtin_true},
-	{":", builtin_true}, {"pwd", builtin_pwd}, {"env", builtin_env},
-	{"export", builtin_export}, {"alias", builtin_alias},
-	{"unalias", builtin_unalias}, {"type", builtin_type},
-	{"unset", builtin_unset}, {"readonly", builtin_readonly},
-	{"return", builtin_return}, {NULL, NULL}};
-	int						i;
-
-	i = -1;
-	while (builtins[++i].fn)
-	{
-		if (ft_strcmp(builtins[i].cmd, arg) == 0)
-			return (builtins[i].fn);
 	}
 	return (NULL);
 }
@@ -173,7 +146,7 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	}
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
-	builtin = find_builtin(vm->frame.argv[0]);
+	builtin = _builtin_find(vm->frame.argv[0]);
 	if (builtin && !is_command_in_pipeline(vm))
 	{
 		auto int saved_stdin = dup(STDIN_FILENO);
@@ -203,6 +176,14 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			sh_destroy(sh);
 			exit(exit_code);
 		}
+		if (ft_strchr(vm->frame.argv[0], '/'))
+		{
+			if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
+				ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
+			execve(vm->frame.argv[0], vm->frame.argv, env);
+			ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
+			exit(126);
+		}
 		exec = find_exec(vm->frame.argv[0], env_get(&sh->env, "PATH"));
 		if (!exec)
 		{
@@ -211,11 +192,9 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			exit(127);
 		}
 		execve(exec, vm->frame.argv, env);
-		if (exec && exec != vm->frame.argv[0])
-			free(exec);
-		ft_dprintf(2, "execve failed: %m\n");
+		ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
 		sh_destroy(sh);
-		exit(1);
+		exit(126);
 	}
 	else if (pid < 0)
 		ft_dprintf(2, "fork failed: %m\n");
