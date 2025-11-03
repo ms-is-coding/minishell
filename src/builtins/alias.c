@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:45:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/30 16:50:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/31 13:42:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	builtin_alias(t_shell *sh, int argc, char **argv, char **envp)
 	char	*value;
 	int		status;
 
-	(void)argc;
 	(void)envp;
 	alias = *(argv++);
 	if (set_flags(&argc, &argv) & FLAG_ERR)

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/23 12:26:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:53:02 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,44 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
+static int	set_export(t_env *env, const char *arg, char flags)
+{
+	char	*key;
+	char	*value;
+	char	*eq;
+
+	if (!is_valid_var(arg))
+		return (builtin_error(ctx("export", arg), ERR_INVALID_ID, 1));
+	eq = ft_strchr(arg, '=');
+	if (eq)
+	{
+		*eq = '\0';
+		value = ft_strdup(eq + 1);
+	}
+	else
+		value = NULL;
+	key = ft_strdup(arg);
+	if (flags & FLAG_N)
+	{
+		if (env_set(env, key, value, 0) != RESULT_OK)
+			return (builtin_error(ctx("export", arg), ERR_BAD_SET, 1));
+	}
+	else if (env_set(env, key, value, ENV_FLAG_EXPORT) != RESULT_OK)
+		return (builtin_error(ctx("export", arg), ERR_BAD_SET, 1));
+	return (0);
+}
+
 // When no arguments are given, the results are unspecified.
 int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 {
 	char	flags;
-	char	*alias;
-	char	*key;
-	char	*value;
 	int		status;
 
-	(void)argc;
 	(void)envp;
-	alias = argv[0];
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
-		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 2));
+		return (builtin_error(ctx("export", *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
 	{
 		if (!(flags & FLAG_P))
@@ -106,17 +128,8 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	status = 0;
 	while (*argv)
 	{
-		if (!is_valid_var(*argv))
-			status = builtin_error(ctx(alias, *argv), ERR_INVALID_ID, 1);
-		else
-		{
-			separate_export(*argv, &key, &value);
-			if (flags & FLAG_N
-				&& env_set(&sh->env, key, value, 0) != RESULT_OK)
-				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
-			else if (env_set(&sh->env, key, value, ENV_FLAG_EXPORT) != RESULT_OK)
-				status = builtin_error(ctx(alias, *argv), ERR_BAD_SET, 1);
-		}
+		if (set_export(&sh->env, *argv, flags) != 0)
+			status = 1;
 		argv++;
 	}
 	return (status);

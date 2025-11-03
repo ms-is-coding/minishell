@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/02 12:59:22 by smamalig         ###   ########.fr        #
+#    Updated: 2025/11/03 14:27:15 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ CFLAGS_DEBUG	:= -Og -g3 -Wshadow -Wpadded -Wconversion -Wstrict-prototypes \
 					-Wuninitialized -Wdouble-promotion -Wfloat-equal -Wvla \
 					-Wnull-dereference -Wformat=2 -fstack-protector-strong
 CFLAGS_RELEASE	:= -O2 -DNDEBUG -march=native -D__is_42sh
-CFLAGS_SANITIZE	:= -fsanitize=address,undefined,leak
+CFLAGS_SANITIZE	:= -fsanitize=address,undefined
 
 
 ifeq ($(MODE), release)
@@ -52,7 +52,8 @@ SRC_BYTECODE	= bytecode/write.c bytecode/get.c
 SRC_BUILTINS 	:= $(addprefix builtins/, alias.c cd.c echo.c env.c error.c \
 					exec.c exit.c export.c false.c logout.c pwd.c readonly.c \
 					return.c set.c true.c type.c unalias.c unset.c \
-					cd_internal.c echo_internal.c export_internal.c)
+					cd_internal.c echo_internal.c env_internal.h \
+					export_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 					cmd.c exec.c heredoc.c subshell.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \

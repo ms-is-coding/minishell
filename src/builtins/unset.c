@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/21 22:42:15 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:34:01 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <stdbool.h>
 
+//needs tweaking
 int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
 {
 	int			status;
@@ -27,10 +28,7 @@ int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
 	{
 		result = env_remove(&sh->env, *argv);
 		if (result == RESULT_RDONLY)
-		{
-			ft_dprintf(2, "unset: %s: cannot unset: readonly variable\n", *argv);
-			status = 1;
-		}
+			status = builtin_error(ctx("unset", *argv), ERR_READONLY_UNSET, 1);
 		argv++;
 	}
 	return (status);

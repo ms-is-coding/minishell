@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readonly.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 09:32:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/03 12:06:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
+static int	separate_export(const char *arg, char **key, char **value)
+{
+	char	*eq;
+
+	if (!is_valid_var(arg))
+		return (builtin_error(ctx("readonly", arg), ERR_INVALID_ID, 1));
+	eq = ft_strchr(arg, '=');
+	if (eq)
+	{
+		*eq = '\0';
+		*value = ft_strdup(eq + 1);
+	}
+	else
+		value = NULL;
+	*key = ft_strdup(arg);
+	return (0);
+}
+
 int	builtin_readonly(t_shell *sh, int argc, char **argv, char **envp)
 {
 	t_env_bucket	*bucket;
@@ -43,22 +61,14 @@ int	builtin_readonly(t_shell *sh, int argc, char **argv, char **envp)
 	{
 		bucket = env_find_key(&sh->env, argv[i]);
 		if (bucket)
-		{
 			bucket->flags |= ENV_FLAG_RDONLY;
-		}
 		else
 		{
-			if (!is_valid_var(argv[i]))
-				status = builtin_error(ctx(argv[0], argv[i]), ERR_INVALID_ID, 1);
-			else
-			{
-				separate_export(argv[i], &key, &value);
-				if (env_set(&sh->env, key, value, ENV_FLAG_RDONLY) != RESULT_OK)
-					status = builtin_error(ctx(argv[0], argv[i]), ERR_BAD_SET, 1);
-			}
+			separate_export(argv[i], &key, &value);
+			if (env_set(&sh->env, key, value, ENV_FLAG_RDONLY) != RESULT_OK)
+				status = builtin_error(ctx("readonly", argv[i]), ERR_BAD_SET, 1);
 		}
 		i++;
-
 	}
 	return (status);
 }

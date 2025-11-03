@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/10/30 16:49:25 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/03 12:05:26 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static const char	*get_error_info(t_error err)
 	[ERR_NO_HOME] = ": HOME not found",
 	[ERR_NO_OLDPWD] = ": OLDPWD not found",
 	[ERR_BAD_SET] = ": could not set variable",
+	[ERR_READONLY_UNSET] = ": cannot unset: readonly variable",
 	[ERR_BAD_RM] = ": could not remove variable",
 	[ERR_TOO_LONG] = ": path too long",
 	[ERR_NOT_NUMERIC] = ": numeric argument required",

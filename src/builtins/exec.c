@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:49:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/10/30 18:25:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,18 @@ int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 	if (ft_strchr(argv[1], '/'))
 	{
 		if (access(argv[1], F_OK) == -1)
-			builtin_error(ctx(argv[0], argv[1]), ERR_404, 127);
+			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
 		else if (access(argv[1], X_OK) == -1
 			|| execve(argv[1], argv + 1, envp) == -1)
-			builtin_error(ctx(argv[0], argv[1]), ERR_NO_PERM, 126);
+			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
 	}
 	else
 	{
 		path = find_cmd_path(argv[1], envp);
 		if (!path)
-			builtin_error(ctx(argv[0], argv[1]), ERR_404, 127);
+			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
 		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
-			builtin_error(ctx(argv[0], argv[1]), ERR_NO_PERM, 126);
+			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
 		free(path);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 17:18:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/03 14:06:15 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 #include "builtins/builtins.h"
+#include "builtins/env_internal.h"
 #include "libft.h"
 
 #define FLAG_I		1
@@ -65,116 +66,70 @@ static char	set_flags(int *argc, char ***argv)
 	return (flags);
 }
 
-static bool	is_valid_assignment(const char *str)
+static int	build_env_copy(char **copy, char **envp, char ***argv, char flags)
 {
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (false);
-	str++;
-	while (*str && *str != '=')
-	{
-		if (!ft_isalnum(*str) && *str != '_')
-			return (false);
-		str++;
-	}
-	if (*str == '=')
-		return (true);
-	return (false);
-}
-
-static int	is_existing_var(char **envp, const char *assignment)
-{
+	size_t	parsed;
 	size_t	i;
-	size_t	len;
-
-	len = 0;
-	while (assignment[len] && assignment[len] != '=')
-		len++;
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], assignment, len) == 0
-			&& (envp[i][len] == '=' || envp[i][len] == '\0'))
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-static void	print_env(char **envp)
-{
-	size_t	len;
-
-	while (*envp)
-	{
-		len = ft_strlen(*envp);
-		(*envp)[len] = '\n';
-		write(1, *envp, len + 1);
-		envp++;
-	}
-}
-
-int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
-{
-	char	**envp_copy;
-	size_t	count;
-	size_t	i;
-	char	flags;
-	char	*alias;
 	int		exist;
 
-	(void)sh;
-	(void)argc;
-	alias = argv[0];
-	argv++;
-	flags = set_flags(&argc, &argv);
-	if (flags & FLAG_ERR)
-		return (builtin_error(ctx(alias, *argv), ERR_INVALID_OPT, 125));
-	count = 0;
-	if (!(flags & FLAG_I) && envp)
-		while (envp[count++]);
-	i = 0;
-	while (argv[i] && is_valid_assignment(argv[i]))
-	{
-		if (is_existing_var(envp, argv[i]) == -1)
-			count++;
-		i++;
-	}
-	envp_copy = malloc(sizeof(char *) * (count + 1)); //sanity check ?
-	if (!envp_copy)
-		return (125);
 	i = 0;
 	if (!(flags & FLAG_I) && envp)
 	{
 		while (envp[i])
 		{
-			envp_copy[i] = envp[i];
+			copy[i] = envp[i];
 			i++;
 		}
 	}
-		envp_copy[i] = NULL;
-	while (argv && *argv && is_valid_assignment(*argv))
+	parsed = 0;
+	while (argv && *argv && is_valid_assignment(**argv))
 	{
-		exist = is_existing_var(envp_copy, *argv);
+		exist = is_existing_var(copy, **argv);
 		if (exist == -1)
-			envp_copy[i++] = *argv;
+			copy[i++] = **argv;
 		else
-			envp_copy[exist] = *argv;
-		envp_copy[i] = NULL;
-		argv++;
+			copy[exist] = **argv;
+		(*argv)++;
+		parsed++;
 	}
-	if (!*argv)
-	{
-		print_env(envp_copy);
-		free(envp_copy);
-	}
-	else
-	{
-		if (!access(*argv, F_OK))
-			return (builtin_error(ctx(alias, *argv), ERR_FILE_EXISTS, 126));
-		execve(*argv, argv, envp_copy);
-		free(envp_copy);
-		return (builtin_error(ctx(alias, *argv), ERR_NO_FILE, 127)); // correct error msg ? how to 126 ?
+	return (parsed);
+}
 
-	}
-	return (0);
-}	
+static int	exec_env(t_shell *sh, int argc, char **argv, char **envp)
+{
+	int		pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		return (builtin_error(ctx("env", NULL), ERR_PERROR, 125));
+	else if (pid == 0)
+		exit(builtin_exec(sh, argc, argv - 1, envp));
+	else
+		waitpid(pid, &status, 0);
+	return (status);
+}
+
+int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
+{
+	char	**copy;
+	char	flags;
+	int		status;
+
+	status = 0;
+	argv++;
+	flags = set_flags(&argc, &argv);
+	if (flags & FLAG_ERR)
+		return (builtin_error(ctx("env", *argv), ERR_INVALID_OPT, 125));
+	copy = ft_calloc((get_env_size(argv, envp, flags) + 1), sizeof(char *));
+	if (!copy)
+		return (125);
+	argc -= build_env_copy(copy, envp, &argv, flags);
+	if (!*argv)
+		print_env(copy);
+	else
+		status = exec_env(sh, argc, argv, copy);
+	free(copy);
+	return (WEXITSTATUS(status));
+}
+//calloc sanity check ? What error msg for calloc failure?
