@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/03 14:13:15 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/06 12:44:29 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "libft.h"
 #include "libft_printf.h"
 
-static bool get_current_path(t_env *env, char *cwd)
+static bool	get_current_path(t_env *env, char *cwd)
 {
 	const char	*ptr;
 
@@ -71,6 +71,35 @@ static int	resolve_pwd(t_env *env, char *new, char *old, const char *path)
 	return (0);
 }
 
+static void	normalize_path(char *path)
+{
+	const char	*src;
+	char		*dst;
+	bool		is_abs;
+
+	is_abs = false;
+	if (!*path || *path == '/')
+		is_abs = true;
+	src = path;
+	dst = path;
+	while (*src)
+	{
+		if (*src == '/')
+			collapse_slashes(&src, &dst, &path);
+		else if (src[0] == '.' && (src[1] == '/' || src[1] == '\0'))
+			skip_current_dir(&src);
+		else if (src[0] == '.' && src[1] == '.'
+			&& (src[2] == '/' || src[2] == '\0'))
+			handle_parent_dir(&src, &dst, path);
+		else
+		{
+			while (*src && *src != '/')
+				*dst++ = *src++;
+		}
+	}
+	finalize_path(path, &dst, is_abs);
+}
+
 int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 {
 	static char	oldpwd[PATH_MAX];
@@ -86,7 +115,9 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	status = resolve_pwd(&sh->env, newbuf, oldbuf, argv[1]);
 	if (status)
 		return (status);
+	ft_printf("cd: changing to %s\n", newbuf);
 	normalize_path(newbuf);
+	ft_printf("cd: normalized to %s\n", newbuf);
 	if (chdir(newbuf) != 0)
 		return (builtin_error(ctx("cd", newbuf), ERR_PERROR, 1));
 	ft_strlcpy(oldpwd, oldbuf, PATH_MAX);

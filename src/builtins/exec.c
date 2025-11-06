@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 18:25:36 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/05 13:11:24 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ static char	*find_cmd_path(char *cmd, char **envp)
 	while (paths[i])
 	{
 		len = ft_strlen(paths[i]) + ft_strlen(cmd) + 2;
-		path = malloc(sizeof(char) * len);
+		path = allocator_malloc(sizeof(char) * len);
 		if (!path)
-			return (NULL); //to be looked at
+			return (NULL);
 		ft_strlcpy(path, paths[i++], len);
 		ft_strlcat(path, "/", len);
 		ft_strlcat(path, cmd, len);
 		if (access(path, F_OK) == 0)
 			return (path);
-		free(path);
+		allocator_free(path);
 	}
 	return (NULL);
 }
@@ -84,7 +84,7 @@ int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
 		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
 			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
-		free(path);
+		allocator_free(path);
 	}
 	return (0);
 }

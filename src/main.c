@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/01 11:12:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:06:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,14 +191,14 @@ static void	handler(int sig)
 
 	sh = get_shell(0);
 	vm_dispatch(&sh->vm, sig);
-	if (!sh->vm.active)
-	{
-		if (sig == SIGINT)
-			rl_replace_line("", 0);
-		rl_clear_visible_line();
-		rl_redraw_prompt_last_line();
-		rl_redisplay();
-	}
+// 	if (!sh->vm.active)
+// 	{
+// 		if (sig == SIGINT)
+// 			//rl_replace_line("", 0);
+// 		//rl_clear_visible_line();
+// 		//rl_redraw_prompt_last_line();
+// 		//rl_redisplay();
+// 	}
 }
 
 static void	signal_init(void)
