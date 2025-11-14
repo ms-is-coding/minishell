@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/14 13:08:15 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/11/14 13:20:18 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
 					init.c clear.c print.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
-					malloc.c \
+					malloc.c strdup.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)

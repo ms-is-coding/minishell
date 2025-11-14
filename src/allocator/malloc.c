@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:15:57 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 11:42:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:45:25 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,4 @@ void	allocator_free_ptr(void *ptr)
 		slab = slab->next;
 	}
 	free(ptr);
-}
-
-char	*allocator_strdup(const char *s)
-{
-	char		*res;
-	size_t		len;
-
-	len = ft_strlen(s);
-	res = allocator_malloc(len + 1);
-	if (!res)
-		return (NULL);
-	((char *)ft_mempcpy(res, s, len))[0] = 0;
-	return (res);
 }

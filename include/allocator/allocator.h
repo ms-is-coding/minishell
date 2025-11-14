@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 11:42:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:38:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ void			*allocator_calloc(size_t n, size_t size)
 				__attribute__((__warn_unused_result__));
 
 char			*allocator_strdup(const char *s)
+				__attribute__((__malloc__))
+				__attribute__((__warn_unused_result__));
+
+char			*allocator_strndup(const char *s, size_t n)
 				__attribute__((__malloc__))
 				__attribute__((__warn_unused_result__));
 
