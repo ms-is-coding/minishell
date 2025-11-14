@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 07:00:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 11:23:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef uint8_t	t_env_flags;
 # define ENV_FLAG_EXPORT    0x02
 # define ENV_FLAG_INTEGER   0x04
 # define ENV_FLAG_STACK_KEY 0x08
+# define ENV_FLAG_STACK     0x10
 
 typedef struct s_env_bucket
 {

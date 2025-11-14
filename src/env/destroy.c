@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 06:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 12:28:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 11:23:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	env_destroy(t_env *env)
 	while (++i < env->capacity)
 	{
 		bucket = &env->buckets[i];
-		if (!bucket->key)
+		if (!bucket->key || bucket->flags & ENV_FLAG_STACK)
 			continue ;
 		if (bucket->flags & ENV_FLAG_STACK_KEY)
 		{
