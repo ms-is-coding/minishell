@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 11:47:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/13 00:46:01 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,7 @@ t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 	t_token			token;
 	t_token			oper_token;
 	t_parse_rule	rule;
-	bool			same_line;
 
-	(void)same_line;
 	token = p->curr_token;
 	parser_advance(p);
 	rule = parser_get_rule(token.type);
@@ -96,7 +94,6 @@ t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 		oper_token = p->curr_token;
 		if (oper_token.type == TOK_EOF)
 			break ;
-		same_line = token.pos.row == oper_token.pos.row;
 		rule = parser_get_rule(oper_token.type);
 		if (!rule.led)
 		{
