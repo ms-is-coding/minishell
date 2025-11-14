@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:16:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:07:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	vm_run_range(t_vm *vm, t_program *program,
 	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
 	ft_vector_init(&vm->pids, 16);
 	vm->active = true;
+	vm->here_doc = false;
 	vm->redir_count = 0;
 	while (program->pc < end)
 	{

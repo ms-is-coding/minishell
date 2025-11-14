@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:50:20 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:07:29 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 	}
 	while (1)
 	{
+		vm->here_doc = true;
 		line = readline("> ");
 		if (!line)
 		{
@@ -49,6 +50,7 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 			break ;
 		ft_dprintf(fd, "%s\n", line);
 	}
+	vm->here_doc = false;
 }
 
 void	vm_heredoc(t_vm *vm, t_program *program)

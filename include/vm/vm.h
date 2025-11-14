@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:18:15 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:06:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ typedef struct s_vm
 	int				redir_count;
 
 	bool			active;
+	bool			here_doc;
 	bool			had_error;
 
-	uint8_t			reserved[6];
+	uint8_t			reserved[5];
 }	t_vm;
 
 void	vm_run(t_vm *vm, t_program *program);

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 22:43:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 21:27:19 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:00:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	vm_subshell(t_vm *vm, t_program *program)
 	pid = fork();
 	if (pid == 0)
 	{
+		ft_dprintf(2, ">>> subshell\n");
 		if ((program->data[end_pc] & OPCODE_MASK) == OP_EXEC
 			&& program->data[end_pc] & EXEC_PIPELINE_BIT)
 		{
@@ -104,8 +105,9 @@ void	vm_subshell(t_vm *vm, t_program *program)
 			}
 		}
 		setup_fds(vm);
-		vm_run_range(&child_vm, program, end_pc - 1);
+		vm_run_range(&child_vm, program, end_pc);
 		vm_wait(&child_vm, NULL);
+		ft_dprintf(2, "<<< subshell\n");
 		exit(ft_vector_at(&child_vm.exit_codes, -1).value.i32);
 		return ;
 	}

@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/05 13:07:37 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/11/07 23:35:05 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,12 +46,12 @@ SRC_CLI			= cli/init.c cli/add.c cli/find.c cli/get.c cli/parse.c
 SRC_LEXER		:= $(addprefix lexer/, advance.c amp.c comment.c delim.c \
 					dollar.c eof.c error.c group.c init.c internal.c lex.c \
 					number.c pipe.c print.c redir.c)
-SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c command.c \
-					expr.c logical.c list.c group.c redir.c)
+SRC_PARSER		:= $(addprefix parser/, init.c parse.c util.c rules.c \
+					command.c expr.c logical.c list.c group.c redir.c)
 SRC_BYTECODE	= bytecode/write.c bytecode/get.c
-SRC_BUILTINS 	:= $(addprefix builtins/, _find.c alias.c cd.c echo.c env.c error.c \
+SRC_BUILTINS 	:= $(addprefix builtins/, _find.c cd.c echo.c env.c error.c \
 					exec.c exit.c export.c false.c logout.c pwd.c readonly.c \
-					return.c set.c true.c type.c unalias.c unset.c \
+					return.c set.c true.c type.c unset.c \
 					cd_internal.c echo_internal.c env_internal.c \
 					export_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
@@ -59,10 +59,11 @@ SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
 					exec.c redir.c jump.c subshell.c heredoc.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
-					build.c)
+					build.c destroy.c)
 SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
 					init.c clear.c print.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
+					malloc.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
 					arena/destroy.c arena/find.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
@@ -73,8 +74,7 @@ SRC_HELP		:= $(addprefix help/, warn.c version.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
-					$(SRC_ENV) $(SRC_ALIAS) $(SRC_EXPANDER) $(SRC_EXEC) \
-					$(SRC_HELP) \
+					$(SRC_ENV) $(SRC_EXPANDER) $(SRC_EXEC) $(SRC_HELP) \
 					main.c
 
 TEST_DIR		:= tests

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/02 13:14:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:06:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "vm/vm_internal.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 static char	*find_exec(const char *arg, const char *env_path)
@@ -51,6 +52,7 @@ static void	sh_destroy(t_shell *sh)
 	cli_destroy(&sh->cli);
 	ft_vector_free(&sh->vm.exit_codes);
 	ft_vector_free(&sh->vm.pids);
+	env_destroy(&sh->env);
 	allocator_destroy(&sh->allocator);
 	close_pipes(&sh->vm);
 }
@@ -108,6 +110,25 @@ static bool	is_command_in_pipeline(t_vm *vm)
 		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
 }
 
+void	run_empty_command(t_vm *vm)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		setup_fds(vm);
+		sh_destroy(vm->shell);
+		_exit(0);
+	}
+	if (pid > 0)
+		ft_vector_push(&vm->pids,
+			ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
+	reset_fds(vm);
+	allocator_arena_free(vm->allocator, vm->frame.arena);
+	return ;
+}
+
 void	vm_spawn(t_vm *vm, t_program *program)
 {
 	char			**env;
@@ -116,7 +137,6 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	int				pid;
 	t_shell			*sh;
 	int				exit_code;
-
 	if (vm->pids.length == 0)
 		vm->exit_codes.length = 0;
 	if (vm->had_error)
@@ -129,21 +149,8 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	(void)program;
 	sh = vm->shell;
 	if (vm->frame.argc == 0)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			setup_fds(vm);
-			sh_destroy(vm->shell);
-			_exit(0);
-		}
-		if (pid > 0)
-			ft_vector_push(&vm->pids,
-				ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
-		reset_fds(vm);
-		allocator_arena_free(vm->allocator, vm->frame.arena);
-		return ;
-	}
+		run_empty_command(vm);
+
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);
