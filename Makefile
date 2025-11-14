@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/14 13:20:18 by smamalig         ###   ########.fr        #
+#    Updated: 2025/11/14 14:05:26 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,18 +104,22 @@ all: $(NAME)
 	@$(MAKE) postbuild --no-print-directory
 
 
+.PHONY: default
+default: all
+
+
 .PHONY: release
-release: $(NAME)
+release:
 	@$(MAKE) MODE=release --no-print-directory
 
 
 .PHONY: debug
-debug: $(NAME)
+debug:
 	@$(MAKE) MODE=debug --no-print-directory
 
 
 .PHONY: sanitize
-sanitize: $(NAME)
+sanitize:
 	@$(MAKE) MODE=sanitize --no-print-directory
 
 
@@ -128,8 +132,8 @@ postbuild:
 	cp -f $(ROOT_DIR)/$(NAME) $(NAME)
 
 
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $(ROOT_DIR)/$(NAME) $^ $(LDFLAGS) $(LDLIBS)
+$(NAME): $(ROOT_DIR)/$(NAME) libft
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $(ROOT_DIR)/$(NAME)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -137,8 +141,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+libft:
+	$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 
 .PHONY: clean
