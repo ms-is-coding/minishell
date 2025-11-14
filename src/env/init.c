@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/13 00:53:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:46:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ static void	env_init_default_values(t_env *env)
 	tmp = exec_with_output((char *[]){
 			(char *)(intptr_t)"/usr/bin/id",
 			(char *)(intptr_t)"-u", NULL});
-	if (tmp)
-		env_set(env, "UID", allocator_strdup(tmp),
-			ENV_FLAG_RDONLY | ENV_FLAG_INTEGER | ENV_FLAG_STACK_KEY);
+	if (!tmp)
+		return ;
+	tmp = allocator_strndup(tmp, ft_strlen(tmp) - 1);
+	if (!tmp)
+		return ;
+	env_set(env, "UID", allocator_strdup(tmp),
+		ENV_FLAG_RDONLY | ENV_FLAG_INTEGER | ENV_FLAG_STACK_KEY);
 }
 
 static inline size_t	scale_1_25_fast(size_t x)
