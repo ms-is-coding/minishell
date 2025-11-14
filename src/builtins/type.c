@@ -6,14 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/02 14:21:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 06:51:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "alias/alias.h"
 #include "builtins/builtins.h"
 #include <stdbool.h>
 
+/*
 static bool	try_alias(t_alias *alias, const char *cmd)
 {
 	const char	*exec = alias_get(alias, cmd);
@@ -23,6 +23,7 @@ static bool	try_alias(t_alias *alias, const char *cmd)
 	ft_printf("%s is aliased to '%s'\n", cmd, exec);
 	return (true);
 }
+*/
 
 static bool	try_builtin(char *arg)
 {
@@ -65,8 +66,6 @@ int	builtin_type(t_shell *sh, int argc, char **argv, char **envp)
 	error = 0;
 	while (*(++argv))
 	{
-		if (try_alias(&sh->alias, *argv))
-			continue ;
 		if (try_builtin(*argv))
 			continue ;
 		if (try_exec(*argv, env_get(&sh->env, "PATH")))

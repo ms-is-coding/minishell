@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/06 12:44:29 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/07 07:02:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 		return (builtin_error(ctx("cd", newbuf), ERR_PERROR, 1));
 	ft_strlcpy(oldpwd, oldbuf, PATH_MAX);
 	ft_strlcpy(newpwd, newbuf, PATH_MAX);
-	env_set(&sh->env, "OLDPWD", oldpwd, ENV_FLAG_EXPORT);
-	env_set(&sh->env, "PWD", newpwd, ENV_FLAG_EXPORT);
+	env_set(&sh->env, "OLDPWD", oldpwd, ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
+	env_set(&sh->env, "PWD", newpwd, ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
 	if (argv[1] && ft_strcmp(argv[1], "-") == 0)
 		ft_printf("%s\n", newpwd);
 	return (0);

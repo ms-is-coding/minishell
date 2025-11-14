@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/03 14:06:15 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/03 17:16:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>

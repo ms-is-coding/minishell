@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/05 13:11:24 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/07 06:27:06 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*find_cmd_path(char *cmd, char **envp)
 		ft_strlcat(path, cmd, len);
 		if (access(path, F_OK) == 0)
 			return (path);
-		allocator_free(path);
+		allocator_free_ptr(path);
 	}
 	return (NULL);
 }
@@ -84,7 +84,7 @@ int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
 		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
 			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
-		allocator_free(path);
+		allocator_free_ptr(path);
 	}
 	return (0);
 }
