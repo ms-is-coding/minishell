@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 14:02:57 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/16 16:07:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 06:57:49 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	allocator_slab_free(t_allocation alloc)
 	region = alloc.region;
 	meta = (void *)((char *)alloc.data - sizeof(t_slab_meta));
 	meta->prev_block |= SLAB_FLAG_FREE;
-	if (region->max_free < alloc.size)
+	if (region->max_free < meta->size)
 	{
-		region->max_free = (uint16_t)alloc.size;
+		region->max_free = (uint16_t)meta->size;
 	}
 }

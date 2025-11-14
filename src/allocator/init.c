@@ -6,12 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/16 17:11:41 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/11 16:38:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator.h"
+#include "allocator/allocator_internal.h"
 #include <stdint.h>
+#include <assert.h>
 
 void	allocator_init(t_allocator *alc)
 {
@@ -38,4 +39,17 @@ void	allocator_init(t_allocator *alc)
 		alc->stack_slabs[i].next = alc->slabs;
 		alc->slabs = &alc->stack_slabs[i];
 	}
+	__attribute__((__unused__)) void *_;
+	_ = get_allocator(alc);
+}
+
+__attribute__((__warn_unused_result__))
+t_allocator	*get_allocator(t_allocator *alc)
+{
+	static t_allocator	*save = NULL;
+
+	if (alc)
+		save = alc;
+	assert(save != NULL);
+	return (save);
 }

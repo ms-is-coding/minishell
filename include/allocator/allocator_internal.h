@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 00:36:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 06:20:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # define ARENA_FLAG_LARGE 0x8000
 # define ARENA_FLAG_ACTIVE 0x4000
 # define ARENA_ID_MASK 0x3fff
+
+t_allocator		*get_allocator(t_allocator *alc)
+				__attribute__((__warn_unused_result__));
 
 t_arena			*allocator_arena_create(t_allocator *alc);
 t_arena			*allocator_arena_find(t_allocator *alc, t_arena_id id);

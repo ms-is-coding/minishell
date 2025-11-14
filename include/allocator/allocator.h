@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/06 16:53:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/13 00:49:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,17 @@ void			allocator_arena_free(t_allocator *alc, t_arena *arena);
 t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena);
 void			allocator_free(t_allocator *alc, t_allocation alloc);
 
-// Tries to find a slab allocation corresponding to `ptr`. If the allocation was
-// not found (e.g. `ptr` is arena-based, or not allocated through this API), the
-// function will throw an error.
-void			allocator_free_ptr(t_allocator *alc, void *ptr);
+// Attempts to find a slab allocation corresponding to `ptr`. If the allocation
+// was not found (e.g. `ptr` is arena-based, or not allocated through this API),
+// the function will throw an error.
+void			allocator_free_ptr(void *ptr);
+
+void			*allocator_malloc(size_t size)
+				__attribute__((__malloc__))
+				__attribute__((__warn_unused_result__));
+
+char			*allocator_strdup(const char *s)
+				__attribute__((__malloc__))
+				__attribute__((__warn_unused_result__));
 
 #endif // ALLOCATOR_H

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:27:42 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/16 17:35:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 06:55:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	allocator_slab_assign(t_slab_region *slab, t_allocation *alloc)
 	if (slab->max_free >= alloc->size)
 	{
 		while (!is_slab_free(meta) && meta->size < alloc->size)
-			meta = (void *)((char *)meta + meta->size + sizeof(t_slab_meta));
+			meta = (void *)((char *)meta + meta->size);
 		alloc->data = ((char *)meta + sizeof(t_slab_meta));
 		alloc->region = slab;
 		alloc->parent_id = slab->id;
