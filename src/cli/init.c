@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 16:37:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/07 06:42:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli/cli_internal.h"
+#include "allocator/allocator.h"
 #include "libft.h"
 
 #ifdef NDEBUG
@@ -34,7 +35,7 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 	cli->name = argv[0];
 	cli->opt_i = 0;
 	cli->pos_i = 0;
-	cli->positional = malloc(sizeof(char *) * 8);
+	cli->positional = allocator_malloc(sizeof(char *) * 8);
 	if (!cli->positional)
 		return (RESULT_ERROR);
 	cli->pos_capacity = 8;
@@ -51,5 +52,5 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 
 void	cli_destroy(t_cli *cli)
 {
-	free(cli->positional);
+	allocator_free_ptr(cli->positional);
 }
