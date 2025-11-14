@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 06:27:06 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 12:31:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,26 @@
 #include "builtins/builtins.h"
 #include "libft.h"
 
-static char	**get_paths(char **envp)
+static char	*find_exec(const char *arg, char **envp)
 {
-	int		i;
-
-	i = 0;
-	if (!envp)
-		return (NULL);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (ft_split(envp[i] + 5, ':'));
-		i++;
-	}
-	return (NULL);
-}
-
-static char	*find_cmd_path(char *cmd, char **envp)
-{
-	char		**paths;
-	char		*path;
-	int			i;
+	static char	path[PATH_MAX];
+	const char	*env_path;
 	size_t		len;
 
-	i = 0;
-	if (!cmd)
+	if (!arg)
 		return (NULL);
-	paths = get_paths(envp);
-	if (!paths)
+	while (*envp && ft_strncmp("PATH=", *envp, 5) != 0)
+		envp++;
+	if (!*envp)
 		return (NULL);
-	while (paths[i])
+	env_path = *envp + 5;
+	while (ft_strchr(env_path, ':'))
 	{
-		len = ft_strlen(paths[i]) + ft_strlen(cmd) + 2;
-		path = allocator_malloc(sizeof(char) * len);
-		if (!path)
-			return (NULL);
-		ft_strlcpy(path, paths[i++], len);
-		ft_strlcat(path, "/", len);
-		ft_strlcat(path, cmd, len);
+		len = ft_strcspn(env_path, ":");
+		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
 		if (access(path, F_OK) == 0)
 			return (path);
-		allocator_free_ptr(path);
+		env_path += len + 1;
 	}
 	return (NULL);
 }
@@ -79,12 +58,11 @@ int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
 	}
 	else
 	{
-		path = find_cmd_path(argv[1], envp);
+		path = find_exec(argv[1], envp);
 		if (!path)
 			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
 		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
 			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
-		allocator_free_ptr(path);
 	}
 	return (0);
 }
