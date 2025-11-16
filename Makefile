@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/14 14:05:26 by smamalig         ###   ########.fr        #
+#    Updated: 2025/11/16 16:14:54 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIB_DIR			:= lib
 BUILD_DIR		:= build
 
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -MMD -MP -std=gnu17
+CFLAGS			:= -Wall -Wextra -MMD -MP -std=gnu2x
 CFLAGS_DEBUG	:= -Og -g3 -Wshadow -Wpadded -Wconversion -Wstrict-prototypes \
 					-Wmissing-declarations -Wstrict-prototypes -Wundef \
 					-Wmissing-prototypes -Wold-style-definition -Winline \
@@ -132,7 +132,12 @@ postbuild:
 	cp -f $(ROOT_DIR)/$(NAME) $(NAME)
 
 
-$(NAME): $(ROOT_DIR)/$(NAME) libft
+$(NAME): libft
+	@make $(ROOT_DIR)/$(NAME) --no-print-directory
+
+
+$(ROOT_DIR)/$(NAME): $(OBJS)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $(ROOT_DIR)/$(NAME)
 
 
@@ -168,6 +173,16 @@ re: fclean
 
 $(TEST_BIN): $(TEST_DIR)/main.c
 	$(CC) $(CFLAGS) -o $@ $^
+
+
+.PHONY: norm
+norm:
+	echo $(SRCS) | xargs -n1 -P$(shell nproc) norminette
+
+
+.PHONY: tidy
+tidy:
+	echo $(SRCS) | xargs -n1 -P$(shell nproc) clang-tidy -p .
 
 
 .PHONY: test
