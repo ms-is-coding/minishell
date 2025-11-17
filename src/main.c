@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/05 13:06:06 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/16 15:36:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ static int	repl(t_shell *sh)
 		else
 		{
 			sh->vm.exit_codes.length = 0;
-			ft_vector_push(&sh->vm.exit_codes,
-				ft_gen_val(TYPE_OTHER, (t_any){.i32 = 2}));
+			ignore((void *)ft_vector_push(&sh->vm.exit_codes,
+					ft_gen_val(TYPE_OTHER, (t_any){.i32 = 2})));
 		}
 		free(line);
 	}
@@ -163,6 +163,8 @@ static int	command(t_shell *sh, char *command)
 	result = parser_parse(&sh->parser, command);
 	if (result != RESULT_OK)
 		return (2);
+	if (cli_is_set(&sh->cli, "disassemble"))
+		disasm(&sh->parser.program);
 	vm_run(&sh->vm, &sh->parser.program);
 	return (ft_vector_at(&sh->vm.exit_codes, -1).value.i32);
 }
@@ -170,6 +172,7 @@ static int	command(t_shell *sh, char *command)
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
+	env_destroy(&sh->env);
 	ft_vector_free(&sh->vm.exit_codes);
 	allocator_destroy(&sh->allocator);
 }
@@ -191,14 +194,14 @@ static void	handler(int sig)
 
 	sh = get_shell(0);
 	vm_dispatch(&sh->vm, sig);
-// 	if (!sh->vm.active)
-// 	{
-// 		if (sig == SIGINT)
-// 			//rl_replace_line("", 0);
-// 		//rl_clear_visible_line();
-// 		//rl_redraw_prompt_last_line();
-// 		//rl_redisplay();
-// 	}
+	if (!sh->vm.active)
+	{
+		if (sig == SIGINT)
+			rl_replace_line("", 0);
+		rl_clear_visible_line();
+		rl_redraw_prompt_last_line();
+		rl_redisplay();
+	}
 }
 
 static void	signal_init(void)
@@ -213,11 +216,12 @@ static void	test(t_shell *sh)
 	const char	*filename;
 	int			fd;
 	ssize_t		read_size;
+	int			i;
 
-	for (int i = 0; i < sh->cli.pos_i; i++)
+	i = -1;
+	while (++i < sh->cli.pos_i)
 	{
 		filename = sh->cli.positional[i];
-		// ft_printf("==> FILE %s <==\n", filename);
 		fd = open(filename, O_RDONLY);
 		if (fd == -1)
 		{
@@ -240,7 +244,6 @@ static void	test(t_shell *sh)
 		vm_run(&sh->vm, &sh->parser.program);
 		close(fd);
 	}
-
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -256,8 +259,7 @@ int	main(int argc, char **argv, char **envp)
 	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
 		|| env_init(&sh.env, &sh.allocator, envp) != RESULT_OK
 		|| parser_init(&sh.parser, &sh.lexer) != RESULT_OK
-		|| ft_vector_init(&sh.vm.exit_codes, 16) != RESULT_OK
-		|| alias_init(&sh.alias, &sh.allocator) != RESULT_OK)
+		|| ft_vector_init(&sh.vm.exit_codes, 16) != RESULT_OK)
 	{
 		sh_destroy(&sh);
 		return (2);
