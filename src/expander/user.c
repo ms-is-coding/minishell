@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 19:40:38 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/14 15:21:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)
 	exp->len += ft_strlen(home);
 	if (mode == VEXPM_EXTRACT)
 		ft_strcat(exp->frame->argv[exp->frame->argc], home);
-	env_set(&((t_shell *)exp->sh)->env, "HOME", home, ENV_FLAG_EXPORT);
+	home = allocator_strdup(home);
+	if (!home)
+		return ;
+	env_set(&((t_shell *)exp->sh)->env, "HOME", home,
+		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
 }
 
 void	expander_user(t_expander *exp, t_var_expansion_mode mode)
