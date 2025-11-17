@@ -6,16 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 13:07:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/14 13:27:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/wait.h>
 #include <unistd.h>
 #include <sys/types.h>
-
 #include "builtins/builtins.h"
 #include "libft.h"
-
 
 static int	env_exec(t_shell *sh, int argc, char **argv, char **envp)
 {
@@ -34,7 +33,7 @@ static int	env_exec(t_shell *sh, int argc, char **argv, char **envp)
 static int	env_print(char **envp)
 {
 	int		i;
-	int		len;
+	size_t	len;
 
 	i = 0;
 	while (envp && envp[i])
