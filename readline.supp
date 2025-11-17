@@ -12,3 +12,15 @@
 	fun:add_history
 	...
 }
+{
+	suppress_usr_bin
+	Memcheck:Leak
+	...
+	obj:/usr/bin/*
+}
+{
+	suppress_local_bin
+	Memcheck:Leak
+	...
+	obj:*/.local/bin/*
+}
