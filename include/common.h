@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 22:38:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/16 15:48:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,9 @@
 # define ERROR_CHARACTERS 10
 // would write ERROR_CHARACTERS * 2 + 3, but norm...
 # define ERROR_MAX_LENGTH 23
+
+static inline void	ignore(__attribute__((__unused__)) void *data)
+{
+}
 
 #endif // COMMON_H

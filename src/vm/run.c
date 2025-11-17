@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/06 18:07:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/16 15:48:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	vm_run(t_vm *vm, t_program *program)
 	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
 	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
 	program->pc = 0UL;
-	ft_vector_init(&vm->pids, 16);
+	ignore((void *)ft_vector_init(&vm->pids, 16));
 	vm->active = true;
 	vm->redir_count = 0;
 	while (program->pc < program->len)
@@ -67,7 +67,7 @@ void	vm_run_range(t_vm *vm, t_program *program,
 	vm->prev_fd = 0;
 	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
 	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
-	ft_vector_init(&vm->pids, 16);
+	ignore((void *)ft_vector_init(&vm->pids, 16));
 	vm->active = true;
 	vm->here_doc = false;
 	vm->redir_count = 0;

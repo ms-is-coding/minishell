@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 15:06:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/16 15:37:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static bool	is_command_in_pipeline(t_vm *vm)
 		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
 }
 
-void	run_empty_command(t_vm *vm)
+static void	run_empty_command(t_vm *vm)
 {
 	pid_t	pid;
 
@@ -122,8 +122,8 @@ void	run_empty_command(t_vm *vm)
 		_exit(0);
 	}
 	if (pid > 0)
-		ft_vector_push(&vm->pids,
-			ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
+		ignore((void *)ft_vector_push(&vm->pids,
+				ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid})));
 	reset_fds(vm);
 	allocator_arena_free(vm->allocator, vm->frame.arena);
 	return ;
@@ -137,20 +137,20 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	int				pid;
 	t_shell			*sh;
 	int				exit_code;
+
 	if (vm->pids.length == 0)
 		vm->exit_codes.length = 0;
 	if (vm->had_error)
 	{
 		vm->had_error = false;
-		ft_vector_push(&vm->exit_codes,
-			ft_gen_val(TYPE_OTHER, (t_any){.i32 = 1}));
+		ignore((void *)ft_vector_push(&vm->exit_codes,
+				ft_gen_val(TYPE_OTHER, (t_any){.i32 = 1})));
 		return ;
 	}
 	(void)program;
 	sh = vm->shell;
 	if (vm->frame.argc == 0)
 		run_empty_command(vm);
-
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);
@@ -167,8 +167,8 @@ void	vm_spawn(t_vm *vm, t_program *program)
 		close(saved_stdin);
 		close(saved_stdout);
 		close(saved_stderr);
-		ft_vector_push(&vm->exit_codes,
-			ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code}));
+		ignore((void *)ft_vector_push(&vm->exit_codes,
+				ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code})));
 		close_pipes(vm);
 		vm->redir_count = 0;
 		return ;
@@ -188,7 +188,8 @@ void	vm_spawn(t_vm *vm, t_program *program)
 			if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
 				ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
 			execve(vm->frame.argv[0], vm->frame.argv, env);
-			ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
+			ft_dprintf(2, "%s: cannot execute binary file: %m\n",
+				vm->frame.argv[0]);
 			exit(126);
 		}
 		exec = find_exec(vm->frame.argv[0], env_get(&sh->env, "PATH"));
@@ -206,7 +207,8 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	else if (pid < 0)
 		ft_dprintf(2, "fork failed: %m\n");
 	reset_fds(vm);
-	ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid}));
+	ignore((void *)
+		ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid})));
 	allocator_arena_free(vm->allocator, vm->frame.arena);
 	return ;
 }
