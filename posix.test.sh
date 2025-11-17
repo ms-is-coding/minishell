@@ -128,7 +128,7 @@ run_tests() {
 	test_cmd "export modify var" "export FOO=bar && export FOO=baz && echo \$FOO"
 	test_cmd "export no value" "export VAR && env | grep VAR"
 	test_cmd "export invalid" "export 123=abc"
-	test_cmd "export list" "export | sort | head -n 3"
+	test_cmd "export list" "export -p | sort | head -n 3"
 
 	test_cmd "unset existing" "export TMP=1 && unset TMP && echo \$TMP"
 	test_cmd "unset nonexistent" "unset NONEXISTENT"
