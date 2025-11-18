@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 13:35:52 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/19 00:58:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 #include "allocator/allocator.h"
 #include "env/env.h"
-#include "help/help.h"
+#include "util/help.h"
 #include "parser/parser.h"
 #include "disasm/disasm.h"
 #include "cli/cli.h"

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/16 15:37:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/17 23:49:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,40 @@ static void	run_empty_command(t_vm *vm)
 	return ;
 }
 
-void	vm_spawn(t_vm *vm, t_program *program)
+static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
+{
+	t_builtin_fn	builtin;
+	int				exit_code;
+	int				saved_stdin;
+	int				saved_stdout;
+	int				saved_stderr;
+
+	builtin = _builtin_find(vm->frame.argv[0]);
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	saved_stderr = dup(STDERR_FILENO);
+	setup_fds(vm);
+	exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stderr, STDERR_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+	close(saved_stderr);
+	close_pipes(vm);
+	vm->redir_count = 0;
+	ignore((void *)ft_vector_push(&vm->exit_codes,
+			ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code})));
+	return (exit_code);
+}
+
+void	vm_spawn(t_vm *vm)
 {
 	char			**env;
 	char			*exec;
-	t_builtin_fn	builtin;
 	int				pid;
 	t_shell			*sh;
+	t_builtin_fn	builtin;
 	int				exit_code;
 
 	if (vm->pids.length == 0)
@@ -147,30 +174,15 @@ void	vm_spawn(t_vm *vm, t_program *program)
 				ft_gen_val(TYPE_OTHER, (t_any){.i32 = 1})));
 		return ;
 	}
-	(void)program;
 	sh = vm->shell;
 	if (vm->frame.argc == 0)
 		run_empty_command(vm);
 	env = env_build(&sh->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);
-	if (builtin && !is_command_in_pipeline(vm))
+	if (_builtin_find(vm->frame.argv[0]) && !is_command_in_pipeline(vm))
 	{
-		auto int saved_stdin = dup(STDIN_FILENO);
-		auto int saved_stdout = dup(STDOUT_FILENO);
-		auto int saved_stderr = dup(STDERR_FILENO);
-		setup_fds(vm);
-		exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
-		dup2(saved_stderr, STDERR_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
-		close(saved_stderr);
-		ignore((void *)ft_vector_push(&vm->exit_codes,
-				ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code})));
-		close_pipes(vm);
-		vm->redir_count = 0;
+		execute_builtin(sh, vm, env);
 		return ;
 	}
 	pid = fork();
@@ -210,5 +222,4 @@ void	vm_spawn(t_vm *vm, t_program *program)
 	ignore((void *)
 		ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid})));
 	allocator_arena_free(vm->allocator, vm->frame.arena);
-	return ;
 }

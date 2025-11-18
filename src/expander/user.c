@@ -6,14 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 15:21:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:37:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander.h"
 #include "expander/expander_internal.h"
-#include "exec/exec.h"
-#include "help/help.h"
+#include "util/exec.h"
+#include "util/help.h"
 #include "shell.h"
 
 static char	*extract_user(t_expander *exp)

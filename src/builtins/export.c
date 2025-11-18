@@ -6,14 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/14 14:09:26 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/19 00:58:11 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 #include "builtins/export_internal.h"
 #include "env/env.h"
-#include "help/help.h"
 #include "libft.h"
 #include <stdbool.h>
 

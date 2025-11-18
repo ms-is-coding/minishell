@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/11/18 12:56:13 by mattcarniel      ###   ########.fr        #
+#    Updated: 2025/11/19 00:56:30 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,12 +68,11 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
 SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
 					char.c dquote.c squote.c user.c)
-SRC_EXEC		:= exec/exec.c
-SRC_HELP		:= $(addprefix help/, warn.c version.c)
+SRC_UTIL		:= $(addprefix util/, warn.c version.c exec.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
-					$(SRC_ENV) $(SRC_EXPANDER) $(SRC_EXEC) $(SRC_HELP) \
+					$(SRC_ENV) $(SRC_EXPANDER) $(SRC_EXEC) $(SRC_UTIL) \
 					main.c
 
 TEST_DIR		:= tests

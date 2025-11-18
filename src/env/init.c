@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 12:46:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:37:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
 #include "common.h"
-#include "exec/exec.h"
+#include "util/exec.h"
 #include "libft.h"
 #include <string.h>
 

@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/06 18:07:29 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:17:54 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "help/help.h"
+#include "util/help.h"
 #include "vm/bytecode.h"
 #include "vm/vm_internal.h"
 #include <fcntl.h>
