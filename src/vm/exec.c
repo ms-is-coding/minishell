@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 00:41:34 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:31:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/17 23:44:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	vm_exec(t_vm *vm, t_program *program)
 			return ;
 		}
 	}
-	vm_spawn(vm, program);
+	vm_spawn(vm);
 	if (op & EXEC_WAIT_BIT)
 	{
 		vm_wait(vm, program);
