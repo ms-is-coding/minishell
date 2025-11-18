@@ -6,65 +6,70 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:59:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 19:37:15 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 20:00:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "util/exec.h"
 #include <fcntl.h>
-#include <stdlib.h>
+#include <stddef.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-static int	open_stdout(void)
+static char	*read_stdout(int fd)
 {
-	int	fd;
+	char		tmp[1024];
+	char		*buf;
+	char		*newbuf;
+	ssize_t		n;
+	size_t		len;
 
-	fd = open("/tmp/.trash_stdout", O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd == -1)
-		return (-1);
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	n = 1;
+	len = 0;
+	buf = NULL;
+	while (n > 0)
 	{
-		close(fd);
-		return (-1);
+		n = read(fd, tmp, sizeof(tmp));
+		if (n == -1)
+			return (ft_free(buf), NULL);
+		newbuf = ft_realloc(buf, len + (size_t)n + 1);
+		if (!newbuf)
+			return (ft_free(buf), NULL);
+		buf = newbuf;
+		ft_memcpy(buf + len, tmp, (size_t)n);
+		len += (size_t)n;
 	}
-	return (0);
-}
-
-static char	*read_stdout(void)
-{
-	static char	buffer[1024];
-	ssize_t		read_size;
-	int			fd;
-
-	fd = open("/tmp/.trash_stdout", O_RDONLY);
-	if (fd == -1)
+	if (!buf)
 		return (NULL);
-	read_size = read(fd, buffer, sizeof(buffer));
-	close(fd);
-	if (read_size == -1 || read_size == sizeof(buffer))
-		return (NULL);
-	buffer[read_size] = '\0';
-	return (buffer);
+	buf[len] = '\0';
+	return (buf);
 }
 
 char	*exec_with_output(char **argv)
 {
 	pid_t	pid;
+	int		pipefd[2];
 	int		stat;
+	char	*buf;
 
+	buf = NULL;
+	if (pipe(pipefd) == -1)
+		return (NULL);
 	pid = fork();
 	if (pid == -1)
 		return (NULL);
 	if (pid == 0)
 	{
-		close(0);
-		if (open_stdout() == -1)
-			exit(1);
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
 		execve(argv[0], argv, (char **){NULL});
-		exit(1);
+		_exit(1);
 	}
-	else
-		waitpid(pid, &stat, 0);
-	return (read_stdout());
+	close(pipefd[1]);
+	buf = read_stdout(pipefd[0]);
+	close(pipefd[0]);
+	waitpid(pid, &stat, 0);
+	return (buf);
 }
