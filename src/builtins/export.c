@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/03 11:53:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/14 14:09:26 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 #include "libft.h"
 #include <stdbool.h>
 
-#define FLAG_P		1
-#define FLAG_N		2
-#define FLAG_ERR	4
+#define FLAG_N		1
+#define FLAG_ERR	2
 
 static bool	get_flags(const char *opt, char *flags)
 {
@@ -30,9 +29,7 @@ static bool	get_flags(const char *opt, char *flags)
 	i = 1;
 	while (opt[i])
 	{
-		if (opt[i] == 'p')
-			*flags |= FLAG_P;
-		else if (opt[i] == 'n')
+		if (opt[i] == 'n')
 			*flags |= FLAG_N;
 		else
 		{
@@ -120,11 +117,7 @@ int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx("export", *argv), ERR_INVALID_OPT, 2));
 	if (!(*argv))
-	{
-		if (!(flags & FLAG_P))
-			help_warn(HELP_EXPORT_NOARG);
 		return (print_exported(&sh->env), 0);
-	}
 	status = 0;
 	while (*argv)
 	{

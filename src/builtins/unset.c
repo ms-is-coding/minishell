@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/03 13:34:01 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 12:53:25 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
 	{
 		result = env_remove(&sh->env, *argv);
 		if (result == RESULT_RDONLY)
-			status = builtin_error(ctx("unset", *argv), ERR_READONLY_UNSET, 1);
+			status = builtin_error(ctx("unset", *argv), ERR_BAD_SET, 1);
 		argv++;
 	}
 	return (status);

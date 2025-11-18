@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/03 12:05:26 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 12:55:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,17 @@ static const char	*get_error_info(t_error err)
 {
 	static const char	*info[] = {
 	[ERR_NONE] = ": Success",
-	[ERR_INVALID_NAME] = ": invalid name",
 	[ERR_TOO_MANY_ARGS] = ": too many arguments",
 	[ERR_INVALID_OPT] = ": invalid option",
-	[ERR_INVALID_ALIAS] = ": usage: alias [-p] [name[=value] ... ]",
-	[ERR_INVALID_UNALIAS] = ": usage: unalias [-a] name [name ...]",
 	[ERR_INVALID_ID] = ": not a valid identifier",
 	[ERR_NO_HOME] = ": HOME not found",
 	[ERR_NO_OLDPWD] = ": OLDPWD not found",
 	[ERR_BAD_SET] = ": could not set variable",
-	[ERR_READONLY_UNSET] = ": cannot unset: readonly variable",
-	[ERR_BAD_RM] = ": could not remove variable",
 	[ERR_TOO_LONG] = ": path too long",
 	[ERR_NOT_NUMERIC] = ": numeric argument required",
 	[ERR_404] = ": not found",
-	[ERR_NO_FILE] = ": no such file",
 	[ERR_NO_PERM] = ": Permission denied",
+	[ERR_HELP_NOT_FOUND] = ": help topic not found",
 	[ERR_PERROR] = ": system error",
 	[ERR_UNKNOWN] = ": unknown error"
 	};

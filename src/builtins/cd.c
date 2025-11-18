@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 11:23:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:59:20 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "builtins/builtins.h"
 #include "builtins/cd_internal.h"
 #include "libft.h"
-#include "libft_printf.h"
+#include "allocator/allocator.h"
 
 static bool	get_current_path(t_env *env, char *cwd)
 {
@@ -102,8 +102,6 @@ static void	normalize_path(char *path)
 
 int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 {
-	static char	oldpwd[PATH_MAX];
-	static char	newpwd[PATH_MAX];
 	char		oldbuf[PATH_MAX];
 	char		newbuf[PATH_MAX];
 	int			status;
@@ -120,11 +118,9 @@ int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
 	ft_printf("cd: normalized to %s\n", newbuf);
 	if (chdir(newbuf) != 0)
 		return (builtin_error(ctx("cd", newbuf), ERR_PERROR, 1));
-	ft_strlcpy(oldpwd, oldbuf, PATH_MAX);
-	ft_strlcpy(newpwd, newbuf, PATH_MAX);
-	env_set(&sh->env, "OLDPWD", oldpwd, ENV_FLAG_EXPORT | ENV_FLAG_STACK);
-	env_set(&sh->env, "PWD", newpwd, ENV_FLAG_EXPORT | ENV_FLAG_STACK);
+	env_set(&sh->env, "OLDPWD", allocator_strdup(oldbuf), ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY); //env_set check ?
+	env_set(&sh->env, "PWD", allocator_strdup(newbuf), ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
 	if (argv[1] && ft_strcmp(argv[1], "-") == 0)
-		ft_printf("%s\n", newpwd);
+		ft_printf("%s\n", newbuf);
 	return (0);
 }

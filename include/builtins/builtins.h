@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/03 17:13:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 12:58:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,17 @@
 typedef enum e_error
 {
 	ERR_NONE,
-	ERR_INVALID_NAME,
 	ERR_TOO_MANY_ARGS,
 	ERR_INVALID_OPT,
-	ERR_INVALID_ALIAS,
-	ERR_INVALID_UNALIAS,
 	ERR_INVALID_ID,
 	ERR_NO_HOME,
 	ERR_NO_OLDPWD,
 	ERR_BAD_SET,
-	ERR_READONLY_UNSET,
-	ERR_BAD_RM,
 	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
 	ERR_404,
-	ERR_NO_FILE,
 	ERR_NO_PERM,
+	ERR_HELP_NOT_FOUND,
 	ERR_PERROR,
 	ERR_UNKNOWN,
 	ERR_COUNT
@@ -68,6 +63,8 @@ int				builtin_type(t_shell *sh, int argc, char **argv, char **envp);
 int				builtin_unalias(t_shell *sh, int argc, char **argv,
 					char **envp);
 int				builtin_unset(t_shell *sh, int argc, char **argv, char **envp);
+
+int				builtin_help(t_shell *sh, int argc, char **argv, char **envp);
 
 t_context		ctx(const char *builtin, const char *subject);
 int				builtin_error(t_context ctx, t_error err, int int_code);

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   _find.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 13:12:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 12:21:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 13:02:10 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
+
+#include <stdio.h>
 
 struct s_builtin
 {
@@ -38,6 +40,7 @@ static struct s_builtin	g_builtins[] = {
 {"type", builtin_type, 6385745159ul},
 	// {"unalias", builtin_unalias, 229485367338034ul},
 {"unset", builtin_unset, 210730384244ul},
+{"help", builtin_help, 6385292014ul},
 {NULL, NULL, 0}
 };
 
