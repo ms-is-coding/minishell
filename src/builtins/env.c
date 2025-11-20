@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 13:27:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:06:52 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ static int	env_print(char **envp)
 	return (0);
 }
 
-int	builtin_env(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_env(
+	__attribute__((unused)) t_shell *sh,
+	int argc,
+	__attribute__((unused)) char **argv,
+	__attribute__((unused)) char **envp)
 {
-	(void)sh;
-	(void)argv;
-	(void)envp;
 	if (argc > 1)
 		return (env_exec(sh, argc, argv, envp));
 	else

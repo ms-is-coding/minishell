@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/17 16:59:20 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 17:52:41 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,26 +100,28 @@ static void	normalize_path(char *path)
 	finalize_path(path, &dst, is_abs);
 }
 
-int	builtin_cd(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_cd(
+	t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	char		oldbuf[PATH_MAX];
 	char		newbuf[PATH_MAX];
 	int			status;
 
-	(void)envp;
-	(void)argc;
 	if (argv[1] && argv[2])
 		return (builtin_error(ctx("cd", NULL), ERR_TOO_MANY_ARGS, 2));
 	status = resolve_pwd(&sh->env, newbuf, oldbuf, argv[1]);
 	if (status)
 		return (status);
-	ft_printf("cd: changing to %s\n", newbuf);
 	normalize_path(newbuf);
-	ft_printf("cd: normalized to %s\n", newbuf);
 	if (chdir(newbuf) != 0)
 		return (builtin_error(ctx("cd", newbuf), ERR_PERROR, 1));
-	env_set(&sh->env, "OLDPWD", allocator_strdup(oldbuf), ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY); //env_set check ?
-	env_set(&sh->env, "PWD", allocator_strdup(newbuf), ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
+	env_set(&sh->env, "OLDPWD", allocator_strdup(oldbuf),
+		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
+	env_set(&sh->env, "PWD", allocator_strdup(newbuf),
+		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
 	if (argv[1] && ft_strcmp(argv[1], "-") == 0)
 		ft_printf("%s\n", newbuf);
 	return (0);

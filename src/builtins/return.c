@@ -6,21 +6,21 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 19:26:30 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 18:29:19 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 18:09:16 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 #include <errno.h>
 
-int	builtin_return(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_return(
+	t_shell *sh,
+	__attribute__((unused)) int argc,
+	__attribute__((unused)) char **argv,
+	__attribute__((unused)) char **envp)
 {
 	int	exit_code;
 
-	(void)sh;
-	(void)argc;
-	(void)argv;
-	(void)envp;
 	// FIX this is not working
 	if (argc == 1)
 		exit_code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;

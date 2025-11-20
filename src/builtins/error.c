@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/18 12:55:32 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 17:23:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static const char	*get_error_info(t_error err)
 	[ERR_404] = ": not found",
 	[ERR_NO_PERM] = ": Permission denied",
 	[ERR_HELP_NOT_FOUND] = ": help topic not found",
+	[ERR_HELP_DIRTY] = ": Please mind your language when asking for help.",
+	[ERR_HELP_EXCESS] = ": Are you begging for help?",
 	[ERR_PERROR] = ": system error",
 	[ERR_UNKNOWN] = ": unknown error"
 	};

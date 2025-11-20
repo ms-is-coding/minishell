@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:10:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/22 19:30:52 by macarnie         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:58:30 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,16 @@ static bool	fill_buffer(const char *src, char *buf, char **ptr, char flags)
 	return (false);
 }
 
-int	builtin_echo(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_echo(
+	__attribute__((unused)) t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	char	buf[BUF_SIZE];
 	char	*ptr;
 	char	flags;
 
-	(void)envp;
-	(void)sh;
-	(void)argc;
 	argv++;
 	flags = set_flags(&argv);
 	ptr = buf;

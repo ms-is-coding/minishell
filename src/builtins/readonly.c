@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/03 12:06:50 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/20 11:43:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,31 @@ static int	separate_export(const char *arg, char **key, char **value)
 	return (0);
 }
 
-int	builtin_readonly(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_readonly(
+	t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	t_env_bucket	*bucket;
-	int				i;
 	int				status;
 	char			*key;
 	char			*value;
 
-	i = 1;
-	(void)envp;
+	argv++;
 	status = 0;
-	while (i < argc)
+	while (*argv)
 	{
-		bucket = env_find_key(&sh->env, argv[i]);
+		bucket = env_find_key(&sh->env, *argv);
 		if (bucket)
 			bucket->flags |= ENV_FLAG_RDONLY;
 		else
 		{
-			separate_export(argv[i], &key, &value);
+			separate_export(*argv, &key, &value);
 			if (env_set(&sh->env, key, value, ENV_FLAG_RDONLY) != RESULT_OK)
-				status = builtin_error(ctx("readonly", argv[i]), ERR_BAD_SET, 1);
+				status = builtin_error(ctx("readonly", *argv), ERR_BAD_SET, 1);
 		}
-		i++;
+		argv++;
 	}
 	return (status);
 }

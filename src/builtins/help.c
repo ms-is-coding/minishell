@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:13:39 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/18 13:31:26 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/20 11:51:55 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdbool.h>
 #include "builtins/builtins.h"
+#include "builtins/help_internal.h"
 #include "libft.h"
 
 #define FLAG_D		1
@@ -153,9 +154,9 @@ static const char	*g_export_help[] = {
 
 static const char	*g_help_false[] = {
 	"false",
-	"Do nothing, unsuccessfully.\n",
+	"Do nothing, unsuccessfully.",
 	"false",
-	"    Do nothing, unsuccessfully."
+	"    Do nothing, unsuccessfully.\n"
 	"\n"
 	"    Exit Status:\n"
 	"    Always fails.",
@@ -326,10 +327,10 @@ static int	print_cmd_list(void)
 	return (0);
 }
 
-static int	print_cmd_help(const char **topic, char flags)
+static bool	print_cmd_help(const char **topic, char flags)
 {
 	if (!topic)
-		return (1);
+		return (false);
 	if (flags & FLAG_D)
 		ft_printf("%s - %s\n", topic[0], topic[1]);
 	else if (flags & FLAG_M)
@@ -342,31 +343,35 @@ static int	print_cmd_help(const char **topic, char flags)
 		ft_printf("%s: %s\n", topic[0], topic[2]);
 	else
 		ft_printf("%s: %s\n\n%s\n", topic[0], topic[2], topic[3]);
-	return (0);
+	return (true);
 }
 
-int	builtin_help(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_help(
+	__attribute__((unused)) t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	char	flags;
 	size_t	i;
 	int		status;
 
-	(void)sh;
-	(void)envp;
-	(void)argc;
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx("help", argv[0]), ERR_INVALID_OPT, 1));
 	if (!*argv)
 		return (print_cmd_list());
-	status = 0;
+	status = sanitize_help(argv);
+	if (status)
+		return (status);
 	while (*argv)
 	{
 		i = 0;
 		while (g_help[i].name && ft_strcmp(*argv, g_help[i].name) != 0)
 			i++;
-		print_cmd_help(g_help[i].topic, flags);
+		if (!print_cmd_help(g_help[i].topic, flags))
+			status = builtin_error(ctx("help", *argv), ERR_HELP_NOT_FOUND, 1);
 		argv++;
 	}
 	return (status);

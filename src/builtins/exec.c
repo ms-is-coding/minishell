@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 12:31:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/18 17:59:58 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,32 @@ static char	*find_exec(const char *arg, char **envp)
 	return (NULL);
 }
 
-int	builtin_exec(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_exec(
+	__attribute__((unused)) t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	char **envp)
 {
 	char	*path;
 
-	(void)sh;
-	(void)argc;
-	if (!*(argv + 1))
+	argv++;
+	if (!*argv)
 		return (0);
-	if (ft_strchr(argv[1], '/'))
+	if (ft_strchr(*argv, '/'))
 	{
-		if (access(argv[1], F_OK) == -1)
-			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
+		if (access(*argv, F_OK) == -1)
+			builtin_error(ctx("exec", *argv), ERR_404, 127);
 		else if (access(argv[1], X_OK) == -1
 			|| execve(argv[1], argv + 1, envp) == -1)
-			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
+			builtin_error(ctx("exec", *argv), ERR_NO_PERM, 126);
 	}
 	else
 	{
-		path = find_exec(argv[1], envp);
+		path = find_exec(*argv, envp);
 		if (!path)
-			builtin_error(ctx("exec", argv[1]), ERR_404, 127);
-		else if (access(path, X_OK) == -1 || execve(path, argv + 1, envp) == -1)
-			builtin_error(ctx("exec", argv[1]), ERR_NO_PERM, 126);
+			builtin_error(ctx("exec", *argv), ERR_404, 127);
+		else if (access(path, X_OK) == -1 || execve(path, argv, envp) == -1)
+			builtin_error(ctx("exec", *argv), ERR_NO_PERM, 126);
 	}
 	return (0);
 }

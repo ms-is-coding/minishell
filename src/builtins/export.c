@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/19 15:19:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/01 19:21:31 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,15 @@ static int	set_export(t_env *env, const char *arg, char flags)
 	return (0);
 }
 
-// When no arguments are given, the results are unspecified.
-int	builtin_export(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_export(
+	t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	char	flags;
 	int		status;
 
-	(void)envp;
 	argv++;
 	flags = set_flags(&argc, &argv);
 	if (flags & FLAG_ERR)

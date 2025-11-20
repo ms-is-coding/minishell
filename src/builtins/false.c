@@ -6,17 +6,17 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:16:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/18 18:30:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 18:02:02 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 
-int	builtin_false(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_false(
+	__attribute__((unused)) t_shell *sh,
+	__attribute__((unused)) int argc,
+	__attribute__((unused)) char **argv,
+	__attribute__((unused)) char **envp)
 {
-	(void)sh;
-	(void)argc;
-	(void)argv;
-	(void)envp;
 	return (1);
 }

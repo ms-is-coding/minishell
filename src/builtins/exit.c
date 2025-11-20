@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 15:01:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 18:25:58 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 18:00:31 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 #include "builtins/builtins.h"
 #include "libft.h"
 
-int	builtin_exit(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_exit(
+	__attribute__((unused)) t_shell *sh,
+	int argc,
+	__attribute__((unused)) char **argv,
+	__attribute__((unused)) char **envp)
 {
 	int		exit_code;
 
-	(void)argv;
-	(void)sh;
-	(void)envp;
 	exit_code = 0;
 	// FIX this is still not working
 	if (argc == 1)

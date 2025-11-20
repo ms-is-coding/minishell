@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 12:58:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 17:18:29 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef enum e_error
 	ERR_404,
 	ERR_NO_PERM,
 	ERR_HELP_NOT_FOUND,
+	ERR_HELP_DIRTY,
+	ERR_HELP_EXCESS,
 	ERR_PERROR,
 	ERR_UNKNOWN,
 	ERR_COUNT

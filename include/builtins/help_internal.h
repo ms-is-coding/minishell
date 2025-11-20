@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alias_internal.h                                   :+:      :+:    :+:   */
+/*   help_internal.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/06 00:33:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/13 14:51:26 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/11/18 13:53:55 by mattcarniel       #+#    #+#             */
+/*   Updated: 2025/11/18 14:46:18 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ALIAS_INTERNAL_H
-# define ALIAS_INTERNAL_H
+#ifndef HELP_INTERNAL_H
+# define HELP_INTERNAL_H
 
-# include "alias.h"
+int	sanitize_help(char **argv);
 
-size_t			alias_hash(t_alias *alias, const char *data);
-t_alias_bucket	*alias_find_key(t_alias *alias, const char *key);
-t_alias_bucket	*alias_find_empty(t_alias *alias, const char *key);
-
-#endif // ALIAS_INTERNAL_H
+#endif

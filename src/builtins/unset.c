@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/18 12:53:25 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/18 18:03:43 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #include <stdbool.h>
 
 //needs tweaking
-int	builtin_unset(t_shell *sh, int argc, char **argv, char **envp)
+int	builtin_unset(
+	t_shell *sh,
+	__attribute__((unused)) int argc,
+	char **argv,
+	__attribute__((unused)) char **envp)
 {
 	int			status;
 	t_result	result;
 
-	(void)argc;
-	(void)envp;
 	argv++;
 	status = 0;
 	while (*argv)
