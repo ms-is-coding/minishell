@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/19 00:58:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/21 23:24:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 #include "allocator/allocator.h"
 #include "env/env.h"
+#include "util/time.h"
+#include "util/git.h"
 #include "util/help.h"
 #include "parser/parser.h"
 #include "disasm/disasm.h"
@@ -92,47 +94,120 @@ static void	reset_prompt(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &def);
 }
 
-static int	repl(t_shell *sh)
+static void	prompt_exit_codes(t_shell *sh, char *prompt)
 {
-	char		*line;
-	t_result	result;
-	int			i;
-	char		prompt_buf[PROMPT_SIZE];
 	const char	*color;
 	int			code;
+	int			i;
 
+	if (!had_newline())
+		ft_snprintf(prompt, PROMPT_SIZE, ANSI_MAGENTA "⤶ " ANSI_RESET);
+	color = ANSI_RED;
+	if (ft_vector_at(&sh->vm.exit_codes, -1).value.i32 == 0)
+		color = ANSI_GREEN;
+	i = -1;
+	while (++i < (int)sh->vm.exit_codes.length - 1)
+	{
+		code = ft_vector_at(&sh->vm.exit_codes, i).value.i32;
+		if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
+			ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s ",
+				prompt, color, kill_signals(code - 128));
+		else
+			ft_snprintf(prompt, PROMPT_SIZE, "%s%s %i ",
+				prompt, color, code);
+	}
+	code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;
+	if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
+		ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s " ANSI_RESET,
+			prompt, color, kill_signals(code - 128));
+	else
+		ft_snprintf(prompt, PROMPT_SIZE, "%s%s %i " ANSI_RESET,
+			prompt, color, code);
+}
+
+static void	prompt_git_status(
+	__attribute__((unused)) t_shell *sh,
+	char *prompt)
+{
+	char			git_prompt[64];
+	t_git_status	git;
+
+	git = git_status_read();
+	if (git.branch[0] == '\0')
+		return ;
+	git_prompt[0] = '\0';
+	ft_strlcat(git_prompt, ANSI_MAGENTA " ", 64);
+	ft_strlcat(git_prompt, git.branch, 64);
+	ft_strlcat(git_prompt, " ", 64);
+	if (git.behind)
+		ft_snprintf(git_prompt, 64, "%s%i", git_prompt, git.behind);
+	if (git.ahead)
+		ft_snprintf(git_prompt, 64, "%s%i", git_prompt, git.ahead);
+	if (git.behind || git.ahead)
+		ft_strlcat(git_prompt, " ", 64);
+	if (git.staged)
+		ft_snprintf(git_prompt, 64, "%s+%i", git_prompt, git.staged);
+	if (git.dirty)
+		ft_snprintf(git_prompt, 64, "%s%i", git_prompt, git.dirty);
+	if (git.untracked)
+		ft_snprintf(git_prompt, 64, "%s%i", git_prompt, git.untracked);
+	if (git.staged || git.dirty || git.untracked)
+		ft_strlcat(git_prompt, " ", 64);
+	ft_strlcat(git_prompt, "", 64);
+	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_MAGENTA "%s" ANSI_RESET,
+		prompt, git_prompt);
+}
+
+static void	prompt_pwd(t_shell *sh, char *prompt)
+{
+	const char	*home;
+	char		pwd[PATH_MAX];
+	const char	*tmp;
+
+	tmp = env_get(&sh->env, "PWD");
+	if (tmp)
+		ft_strlcpy(pwd, tmp, PATH_MAX);
+	else
+		getcwd(pwd, PATH_MAX);
+	home = env_get(&sh->env, "HOME");
+	if (ft_strstr(pwd, home))
+		ft_snprintf(pwd, PATH_MAX, "~%s", pwd + ft_strlen(home));
+	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_BLUE " %s " ANSI_RESET,
+		prompt, pwd);
+}
+
+static void	prompt_time(__attribute__((unused)) t_shell *sh, char *prompt,
+	int64_t delta)
+{
+
+	if (delta <= 0)
+		return ;
+	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_YELLOW " %lims " ANSI_RESET,
+		prompt, delta);
+}
+
+static int	repl(t_shell *sh)
+{
+	int64_t		begin;
+	int64_t		end;
+	char		*line;
+	t_result	result;
+	char		prompt[PROMPT_SIZE];
+
+	begin = 0;
+	end = 0;
 	while (1)
 	{
 		if (sh->vm.active)
 			continue ;
-		i = -1;
-		prompt_buf[0] = '\0';
-		if (!had_newline())
-			ft_snprintf(prompt_buf, PROMPT_SIZE, ANSI_MAGENTA "⤶ " ANSI_RESET);
-		color = ANSI_RED;
-		if (ft_vector_at(&sh->vm.exit_codes, -1).value.i32 == 0)
-			color = ANSI_GREEN;
-		while (++i < (int)sh->vm.exit_codes.length - 1)
-		{
-			code = ft_vector_at(&sh->vm.exit_codes, i).value.i32;
-			if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
-				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s |",
-					prompt_buf, color, kill_signals(code - 128));
-			else
-				ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i |",
-					prompt_buf, color, code);
-		}
-		code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;
-		if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
-			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %s $" ANSI_RESET
-				ANSI_BOLD ANSI_CYAN " " ANSI_RESET,
-				prompt_buf, color, kill_signals(code - 128));
-		else
-			ft_snprintf(prompt_buf, PROMPT_SIZE, "%s%s %i $" ANSI_RESET
-				ANSI_BOLD ANSI_CYAN " " ANSI_RESET,
-				prompt_buf, color, code);
+		prompt[0] = '\0';
+		prompt_exit_codes(sh, prompt);
+		prompt_pwd(sh, prompt);
+		prompt_git_status(sh, prompt);
+		prompt_time(sh, prompt, end - begin - 1);
+		ft_strlcat(prompt, " ", PROMPT_SIZE);
 		reset_prompt();
-		line = readline(prompt_buf);
+		line = readline(prompt);
 		if (!line)
 			break ;
 		add_history(line);
@@ -142,7 +217,9 @@ static int	repl(t_shell *sh)
 		{
 			if (cli_is_set(&sh->cli, "disassemble"))
 				disasm(&sh->parser.program);
+			begin = time_get();
 			vm_run(&sh->vm, &sh->parser.program);
+			end = time_get();
 		}
 		else
 		{
