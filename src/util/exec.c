@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:59:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 20:00:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:27:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ static char	*read_stdout(int fd)
 	return (buf);
 }
 
+static void	close_stderr(void)
+{
+	int	devnull;
+
+	devnull = open("/dev/null", O_WRONLY);
+	dup2(devnull, STDERR_FILENO);
+	close(devnull);
+}
+
 char	*exec_with_output(char **argv)
 {
 	pid_t	pid;
@@ -53,7 +62,6 @@ char	*exec_with_output(char **argv)
 	int		stat;
 	char	*buf;
 
-	buf = NULL;
 	if (pipe(pipefd) == -1)
 		return (NULL);
 	pid = fork();
@@ -64,6 +72,7 @@ char	*exec_with_output(char **argv)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
+		close_stderr();
 		execve(argv[0], argv, (char **){NULL});
 		_exit(1);
 	}

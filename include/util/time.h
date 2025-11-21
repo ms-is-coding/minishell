@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   time.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 03:03:54 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:14:31 by smamalig         ###   ########.fr       */
+/*   Created: 2025/11/21 13:24:00 by smamalig          #+#    #+#             */
+/*   Updated: 2025/11/21 13:24:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#ifndef TIME_H
+# define TIME_H
 
-// On error, this function silently returns NULL
-// its max output is 1024 bytes
-char		*exec_with_output(char **argv);
+# include <stdint.h>
 
-int			secure_open(const char *file, int oflag);
-int			secure_execve(const char *path, char *const *argv,
-				char *const *envp)
-			__attribute__((nonnull(1, 2)));
+int64_t	time_get(void);
 
-#endif // EXEC_H
+#endif // TIME_H

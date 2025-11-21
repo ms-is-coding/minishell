@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:05:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:18:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/22 00:24:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ struct s_help
 [HELP_HEREDOC_EOF] = {
 	"Here-document delimited by end-of-file",
 	"https://tinyurl.com/4bbffxcx"},
+[HELP_UNSAFE_EXEC] = {
+	"The shell is currently vulnerable to TOCTOU. To avoid this warning, "
+	"please compile in release mode",
+	"https://tinyurl.com/57fh7f4s"}
 };
 
 void	help_warn(t_help_code code)

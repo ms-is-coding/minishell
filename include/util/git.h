@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   git.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/17 03:03:54 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:14:31 by smamalig         ###   ########.fr       */
+/*   Created: 2025/11/18 18:09:25 by smamalig          #+#    #+#             */
+/*   Updated: 2025/11/19 00:41:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#ifndef GIT_H
+# define GIT_H
 
-// On error, this function silently returns NULL
-// its max output is 1024 bytes
-char		*exec_with_output(char **argv);
+typedef struct git_status {
+	char	branch[128];
+	char	upstream[128];
+	int		ahead;
+	int		behind;
 
-int			secure_open(const char *file, int oflag);
-int			secure_execve(const char *path, char *const *argv,
-				char *const *envp)
-			__attribute__((nonnull(1, 2)));
+	int		staged;
+	int		dirty;
+	int		untracked;
+	int		conflicts;
+}	t_git_status;
 
-#endif // EXEC_H
+t_git_status	git_status_read(void);
+
+#endif // GIT_H
