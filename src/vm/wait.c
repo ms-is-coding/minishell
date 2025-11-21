@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/16 15:48:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/21 23:14:29 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	vm_wait(t_vm *vm, t_program *program)
 		else if (WIFCONTINUED(stat))
 			code = 0;
 		if (WCOREDUMP(stat))
-			ft_printf("[%i] %s (core dumped)\n", pid, strsignal(code - 128));
+			ft_dprintf(2, "[%i] %s (core dumped)\n", pid, strsignal(code - 128));
 		ignore((void *)ft_vector_push(&vm->exit_codes,
-			ft_gen_val(TYPE_OTHER, (t_any){.i32 = code})));
+				ft_gen_val(TYPE_OTHER, (t_any){.i32 = code})));
 	}
 	vm->pids.length = 0;
 }

@@ -6,11 +6,10 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/16 23:57:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/22 00:36:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
 #include "vm/bytecode.h"
 #include "vm/vm_internal.h"
 #include <fcntl.h>
@@ -38,14 +37,14 @@ void	vm_redir_in(t_vm *vm, t_program *program)
 	len = program_get_u16(program);
 	if (target_fd == -1)
 		target_fd = 0;
-	filename = ft_strndup((char *)program->data + program->pc, len);
+	filename = allocator_strndup((char *)program->data + program->pc, len);
 	file_fd = open(filename, O_RDONLY);
 	if (file_fd == -1)
 	{
 		ft_dprintf(2, "%s: %m\n", filename);
 		vm->had_error = true;
 	}
-	free(filename);
+	allocator_free_ptr(filename);
 	redir_insert(vm, target_fd, file_fd);
 	program->pc += len;
 }
@@ -63,7 +62,7 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 	len = program_get_u16(program);
 	if (target_fd == -1)
 		target_fd = 1;
-	filename = ft_strndup((char *)program->data + program->pc, len);
+	filename = allocator_strndup((char *)program->data + program->pc, len);
 	if (opcode & REDIR_APPEND_BIT)
 		file_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
@@ -73,7 +72,7 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 		ft_dprintf(2, "%s: %m\n", filename);
 		vm->had_error = true;
 	}
-	free(filename);
+	allocator_free_ptr(filename);
 	redir_insert(vm, target_fd, file_fd);
 	program->pc += len;
 }

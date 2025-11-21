@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 19:37:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/21 16:34:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static void	get_user_home(t_expander *exp, const char *user,
 	exp->len += ft_strlen(home);
 	if (mode == VEXPM_EXTRACT)
 		ft_strcat(exp->frame->argv[exp->frame->argc], home);
+	ft_free((void *)(intptr_t)home);
 }
 
 static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)

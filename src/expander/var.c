@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 21:28:36 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:08:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static const char	*extract_var(t_expander *exp)
 		key[k++] = expander_next(exp);
 	key[k] = '\0';
 	if (k == 0)
-		return (ft_strdup("$"));
+		return (allocator_strdup("$"));
 	return (env_get(&((t_shell *)exp->sh)->env, key));
 }
 

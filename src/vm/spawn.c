@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/17 23:49:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/22 00:24:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
 #include "builtins/builtins.h"
 #include "shell.h"
+#include "util/exec.h"
 #include "vm/vm_internal.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -199,7 +200,7 @@ void	vm_spawn(t_vm *vm)
 		{
 			if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
 				ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
-			execve(vm->frame.argv[0], vm->frame.argv, env);
+			secure_execve(vm->frame.argv[0], vm->frame.argv, env);
 			ft_dprintf(2, "%s: cannot execute binary file: %m\n",
 				vm->frame.argv[0]);
 			exit(126);
@@ -211,7 +212,7 @@ void	vm_spawn(t_vm *vm)
 			sh_destroy(sh);
 			exit(127);
 		}
-		execve(exec, vm->frame.argv, env);
+		secure_execve(exec, vm->frame.argv, env);
 		ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
 		sh_destroy(sh);
 		exit(126);
