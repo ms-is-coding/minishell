@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/19 00:58:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:19:10 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,14 @@ static int	set_export(t_env *env, const char *arg, char flags)
 
 	if (!is_valid_var(arg))
 		return (builtin_error(ctx("export", arg), ERR_INVALID_ID, 1));
-	eq = ft_strchr(arg, '=');
+	key = allocator_strdup(arg);
+	eq = ft_strchr(key, '=');
+	value = NULL;
 	if (eq)
 	{
 		*eq = '\0';
-		value = ft_strdup(eq + 1);
+		value = eq + 1;
 	}
-	else
-		value = NULL;
-	key = ft_strdup(arg);
 	if (flags & FLAG_N)
 	{
 		if (env_set(env, key, value, 0) != RESULT_OK)
