@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 06:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 15:09:20 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/19 15:17:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env/env.h"
+#include "env/env_internal.h"
 
-static void	env_free_bucket(t_env_bucket *bucket)
+void	env_free_bucket(t_env_bucket *bucket)
 {
 	if (!bucket->key || bucket->flags & ENV_FLAG_STACK)
 		return ;
