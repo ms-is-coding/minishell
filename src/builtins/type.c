@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/20 11:42:21 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/12/01 18:05:34 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ static bool	get_flags(const char *opt, char *flags)
 	{
 		if (opt[i] == 'a')
 			*flags |= FLAG_A;
-		else if (opt[i] == 'p')
-			*flags |= FLAG_P;
 		else if (opt[i] == 'P')
-			*flags |= FLAG_PP;
+			*flags = (*flags | (FLAG_P | FLAG_PP)) & ~FLAG_T;
+		else if (opt[i] == 'p')
+			*flags = (*flags | FLAG_P) & ~FLAG_T;
 		else if (opt[i] == 't')
-			*flags |= FLAG_T;
+			*flags = (*flags | FLAG_T) & ~FLAG_P;
 		else
 		{
 			*flags = FLAG_ERR;
@@ -76,19 +76,17 @@ static bool	try_builtin(char *name, char flags)
 	return (true);
 }
 
-static bool	try_exec(char *arg, const char *env_path, char flags)
+static bool	try_exec(const char *arg, const char *env_path, char flags)
 {
-	char	path[PATH_MAX];
-	size_t	len;
+	static char	path[PATH_MAX];
+	size_t		len;
 
-	if (!env_path)
+	if (!arg || !env_path)
 		return (false);
 	while (ft_strchr(env_path, ':'))
 	{
-		len = ft_strcspn(env_path, ":"); //if path_max is smaller, big issue
-		ft_strlcpy(path, env_path, len + 1);
-		ft_strlcat(path, "/", PATH_MAX);
-		ft_strlcat(path, arg, PATH_MAX);
+		len = ft_strcspn(env_path, ":");
+		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
 		if (access(path, X_OK) == 0)
 		{
 			type_info(arg, path, TYPE_EXEC, flags);
@@ -110,22 +108,22 @@ int	builtin_type(
 	char		flags;
 	bool		found;
 
-	path = env_get(&sh->env, "PATH");
 	argv++;
+	path = env_get(&sh->env, "PATH");
 	flags = set_flags(&argc, &argv);
+	if (flags & FLAG_ERR)
+		return (builtin_error(ctx("type", NULL), ERR_INVALID_OPT, 2));
 	status = 0;
 	while (*argv)
 	{
-		found = try_builtin(*argv, flags);
+		if (!(flags & FLAG_PP))
+			found = try_builtin(*argv, flags);
 		if (!found || (flags & (FLAG_A | FLAG_PP)))
 			found |= try_exec(*argv, path, flags);
-		if (!found)
-		{
-			if (!(flags & (FLAG_P | FLAG_PP | FLAG_T)))
-				status = builtin_error(ctx("type", *argv), ERR_404, 1);
-			else
-				status = 1;
-		}
+		if (!found && !(flags & (FLAG_P | FLAG_PP | FLAG_T)))
+			status = builtin_error(ctx("type", *argv), ERR_404, 1);
+		else if (!found)
+			status = 1;
 		argv++;
 	}
 	return (status);

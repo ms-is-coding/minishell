@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:13:39 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/20 11:51:55 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/12/01 17:59:24 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,28 @@ static const char	*g_help_true[] = {
 	"    Always succeeds.",
 	NULL};
 
+static const char	*g_help_type[] = {
+	"type",
+	"Display information about command type.",
+	"type [-aptP] [name ...]",
+	"    For each NAME, indicate how it would be interpreted if used as a\n"
+	"    command name.\n"
+	"\n"
+	"    Options:\n"
+	"      -a\tdisplay all locations containing an executable named NAME;\n"
+	"        \tincludes builtins if the `-p' flag is not also used\n"
+	"      -P\tforce a PATH search for each NAME, even if it is a shell\n"
+	"        \tbuiltin, and returns the name of the disk file that would be\n"
+	"        \texecuted\n"
+	"      -p\treturns either the name of the disk file that would be\n"
+	"        \texecuted, or nothing if `type -t NAME' would not return `file'\n"
+	"      -t\toutput a single word which is one of `builtin' or `file' if\n"
+	"        \tNAME is a shell builtin or disk file, respectively\n"
+	"\n"
+	"    Exit Status:\n"
+	"    Returns 0 if all NAMEs are found; fails if any are not found.",
+	NULL};
+
 static const char	*g_help_help[] = {
 	"help",
 	"Display information about builtin commands.",
@@ -259,6 +281,7 @@ static t_help		g_help[] = {
 {"readonly", g_help_readonly},
 {"return", g_help_return},
 {"true", g_help_true},
+{"type", g_help_type},
 {"help", g_help_help},
 {NULL, NULL}
 };

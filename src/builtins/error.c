@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/18 17:23:21 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/27 15:10:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static const char	*get_error_info(t_error err)
 	[ERR_INVALID_ID] = ": not a valid identifier",
 	[ERR_NO_HOME] = ": HOME not found",
 	[ERR_NO_OLDPWD] = ": OLDPWD not found",
+	[ERR_PREV_DIR] = ": Roll-backed to previous DIR, which does not exist",
+	[ERR_CURR_DIR] = ": Current DIR does not exist",
 	[ERR_BAD_SET] = ": could not set variable",
 	[ERR_TOO_LONG] = ": path too long",
 	[ERR_NOT_NUMERIC] = ": numeric argument required",
@@ -40,6 +42,7 @@ static const char	*get_error_info(t_error err)
 	[ERR_HELP_NOT_FOUND] = ": help topic not found",
 	[ERR_HELP_DIRTY] = ": Please mind your language when asking for help.",
 	[ERR_HELP_EXCESS] = ": Are you begging for help?",
+	[ERR_ALLOC] = ": internal memory allocation failed",
 	[ERR_PERROR] = ": system error",
 	[ERR_UNKNOWN] = ": unknown error"
 	};

@@ -5,124 +5,110 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 15:32:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 17:52:41 by mattcarniel      ###   ########.fr       */
+/*   Created: 2025/11/24 09:44:16 by mattcarniel       #+#    #+#             */
+/*   Updated: 2025/12/01 19:14:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "env/env.h"
 #include "builtins/builtins.h"
-#include "builtins/cd_internal.h"
 #include "libft.h"
 #include "allocator/allocator.h"
 
-static bool	get_current_path(t_env *env, char *cwd)
+static const char	*resolve_cwd(t_env *env, const char *path)
 {
 	const char	*ptr;
 
-	if (!getcwd(cwd, PATH_MAX))
-	{
-		ptr = env_get(env, "PWD");
-		if (!ptr || !*ptr)
-			return (false);
-		ft_strlcpy(cwd, ptr, PATH_MAX);
-	}
-	return (true);
-}
-
-static int	get_relative_path(char *new, const char *old, const char *path)
-{
-	if (ft_strlen(old) + 1 + ft_strlen(path) + 1 > PATH_MAX)
-		return (builtin_error(ctx("cd", path), ERR_TOO_LONG, 1));
-	ft_strlcpy(new, old, PATH_MAX);
-	if (new[ft_strlen(new) - 1] != '/')
-		ft_strlcat(new, "/", PATH_MAX);
-	ft_strlcat(new, path, PATH_MAX);
-	return (0);
-}
-
-static int	resolve_pwd(t_env *env, char *new, char *old, const char *path)
-{
-	const char	*ptr = NULL;
-
-	if (!get_current_path(env, old))
-		return (builtin_error(ctx("cd", NULL), ERR_PERROR, 1));
+	ptr = path;
 	if (!path)
 	{
 		ptr = env_get(env, "HOME");
-		if (!ptr || !*ptr)
-			return (builtin_error(ctx("cd", NULL), ERR_NO_HOME, 1));
+		if (!ptr)
+			builtin_error(ctx("cd", NULL), ERR_NO_HOME, 1);
 	}
 	else if (ft_strcmp(path, "-") == 0)
 	{
 		ptr = env_get(env, "OLDPWD");
-		if (!ptr || !*ptr)
-			return (builtin_error(ctx("cd", NULL), ERR_NO_OLDPWD, 1));
+		if (!ptr)
+			builtin_error(ctx("cd", NULL), ERR_NO_OLDPWD, 1);
 	}
-	else if (path[0] == '/')
-		ptr = path;
+	if (chdir(ptr))
+	{
+		builtin_error(ctx("cd", path), ERR_PERROR, 1);
+		return (NULL);
+	}
+	return (ptr);
+}
+
+static void	free_pwds(char **old, char **new)
+{
+	if (*old)
+		allocator_free_ptr(*old);
+	if (*new)
+		allocator_free_ptr(*new);
+}
+
+static int	get_pwds(t_shell *sh, const char *cwd, char **old, char **new)
+{
+	const char	*ptr;
+
+	if (!getcwd(*new, PATH_MAX))
+	{
+		if (ft_strcmp(cwd, "..") == 0)
+			return (builtin_error(ctx("cd", cwd), ERR_PREV_DIR, 1));
+		if (ft_strcmp(cwd, ".") == 0)
+			return (builtin_error(ctx("cd", cwd), ERR_CURR_DIR, 1));
+		return (builtin_error(ctx("cd", cwd), ERR_PERROR, 1));
+	}
+	ptr = env_get(&sh->env, "PWD");
+	if (!ptr)
+		ft_strlcpy(*old, "", PATH_MAX);
 	else
-		return (get_relative_path(new, old, path));
-	if (ft_strlcpy(new, ptr, PATH_MAX) > PATH_MAX)
-		return (builtin_error(ctx("cd", ptr), ERR_TOO_LONG, 1));
+		ft_strlcpy(*old, ptr, PATH_MAX);
 	return (0);
 }
 
-static void	normalize_path(char *path)
+static int	set_pwds(t_shell *sh, const char *old, const char *new)
 {
-	const char	*src;
-	char		*dst;
-	bool		is_abs;
-
-	is_abs = false;
-	if (!*path || *path == '/')
-		is_abs = true;
-	src = path;
-	dst = path;
-	while (*src)
-	{
-		if (*src == '/')
-			collapse_slashes(&src, &dst, &path);
-		else if (src[0] == '.' && (src[1] == '/' || src[1] == '\0'))
-			skip_current_dir(&src);
-		else if (src[0] == '.' && src[1] == '.'
-			&& (src[2] == '/' || src[2] == '\0'))
-			handle_parent_dir(&src, &dst, path);
-		else
-		{
-			while (*src && *src != '/')
-				*dst++ = *src++;
-		}
-	}
-	finalize_path(path, &dst, is_abs);
+	if (env_set(&sh->env, "OLDPWD", old, ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY))
+		return (builtin_error(ctx("cd", "OLDPWD"), ERR_BAD_SET, 1));
+	if (env_set(&sh->env, "PWD", new, ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY))
+		return (builtin_error(ctx("cd", "PWD"), ERR_BAD_SET, 1));
+	return (0);
 }
 
 int	builtin_cd(
 	t_shell *sh,
-	__attribute__((unused)) int argc,
+	int argc,
 	char **argv,
 	__attribute__((unused)) char **envp)
 {
-	char		oldbuf[PATH_MAX];
-	char		newbuf[PATH_MAX];
-	int			status;
+	const char	*cwd;
+	char		*old;
+	char		*new;
 
-	if (argv[1] && argv[2])
+	if (argc > 2)
 		return (builtin_error(ctx("cd", NULL), ERR_TOO_MANY_ARGS, 2));
-	status = resolve_pwd(&sh->env, newbuf, oldbuf, argv[1]);
-	if (status)
-		return (status);
-	normalize_path(newbuf);
-	if (chdir(newbuf) != 0)
-		return (builtin_error(ctx("cd", newbuf), ERR_PERROR, 1));
-	env_set(&sh->env, "OLDPWD", allocator_strdup(oldbuf),
-		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
-	env_set(&sh->env, "PWD", allocator_strdup(newbuf),
-		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
-	if (argv[1] && ft_strcmp(argv[1], "-") == 0)
-		ft_printf("%s\n", newbuf);
+	cwd = resolve_cwd(&sh->env, argv[1]);
+	if (!cwd)
+		return (1);
+	new = allocator_calloc(PATH_MAX, sizeof(char));
+	old = allocator_calloc(PATH_MAX, sizeof(char));
+	if (!new || !old)
+	{
+		free_pwds(&old, &new);
+		return (builtin_error(ctx("cd", NULL), ERR_ALLOC, 1));
+	}
+	if (get_pwds(sh, cwd, &old, &new))
+		return (free_pwds(&old, &new), 1);
+	if (set_pwds(sh, old, new))
+		return (free_pwds(&old, &new), 1);
+	if (argc == 2 && ft_strcmp(argv[1], "-") == 0)
+		ft_printf("%s\n", new);
 	return (0);
 }

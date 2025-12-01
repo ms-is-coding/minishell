@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 17:18:29 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2025/11/26 11:58:15 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef enum e_error
 	ERR_INVALID_ID,
 	ERR_NO_HOME,
 	ERR_NO_OLDPWD,
+	ERR_PREV_DIR,
+	ERR_CURR_DIR,
 	ERR_BAD_SET,
 	ERR_TOO_LONG,
 	ERR_NOT_NUMERIC,
@@ -31,6 +33,7 @@ typedef enum e_error
 	ERR_HELP_NOT_FOUND,
 	ERR_HELP_DIRTY,
 	ERR_HELP_EXCESS,
+	ERR_ALLOC,
 	ERR_PERROR,
 	ERR_UNKNOWN,
 	ERR_COUNT
