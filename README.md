@@ -1,29 +1,39 @@
-TraSH - The Trash Shell, 0.0.0-beta
-Copyright (C) 2025 ms-is-coding and SkarEye
-License GPLv3: GNU GPL v.3 https://gnu.org/licenses/gpl-3.0.html
+# TraSH - The Trash Shell
 
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it.
-
-TraSH (TraSH Recycles Again SHell) is a CLI program that attempts to reproduce
-as best as it can the infamous Bash shell, following POSIX standard.
+TraSH (TraSH Replaces Another SHell) is a custom shell inspired by
+the infamous Bash shell, following the POSIX standard.
 TraSH started out as a 'MiniShell' project, required by the 42 Common Core.
+The commands are AoT-compiled to bytecode for faster and more efficient command
+execution, instead of the more commonly used abstact syntax tree execution.
 
-To install TraSH for yourself :
+## Installation
 
-1 - Clone the Git Repository into a local working directory.
+1. Make sure you have the tools to compile this project installed. You can get them
+by running
+```
+sudo apt update && sudo apt install build-essentials
+```
+or your distribution's equivalent
 
-2 - Making use of the Makefile, when in the TraSH directory input the command :
+2. Clone this repository
 
-	make <build_type>
+```
+# using HTTPS
+git clone https://github.com/ms-is-coding/minishell.git
+# or using SSH
+git clone git@github.com:ms-is-coding/minishell.git
+```
 
-With each build type being as specified :
-	- default	:	explicitely runs the default Make rules.
-	- debug		:	adds more compilation flags & debug symbols.
-	- release	:	uses the flag '-O2' & for optimized program execution & adds
-					forbidden features. Disables the debug asserts.
-	- sanitize	:	attaches the ASAN, UBSAN & LSAN libraries, for address
-					errors, undefined behavior & leaks respectively.
+## Build Instructions
+
+TraSH has several available build targets:
+| Target   | Description                                      |
+|----------|--------------------------------------------------|
+| default  | explicitely runs the default Make rules.         |
+| debug    | adds stricter compilation flags & debug symbols. |
+| release  | enables compiler optimizations & adds extra features. Disables the debug asserts.                       |
+| sanitize | attaches the ASAN, UBSAN & LSAN libraries, for address errors, undefined behavior & leaks respectively. |
+
 By default, the 'default' flag is used.
 
 Other more traditional Make rules exist :
@@ -38,8 +48,11 @@ Other more traditional Make rules exist :
 	- tidy		:	executes 'clang-tidy', which checks for errors in the code.
 	- test(WiP)	:	runs tests suites to check program robustness.
 
+## Running
+
 3 - Execute the newly created executable. Depending on the environment you are
-working from, it can be named 'minishell' or 'TraSH'.
+working from, it can be named 'minishell' or 'trash'.
+
 When executing, you can define certain flags :
 	- --dissassemble (-d)	:
 	Dissassembles and prints the bytecode of each executed command line.
@@ -54,32 +67,26 @@ When executing, you can define certain flags :
 	- --posix (-p)			:	(NOT YET IMPLEMENTED)
 	removes some of the non-posix features.
 
-And you're in ! TraSH uses AOT (Ahead Of Time) compilation to bytecode for
-faster and more efficient command execution, such as more commonly used
-binary tree execution.
+## Usage
 
-TraSH also has some built-in functions ready to use :
-	- cd
-	- echo
-	- env
-	- exec
-	- exit
-	- export
-	- false
-	- logout
-	- pwd
-	- readonly
-	- return
-	- set
-	- true
-	- type
-	- unset
+TraSH can be used like any other shell, and exposes the following built-ins for
+quality-of-life:
+`cd`, `echo`, `env`, `exec`, `exit`, `export`, `false`, `logout`, `pwd`,
+`readonly`, `return`, `set`, `true`, `type`, `unset`, `help`
 
-For more information on these built-ins, use when in TraSH :
+For more information on these built-ins, run `help <builtin_name>` in TraSH
 
-	help <builtin_name>
+## Contributing
 
 TraSH functions as close as it can to Bash, but isn't perfect and is prone to
-bugs. If you find any, please feel free to reach out to ms-is-coding or SkarEye
-so we can better the code and ourselves.
+bugs. If you find any, please feel free to open an issue.
 
+## License
+
+Copyright (C) 2025 ms-is-coding and SkarEye
+License GPLv3: GNU GPL v.3 https://gnu.org/licenses/gpl-3.0.html
+
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it.
+
+See [LICENSE](LICENSE) for more details.
