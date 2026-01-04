@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:17:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 12:27:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 		if (ft_strcmp(delim, line) == 0)
 			break ;
 		ft_dprintf(fd, "%s\n", line);
+		free(line);
 	}
 	vm->here_doc = false;
 }
@@ -69,7 +70,7 @@ void	vm_heredoc(t_vm *vm, t_program *program)
 	delim = ft_strndup((char *)program->data + program->pc, len);
 	ft_snprintf(filename, PATH_MAX, "/tmp/.msh_heredoc_%i", vm->redir_count);
 	heredoc_loop(vm, filename, delim);
-	free(delim);
+	ft_free(delim);
 	file_fd = open(filename, O_RDONLY, 0600);
 	if (file_fd == -1)
 	{

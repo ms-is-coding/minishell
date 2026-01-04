@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 23:59:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:31:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 12:21:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	secure_execve(const char *path, char *const *argv, char *const *envp)
 
 int	secure_execve(const char *path, char *const *argv, char *const *envp)
 {
-	help_warn(HELP_UNSAFE_EXEC);
 	execve(path, argv, envp);
 	return (-1);
 }
