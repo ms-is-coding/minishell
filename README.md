@@ -8,18 +8,20 @@ execution, instead of the more commonly used abstact syntax tree execution.
 
 ## Installation
 
-1. Make sure you have the tools to compile this project installed. You can get them
-by running
+1. Make sure you have the tools to compile this project installed. You can get
+them by running:
 ```
 sudo apt update && sudo apt install build-essentials
 ```
-or your distribution's equivalent
+or your distribution's equivalent.
 
 2. Clone this repository
 
 ```
 # using HTTPS
 git clone https://github.com/ms-is-coding/minishell.git
+```
+```
 # or using SSH
 git clone git@github.com:ms-is-coding/minishell.git
 ```
@@ -31,41 +33,36 @@ TraSH has several available build targets:
 |----------|--------------------------------------------------|
 | default  | explicitely runs the default Make rules.         |
 | debug    | adds stricter compilation flags & debug symbols. |
-| release  | enables compiler optimizations & adds extra features. Disables the debug asserts.                       |
+| release  | enables compiler optimizations & adds extra features. Disables the debug asserts. |
 | sanitize | attaches the ASAN, UBSAN & LSAN libraries, for address errors, undefined behavior & leaks respectively. |
 
 By default, the 'default' flag is used.
 
-Other more traditional Make rules exist :
-	- bonus		:
-	- norm		:	executes the 42 'norminette', which checks if the code is
-					written following strict 42 syntax.
-	- postbuild	:
-	- libft		:	recompiles the 'libft' library.
-	- clean		:	removes object files & directory.
-	- fclean	:	removes object files & directory, & executable.
-	- re		:	recompiles all object files & executable.
-	- tidy		:	executes 'clang-tidy', which checks for errors in the code.
-	- test(WiP)	:	runs tests suites to check program robustness.
+Other more traditional Make rules exist:
+| Rule      | Description                                     |
+|-----------|-------------------------------------------------|
+| bonus     | builds the project using 'release'.             |
+| norm      | executes the 42 'norminette', which checks if the code is written following strict 42 syntax. |
+| postbuild | if the executable exists and is up to date, copies it to the root directory |
+| libft     | recompiles the 'libft' library.                 |
+| clean     | removes object files & directory.               |
+| fclean    | removes object files & directory, & executable. |
+| re        | recompiles all object files & executable.       |
+| tidy      | executes 'clang-tidy', which checks for errors in the code. |
+| test(WiP) | runs tests suites to check program robustness.  |
 
 ## Running
 
 3 - Execute the newly created executable. Depending on the environment you are
 working from, it can be named 'minishell' or 'trash'.
 
-When executing, you can define certain flags :
-	- --dissassemble (-d)	:
-	Dissassembles and prints the bytecode of each executed command line.
-	This does not work when working on the 'realease' version.
-
-	- --verbose	(-v)		:	(NOT YET IMPLEMENTED)
-	prints everything TraSH will do.
-
-	- --version				:
-	runs TraSH, prints the current version, exits.
-
-	- --posix (-p)			:	(NOT YET IMPLEMENTED)
-	removes some of the non-posix features.
+When executing, you can define certain flags:
+| Flag                | Description                           |
+|---------------------|---------------------------------------|
+| --dissassemble (-d) | Dissassembles and prints the bytecode of each executed command line. This does not work when working on the 'realease' version. |
+| --verbose (-v)      | (NOT YET IMPLEMENTED) prints everything TraSH will do.|
+| --version           | runs TraSH, prints the current version, exits. |
+| --posix (-p)        | (NOT YET IMPLEMENTED) removes some of the non-posix features. |
 
 ## Usage
 
