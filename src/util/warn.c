@@ -6,19 +6,21 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:05:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:24:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:34:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util/help.h"
 #include "ansi.h"
-#include "libft_printf.h"
+#include "core/stdio.h"
 
 struct s_help
 {
 	const char	*msg;
 	const char	*url;
-}	help[HELP_COUNT] = {
+};
+
+static struct s_help	g_help[HELP_COUNT] = {
 [HELP_HOME_EXPAND] = {"If HOME is unset, the results are unspecified",
 	"https://tinyurl.com/2ywa3tm8"},
 [HELP_EXPORT_NOARG] = {
@@ -37,5 +39,5 @@ void	help_warn(t_help_code code)
 {
 	ft_dprintf(2, ANSI_YELLOW"WARNING: "ANSI_RESET"%s"
 		"\n\tVisit "ANSI_CYAN"%s"ANSI_RESET" for more details\n",
-		help[code].msg, help[code].url);
+		g_help[code].msg, g_help[code].url);
 }

@@ -6,13 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:21:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:30:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm/bytecode.h"
 #include "vm/vm_internal.h"
 #include "allocator/allocator.h"
+#include "core/stdio.h"
 #include <signal.h>
 
 static t_exec_handler	dispatch_opcode(t_opcode opcode)

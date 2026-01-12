@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:15:20 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/02 22:53:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/27 18:14:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ t_result	parser_consume(t_parser *p,
 		parser_advance(p);
 		return (RESULT_OK);
 	}
-	print_error(p, p->curr_token, error);
+	if (p->curr_token.type == TOK_EOF)
+		print_error(p, p->prev_token, error);
+	else
+		print_error(p, p->curr_token, error);
 	return (RESULT_ERROR);
 }
 

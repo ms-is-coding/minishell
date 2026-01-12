@@ -6,12 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 16:39:19 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:25:27 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:33:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
-#include "libft.h"
+#include "core/stdio.h"
+#include "core/string.h"
 
 char	**env_build(t_env *env, t_arena *arena)
 {

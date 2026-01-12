@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:33:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/17 23:44:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:42:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ typedef void	(*t_exec_handler)(t_vm *vm, t_program *program);
 void	vm_dispatch(t_vm *vm, int sig);
 void	vm_spawn(t_vm *vm);
 
-void	vm_run_range(t_vm *vm, t_program *program, size_t end);
-
 void	vm_wait(t_vm *vm, t_program *program);
 
-void	vm_subshell(t_vm *vm, t_program *program);
 void	vm_command(t_vm *vm, t_program *program);
 void	vm_exec(t_vm *vm, t_program *program);
 void	vm_arg(t_vm *vm, t_program *program);

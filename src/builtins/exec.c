@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 17:59:58 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 16:54:35 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stdlib.h>
 
 #include "builtins/builtins.h"
-#include "libft.h"
+#include "core/string.h"
+#include "core/stdio.h"
 
 static char	*find_exec(const char *arg, char **envp)
 {

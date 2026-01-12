@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:05:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 16:58:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:03:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm/bytecode.h"
+#include "core/string.h"
 
 t_result	program_write_u8(t_program *program, uint8_t data)
 {

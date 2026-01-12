@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:26:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:45:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:54:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stddef.h>
 # include <stdint.h>
 
-# include "libft.h"
+# include "core/stdlib.h"
 
 # define MAX_CHUNK 0x10000
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/27 15:10:21 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:07:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 #include "builtins/builtins.h"
-#include "libft.h"
+#include "core/string.h"
 
 #define THREE_DOT	"..."
 #define MSG_LIMIT	128

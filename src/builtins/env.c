@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:53:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:06:52 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:07:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "builtins/builtins.h"
-#include "libft.h"
+#include "core/string.h"
 
 static int	env_exec(t_shell *sh, int argc, char **argv, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 16:34:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/06 22:40:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "util/exec.h"
 #include "util/help.h"
 #include "shell.h"
+#include "core/string.h"
+#include "core/stdio.h"
 
 static char	*extract_user(t_expander *exp)
 {
@@ -22,14 +24,10 @@ static char	*extract_user(t_expander *exp)
 	size_t		u;
 
 	u = 0;
-	if (!(ft_islower(exp->next_char)
-			|| exp->next_char == '-'
-			|| exp->next_char == '_'))
+	if (!exp->next_char || exp->next_char == '/')
 		return (NULL);
 	while (exp->next_char && u < sizeof(user) - 1
-		&& (ft_islower(exp->next_char)
-			|| exp->next_char == '-'
-			|| exp->next_char == '_'))
+		&& (exp->next_char != '/'))
 		user[u++] = expander_next(exp);
 	user[u] = '\0';
 	return (user);

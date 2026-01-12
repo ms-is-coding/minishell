@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   subshell.c                                         :+:      :+:    :+:   */
+/*   log.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/19 23:37:37 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/20 00:45:06 by smamalig         ###   ########.fr       */
+/*   Created: 2026/01/04 12:33:13 by smamalig          #+#    #+#             */
+/*   Updated: 2026/01/04 12:48:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "disasm/disasm_internal.h"
-#include "vm/bytecode.h"
+#ifndef LOG_H
+# define LOG_H
 
-void	disasm_subshell(t_program *program, size_t *offset_ptr)
+# include "shell.h"
+
+typedef enum e_verbosity
 {
-	disasm_print_i32(program, offset_ptr, 1);
-	disasm_print_desc("SUBSHELL");
-}
+	VERBOSITY_GET,
+	VERBOSITY_VERBOSE,
+	VERBOSITY_XTRACE,
+}	t_verbosity;
+
+t_verbosity	log_verbosity(t_verbosity v);
+
+void		log_error(const char *fmt, ...)
+			__attribute__((format(printf, 1, 2)));
+void		log_verbose(const char *line);
+void		log_xtrace(t_shell *sh, const char *fmt, ...)
+			__attribute__((format(printf, 2, 3)));
+
+#endif

@@ -6,14 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/12/01 19:21:31 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:09:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 #include "builtins/export_internal.h"
 #include "env/env.h"
-#include "libft.h"
+#include "core/string.h"
+#include "core/ctype.h"
 #include <stdbool.h>
 
 #define FLAG_N		1

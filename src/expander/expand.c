@@ -6,12 +6,18 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 20:10:20 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/12 16:03:00 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "allocator/allocator.h"
+#include <sys/types.h>
+#include <dirent.h>
 #include "expander/expander.h"
 #include "expander/expander_internal.h"
+#include "core/string.h"
+#include "core/stdio.h"
+#include "shell.h"
 
 void	expander_expand_quotes(t_expander *exp, t_var_expansion_mode mode)
 {
@@ -27,6 +33,43 @@ void	expander_expand_quotes(t_expander *exp, t_var_expansion_mode mode)
 	}
 }
 
+__attribute__((__always_inline__))
+inline bool	my_readdir(DIR *dir, struct dirent **dirent)
+{
+	*dirent = readdir(dir);
+	if (!*dirent)
+		return (false);
+	return (true);
+}
+
+void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
+{
+	DIR				*dir;
+	struct dirent	*dirent;
+	t_allocator		*alc;
+
+	dir = opendir(".");
+	while (my_readdir(dir, &dirent))
+	{
+		if (dirent->d_name[0] == '.')
+			continue ;
+		if (mode == VEXPM_PREPARE)
+		{
+			alc = &((t_shell *)exp->sh)->allocator;
+			exp->frame->argv[exp->frame->argc]
+				= allocator_alloc(alc, dirent->d_reclen,
+					exp->frame->arena).data;
+			if (!exp->frame->argv[exp->frame->argc])
+				return ;
+			exp->frame->argv[exp->frame->argc][0] = '\0';
+		}
+		else if (mode == VEXPM_EXTRACT)
+			ft_strlcpy(exp->frame->argv[exp->frame->argc], dirent->d_name, 256);
+		exp->frame->argc++;
+	}
+	closedir(dir);
+}
+
 void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 {
 	int	prev_argc;
@@ -35,6 +78,8 @@ void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 		prev_argc = exp->frame->argc;
 	if (exp->next_char == '~')
 		expander_user(exp, mode);
+	if (exp->next_char == '*')
+		expander_wildcard(exp, mode);
 	while (exp->next_char)
 	{
 		expander_next(exp);

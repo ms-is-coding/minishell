@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 12:27:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:30:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <readline/readline.h>
+#include "core/string.h"
+#include "core/stdio.h"
 
 static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 {

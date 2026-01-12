@@ -6,10 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:33:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 15:30:41 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:53:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "core/ctype.h"
 #include "lexer/lexer.h"
 #include "lexer/lexer_internal.h"
 

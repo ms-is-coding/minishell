@@ -6,15 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:11 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/12/01 17:59:45 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:12:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <linux/limits.h>
 #include <stddef.h>
 #include <unistd.h>
 #include "builtins/type_internal.h"
-#include "builtins/builtins.h"
-#include "libft.h"
+#include "core/string.h"
 
 static size_t	fill_t(char *buf, char type)
 {
@@ -37,7 +37,7 @@ static size_t	fill_e(char *buf, const char *name, const char *path, char type)
 {
 	ft_strlcpy(buf, name, PATH_MAX);
 	if (type & TYPE_BUILTIN)
-		return (ft_strlcat(buf, " is a builtin", PATH_MAX));
+		return (ft_strlcat(buf, " is a shell builtin", PATH_MAX));
 	else if (type & TYPE_EXEC)
 	{
 		ft_strlcat(buf, " is ", PATH_MAX);

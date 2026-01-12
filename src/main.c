@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/01 19:22:08 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:50:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
 #include <strings.h>
 #include <sys/types.h>
 #include <termios.h>
@@ -37,8 +36,10 @@
 #include "disasm/disasm.h"
 #include "cli/cli.h"
 #include "vm/vm.h"
+#include "core/stdio.h"
+#include "core/string.h"
+#include "core/stdlib.h"
 
-#include "libft.h"
 #include "ansi.h"
 #include "shell.h"
 
@@ -103,12 +104,12 @@ static void	prompt_exit_codes(t_shell *sh, char *prompt)
 	if (!had_newline())
 		ft_snprintf(prompt, PROMPT_SIZE, ANSI_MAGENTA "⤶ " ANSI_RESET);
 	color = ANSI_RED;
-	if (ft_vector_at(&sh->vm.exit_codes, -1).value.i32 == 0)
+	if (vec_get(sh->vm.exit_codes, -1) == 0)
 		color = ANSI_GREEN;
 	i = -1;
-	while (++i < (int)sh->vm.exit_codes.length - 1)
+	while (++i < (int64_t)vec_length(sh->vm.exit_codes) - 1)
 	{
-		code = ft_vector_at(&sh->vm.exit_codes, i).value.i32;
+		code = (int64_t)vec_get(sh->vm.exit_codes, i);
 		if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
 			ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s ",
 				prompt, color, kill_signals(code - 128));
@@ -116,7 +117,7 @@ static void	prompt_exit_codes(t_shell *sh, char *prompt)
 			ft_snprintf(prompt, PROMPT_SIZE, "%s%s %i ",
 				prompt, color, code);
 	}
-	code = ft_vector_at(&sh->vm.exit_codes, -1).value.i32;
+	code = (int64_t)vec_get(sh->vm.exit_codes, -1);
 	if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
 		ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s " ANSI_RESET,
 			prompt, color, kill_signals(code - 128));
@@ -223,14 +224,13 @@ static int	repl(t_shell *sh)
 		}
 		else
 		{
-			sh->vm.exit_codes.length = 0;
-			ignore((void *)ft_vector_push(&sh->vm.exit_codes,
-					ft_gen_val(TYPE_OTHER, (t_any){.i32 = 2})));
+			vec_clear(sh->vm.exit_codes);
+			vec_push(sh->vm.exit_codes, (void *)2);
 		}
 		free(line);
 	}
 	ft_printf("exit\n");
-	return (ft_vector_at(&sh->vm.exit_codes, -1).value.i32);
+	return ((int64_t)vec_get(sh->vm.exit_codes, -1));
 }
 
 static int	command(t_shell *sh, char *command)
@@ -243,14 +243,14 @@ static int	command(t_shell *sh, char *command)
 	if (cli_is_set(&sh->cli, "disassemble"))
 		disasm(&sh->parser.program);
 	vm_run(&sh->vm, &sh->parser.program);
-	return (ft_vector_at(&sh->vm.exit_codes, -1).value.i32);
+	return ((int64_t)vec_get(sh->vm.exit_codes, -1));
 }
 
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
 	env_destroy(&sh->env);
-	ft_vector_free(&sh->vm.exit_codes);
+	vec_free(sh->vm.exit_codes);
 	allocator_destroy(&sh->allocator);
 }
 
@@ -333,10 +333,11 @@ int	main(int argc, char **argv, char **envp)
 	allocator_init(&sh.allocator);
 	expander_init(&sh.expander, &sh);
 	signal_init();
+	sh.vm.exit_codes = vec_new(16);
 	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
 		|| env_init(&sh.env, &sh.allocator, envp) != RESULT_OK
 		|| parser_init(&sh.parser, &sh.lexer) != RESULT_OK
-		|| ft_vector_init(&sh.vm.exit_codes, 16) != RESULT_OK)
+		|| !sh.vm.exit_codes)
 	{
 		sh_destroy(&sh);
 		return (2);

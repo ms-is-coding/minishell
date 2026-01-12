@@ -6,13 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/20 18:08:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:34:02 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander.h"
 #include "expander/expander_internal.h"
-#include "libft.h"
+#include "vector/vector.h"
+#include "core/string.h"
 #include "shell.h"
 #include <stdlib.h>
 
@@ -24,8 +25,6 @@
 // others TBD
 // regular variables
 
-#include "libft.h"
-
 static const char	*extract_var(t_expander *exp)
 {
 	char		key[256];
@@ -36,8 +35,8 @@ static const char	*extract_var(t_expander *exp)
 	{
 		expander_next(exp);
 		if (exp->curr_char == '?')
-			return (ft_itoa_unsafe(ft_vector_at(&((t_shell *)exp->sh)
-						->vm.exit_codes, -1).value.i32));
+			return (ft_itoa_unsafe((int64_t)vec_get(((t_shell *)exp->sh)
+						->vm.exit_codes, -1)));
 		if (exp->curr_char == '$')
 			return (ft_itoa_unsafe(getpid()));
 		return ("");

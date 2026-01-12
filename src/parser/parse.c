@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 22:43:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:56:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "core/stdlib.h"
 #include "parser/parser.h"
 #include "vm/bytecode.h"
 

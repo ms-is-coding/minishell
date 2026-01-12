@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:10:56 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:38:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:56:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.h"
+#include "core/string.h"
 #include <stddef.h>
 
 static t_result	parse_command(t_parser *p, t_token t)

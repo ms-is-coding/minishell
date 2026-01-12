@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/01 19:23:16 by mattcarniel      ###   ########.fr        #
+#    Updated: 2026/01/04 17:41:06 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ CFLAGS_DEBUG	:= -Og -g3 -Wshadow -Wpadded -Wconversion -Wstrict-prototypes \
 					-Wuninitialized -Wdouble-promotion -Wfloat-equal -Wvla \
 					-Wnull-dereference -Wformat=2 -fstack-protector-strong
 CFLAGS_RELEASE	:= -O2 -DNDEBUG -march=native -D__is_42sh
-CFLAGS_SANITIZE	:= -fsanitize=address,undefined
+CFLAGS_SANITIZE	:= -fsanitize=address,undefined,leak
 
 
 ifeq ($(MODE), release)
@@ -55,13 +55,11 @@ SRC_BUILTINS 	:= $(addprefix builtins/, _find.c cd.c echo.c env.c error.c \
 					echo_internal.c export_internal.c \
 					type_internal.c help_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
-					cmd.c exec.c heredoc.c subshell.c)
+					cmd.c exec.c heredoc.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
-					exec.c redir.c jump.c subshell.c heredoc.c)
+					exec.c redir.c jump.c heredoc.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 					build.c destroy.c resize.c)
-SRC_ALIAS		:= $(addprefix alias/, hash.c get.c set.c remove.c find.c \
-					init.c clear.c print.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					malloc.c strdup.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
@@ -77,9 +75,6 @@ SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_ENV) $(SRC_EXPANDER) $(SRC_EXEC) $(SRC_UTIL) \
 					main.c
 
-TEST_DIR		:= tests
-TEST_BIN		:= $(TEST_DIR)/runner
-
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS			:= $(OBJS:.o=.d)
@@ -94,7 +89,7 @@ RESET			= \e[m
 
 LIBFT_DIR		:= $(LIB_DIR)/libft
 LIBFT			:= $(LIBFT_DIR)/libft.a
-LDLIBS			:= -lft -lreadline
+LDLIBS			:= -lftcore -lftalloc -lftvector -lftprintf -lftmath -lreadline
 LDFLAGS			:= -L$(LIBFT_DIR)
 
 INCLUDES		:= -Iinclude -I$(LIBFT_DIR)/include
@@ -147,6 +142,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 
+.PHONY: libft
 libft:
 	$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
@@ -169,13 +165,6 @@ re: fclean
 	@$(MAKE) all --no-print-directory
 
 
--include $(DEPS)
-
-
-$(TEST_BIN): $(TEST_DIR)/main.c
-	$(CC) $(CFLAGS) -o $@ $^
-
-
 .PHONY: norm
 norm:
 	echo $(SRCS) | xargs -n1 -P$(shell nproc) norminette
@@ -186,16 +175,4 @@ tidy:
 	echo $(SRCS) | xargs -n1 -P$(shell nproc) clang-tidy -p .
 
 
-.PHONY: test
-test: $(TEST_BIN)
-	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
-		echo "Usage: make test <suite>"; \
-		echo "Available suites: internal, subject, posix, crazy"; \
-	else \
-		suite=$(filter-out $@,$(MAKECMDGOALS)); \
-		echo "Running test suite: $$suite"; \
-		$(TEST_BIN) $$suite; \
-	fi
-
-%:
-	@:
+-include $(DEPS)

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:24:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:17:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "shell.h"
 #include "util/exec.h"
 #include "vm/vm_internal.h"
+#include "core/string.h"
+#include "core/stdio.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <sys/types.h>
@@ -51,8 +53,8 @@ static void	close_pipes(t_vm *vm)
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
-	ft_vector_free(&sh->vm.exit_codes);
-	ft_vector_free(&sh->vm.pids);
+	vec_free(sh->vm.exit_codes);
+	vec_free(sh->vm.pids);
 	env_destroy(&sh->env);
 	allocator_destroy(&sh->allocator);
 	close_pipes(&sh->vm);
@@ -62,18 +64,6 @@ static void	setup_fds(t_vm *vm)
 {
 	int	i;
 
-	/*
-	ft_dprintf(2, "===== FDS =====\n");
-	ft_dprintf(2, "prev_fd: %6i\n", vm->prev_fd);
-	ft_dprintf(2, "pipe[0]: %6i\n", vm->pipe_fd[0]);
-	ft_dprintf(2, "pipe[1]: %6i\n", vm->pipe_fd[1]);
-	i = -1;
-	while (++i < vm->redir_count)
-	{
-		ft_dprintf(2, "[%i].file: %5i\n", i, vm->redirs[i].file_fd);
-		ft_dprintf(2, "[%i].target: %3i\n", i, vm->redirs[i].target_fd);
-	}
-	*/
 	if (vm->prev_fd != STDIN_FILENO)
 		dup2(vm->prev_fd, STDIN_FILENO);
 	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
@@ -123,8 +113,7 @@ static void	run_empty_command(t_vm *vm)
 		_exit(0);
 	}
 	if (pid > 0)
-		ignore((void *)ft_vector_push(&vm->pids,
-				ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid})));
+		vec_push(vm->pids, (void *)(intptr_t)pid);
 	reset_fds(vm);
 	allocator_arena_free(vm->allocator, vm->frame.arena);
 	return ;
@@ -152,8 +141,7 @@ static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
 	close(saved_stderr);
 	close_pipes(vm);
 	vm->redir_count = 0;
-	ignore((void *)ft_vector_push(&vm->exit_codes,
-			ft_gen_val(TYPE_OTHER, (t_any){.i32 = exit_code})));
+	vec_push(vm->exit_codes, (void *)(intptr_t)exit_code);
 	return (exit_code);
 }
 
@@ -166,13 +154,12 @@ void	vm_spawn(t_vm *vm)
 	t_builtin_fn	builtin;
 	int				exit_code;
 
-	if (vm->pids.length == 0)
-		vm->exit_codes.length = 0;
+	if (vec_length(vm->exit_codes) == 0)
+		vec_clear(vm->exit_codes);
 	if (vm->had_error)
 	{
 		vm->had_error = false;
-		ignore((void *)ft_vector_push(&vm->exit_codes,
-				ft_gen_val(TYPE_OTHER, (t_any){.i32 = 1})));
+		vec_push(vm->exit_codes, (void *)1);
 		return ;
 	}
 	sh = vm->shell;
@@ -220,7 +207,6 @@ void	vm_spawn(t_vm *vm)
 	else if (pid < 0)
 		ft_dprintf(2, "fork failed: %m\n");
 	reset_fds(vm);
-	ignore((void *)
-		ft_vector_push(&vm->pids, ft_gen_val(TYPE_OTHER, (t_any){.i32 = pid})));
+	vec_push(vm->pids, (void *)(intptr_t)pid);
 	allocator_arena_free(vm->allocator, vm->frame.arena);
 }

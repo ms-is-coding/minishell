@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:59:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:27:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:35:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "core/stdlib.h"
+#include "core/string.h"
 #include "util/exec.h"
 #include <fcntl.h>
 #include <stddef.h>

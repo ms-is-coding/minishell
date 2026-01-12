@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:01:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 16:37:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:51:39 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CLI_H
 
 # include "common.h"
-# include "libft.h"
+# include "core/stdlib.h"
 # include <stdbool.h>
 
 typedef struct s_cli_option

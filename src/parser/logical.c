@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:20:53 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 17:31:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:01:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "core/string.h"
 #include "parser/parser.h"
 
 t_result	parse_and(t_parser *p, t_token token)

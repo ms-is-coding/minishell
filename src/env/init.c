@@ -6,14 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:36:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:32:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
 #include "common.h"
 #include "util/exec.h"
-#include "libft.h"
+#include "core/string.h"
 #include <string.h>
 
 static size_t	envp_count(char **envp)

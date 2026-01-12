@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:27:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:03:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/11/29 02:11:48 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_result	env_set(
 	if (bucket->flags & ENV_FLAG_RDONLY)
 		return (RESULT_RDONLY);
 	bucket->is_tombstone = 0;
-	env_free_bucket(bucket);
+	bucket->key = malloc(4);
+	//env_free_bucket(bucket);
 	bucket->key = key;
 	bucket->value = value;
 	bucket->flags = flags;

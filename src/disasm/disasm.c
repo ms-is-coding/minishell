@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:47:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:25:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:42:06 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "vm/bytecode.h"
 #include <stddef.h>
 #include <stdint.h>
+#include "core/stdio.h"
 
 static t_disassembler	disasm_opcode(t_opcode opcode)
 {
@@ -23,7 +24,6 @@ static t_disassembler	disasm_opcode(t_opcode opcode)
 		return (NULL);
 	return ((t_disassembler[OP_COUNT]){
 		[OP_NULL] = disasm_null,
-		[OP_SUBSHELL] = disasm_subshell,
 		[OP_CMD] = disasm_cmd,
 		[OP_ARG] = disasm_arg,
 		[OP_EXEC] = disasm_exec,

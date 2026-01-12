@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:10:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 17:58:30 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:07:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "builtins/builtins.h"
 #include "builtins/echo_internal.h"
-#include "libft.h"
+#include "core/string.h"
 
 #define FLAG_N		1
 #define FLAG_E		2

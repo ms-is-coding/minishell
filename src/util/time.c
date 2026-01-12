@@ -6,14 +6,15 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:22:22 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:14:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:36:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <bits/time.h>
+#include <time.h>
 #include "util/time.h"
+#include "core/stdlib.h"
+#include "core/string.h"
 #include "util/exec.h"
-#include "libft.h"
 
 #if defined(__is_42sh)
 

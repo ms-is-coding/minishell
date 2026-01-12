@@ -6,13 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 13:53:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/18 17:22:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:12:13 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdbool.h>
-#include "libft.h"
+#include "core/string.h"
 #include "builtins/builtins.h"
 
 static const char	*g_bad_words[] = {

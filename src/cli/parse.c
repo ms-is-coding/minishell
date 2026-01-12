@@ -6,11 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 16:36:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:53:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli/cli_internal.h"
+#include "core/stdio.h"
+#include "core/string.h"
 
 static t_result	parse_positional(t_cli *cli, const char *arg)
 {

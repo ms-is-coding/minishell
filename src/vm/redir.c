@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:36:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:13:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <stdint.h>
 #include <unistd.h>
+#include "core/stdio.h"
 
 static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 {

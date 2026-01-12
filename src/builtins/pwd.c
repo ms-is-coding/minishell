@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:20:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:02:00 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:10:00 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include <stdbool.h>
 
 #include "builtins/builtins.h"
-#include "libft.h"
-#include "env/env.h"
+#include "core/string.h"
 
 int	builtin_pwd(
 	__attribute__((unused)) t_shell *sh,

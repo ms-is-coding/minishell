@@ -20,7 +20,7 @@ t_result	parse_r_out(t_parser *p, t_token t)
 
 	if (++p->redirs > MAX_REDIRS)
 	{
-		print_error(p, t, "Too many redirects");
+		print_error(p, p->curr_token, "Too many redirects");
 		return (RESULT_ERROR);
 	}
 	if (parser_consume(p, TOK_WORD, "Expected valid filename") != RESULT_OK)

@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 12:59:33 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:02:45 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:11:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
+#include "core/stdio.h"
 
 int	builtin_set(
 	__attribute__((unused)) t_shell *sh,

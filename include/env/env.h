@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 11:23:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:52:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define ENV_H
 
 # include "allocator/allocator.h"
-# include "libft.h"
+# include "core/stdlib.h"
 
 typedef uint8_t	t_env_flags;
 

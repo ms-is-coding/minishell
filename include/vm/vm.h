@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/06 18:06:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:04:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VM_H
 
 # include "allocator/allocator.h"
+# include "vector/vector.h"
 # include "bytecode.h"
 # include "common.h"
 # include <stdbool.h>
@@ -38,8 +39,8 @@ typedef struct s_vm
 {
 	void			*shell;
 	t_allocator		*allocator;
-	t_vector		pids;
-	t_vector		exit_codes;
+	t_vec			*pids;
+	t_vec			*exit_codes;
 	t_exec_frame	frame;
 
 	t_vm_redir		redirs[MAX_REDIRS];

@@ -6,12 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 00:41:34 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/17 23:44:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:30:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vector/vector.h"
 #include "vm/bytecode.h"
 #include "vm/vm_internal.h"
+#include "core/stdio.h"
 
 void	vm_exec(t_vm *vm, t_program *program)
 {
@@ -30,7 +32,7 @@ void	vm_exec(t_vm *vm, t_program *program)
 	if (op & EXEC_WAIT_BIT)
 	{
 		vm_wait(vm, program);
-		vm->pids.length = 0;
+		vec_clear(vm->pids);
 	}
 	vm->frame.argc = 0;
 }

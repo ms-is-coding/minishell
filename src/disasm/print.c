@@ -6,17 +6,16 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:15:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 16:33:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:32:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
 #include "disasm/disasm_internal.h"
-#include "libft_printf.h"
+#include "core/stdio.h"
 #include "ansi.h"
 #include "vm/bytecode.h"
+#include "core/string.h"
 #include <stdint.h>
-#include <wchar.h>
 
 static void	print_bytes(t_program *program, size_t *offset, int count,
 	int start)

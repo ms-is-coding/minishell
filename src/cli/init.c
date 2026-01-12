@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 06:42:23 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:51:48 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli/cli_internal.h"
 #include "allocator/allocator.h"
-#include "libft.h"
+#include "core/stdlib.h"
 
 #ifdef NDEBUG
 

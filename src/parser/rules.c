@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:08:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 13:20:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/12 16:04:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "core/stdlib.h"
 #include "parser/parser.h"
 
 static t_result	parse_comment(t_parser *p, t_token t)

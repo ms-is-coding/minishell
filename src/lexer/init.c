@@ -6,12 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:27:16 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 12:21:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:53:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer.h"
-#include "libft.h"
+#include "core/stdlib.h"
 
 t_result	lexer_init(t_lexer *lexer, char *input)
 {

@@ -6,12 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:49:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:02:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:32:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 #include "env/env_internal.h"
+#include "core/string.h"
 
 #define UNREACHABLE NULL
 

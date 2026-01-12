@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/01 18:05:34 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:11:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <stdbool.h>
 #include "builtins/builtins.h"
 #include "builtins/type_internal.h"
+#include "core/string.h"
+#include "core/stdio.h"
 
 static bool	get_flags(const char *opt, char *flags)
 {

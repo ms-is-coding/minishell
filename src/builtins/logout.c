@@ -6,12 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:00:05 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:01:49 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:09:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
 #include "cli/cli.h"
+#include "core/stdio.h"
 
 int	builtin_logout(
 	t_shell *sh,

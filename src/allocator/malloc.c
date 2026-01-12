@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:15:57 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 12:45:25 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:31:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
 #include "allocator/allocator_internal.h"
-#include "libft.h"
+#include "core/string.h"
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>

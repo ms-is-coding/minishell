@@ -6,12 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 17:58:38 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/20 16:08:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:55:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util/git.h"
-#include "libft.h"
+#include "core/string.h"
+#include "core/stdlib.h"
 #include "util/exec.h"
 #include <stdio.h>
 #include <string.h>

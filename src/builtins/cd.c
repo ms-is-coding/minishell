@@ -6,18 +6,18 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:44:16 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/12/01 19:14:21 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:07:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 #include "env/env.h"
 #include "builtins/builtins.h"
-#include "libft.h"
+#include "core/string.h"
+#include "core/stdio.h"
 #include "allocator/allocator.h"
 
 static const char	*resolve_cwd(t_env *env, const char *path)

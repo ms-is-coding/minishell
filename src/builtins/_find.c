@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 13:12:32 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 13:02:10 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:07:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
+#include "core/string.h"
 
 #include <stdio.h>
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/13 00:46:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:01:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 #include "parser/parser.h"
 #include "ansi.h"
 #include "vm/bytecode.h"
-
-static void	repeat(char c, int count)
-{
-	int	i;
-
-	i = -1;
-	while (++i < count)
-		ft_dprintf(2, "%c", c);
-}
+#include "core/stdio.h"
+#include "core/math.h"
+#include "core/string.h"
 
 static void	print_line(t_parser *p, t_token token)
 {
@@ -40,12 +34,11 @@ static void	print_line(t_parser *p, t_token token)
 
 void	print_error(t_parser *p, t_token token, const char *message)
 {
-	repeat(' ', ft_intlen(token.pos.row) + 2);
-	ft_dprintf(2, "┌─ " ANSI_CYAN "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
-		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET, token.pos.row,
-		token.pos.col);
-	ft_dprintf(2, ANSI_BOLD ANSI_RED " Syntax Error" ANSI_RESET "\n");
-	ft_dprintf(2, " " ANSI_BOLD "%d" ANSI_RESET " │ ", token.pos.row);
+	ft_dprintf(2, "%*s┌─ " ANSI_CYAN "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
+		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET ANSI_BOLD ANSI_RED
+		" Syntax Error" ANSI_RESET "\n " ANSI_BOLD "%d" ANSI_RESET " │ ",
+		ft_intlen(token.pos.row) + 2, "", token.pos.row, token.pos.col,
+		token.pos.row);
 	if (token.pos.col - 1 > ERROR_CHARACTERS + 3)
 		ft_dprintf(2, "...%.*s", ERROR_CHARACTERS,
 			p->lexer->input + token.pos.col - 1 - ERROR_CHARACTERS);
@@ -59,18 +52,16 @@ void	print_error(t_parser *p, t_token token, const char *message)
 	else
 		ft_dprintf(2, "%s\n", p->lexer->input + token.pos.col - 1
 			+ token.pos.len);
-	repeat(' ', ft_intlen(token.pos.row) + 2);
-	ft_dprintf(2, "╵");
+	ft_dprintf(2, "%*s╵", ft_intlen(token.pos.row) + 2, "");
 	if (token.pos.col - 1 > ERROR_CHARACTERS + 3)
-		repeat(' ', ERROR_CHARACTERS + 4);
+		ft_dprintf(2, "%*s", ERROR_CHARACTERS + 4, "");
 	else
-		repeat(' ', token.pos.col);
-	ft_dprintf(2, ANSI_RED "^");
+		ft_dprintf(2, ANSI_RED "%*s", token.pos.col, "");
 	if (token.pos.len > ERROR_MAX_LENGTH)
-		repeat('~', ERROR_MAX_LENGTH - 1);
+		ft_dprintf(2, ANSI_RED "%.*s", ERROR_MAX_LENGTH, ERROR_HIGHLIGHT);
 	else
-		repeat('~', token.pos.len - 1);
-	ft_dprintf(2, ANSI_RED " %s" ANSI_RESET "\n", message);
+		ft_dprintf(2, "%.*s", token.pos.len, ERROR_HIGHLIGHT);
+	ft_dprintf(2, " %s" ANSI_RESET "\n", message);
 }
 
 t_result	parser_parse_expr(t_parser *p, t_precedence prec)

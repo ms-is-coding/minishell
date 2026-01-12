@@ -6,12 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:37:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/11 17:25:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:54:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer.h"
-#include "libft_printf.h"
+#include "core/stdio.h"
 #include "ansi.h"
 
 static const char	*get_data(t_token t)

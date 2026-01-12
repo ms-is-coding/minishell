@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 13:23:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:55:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "lexer/lexer.h"
 # include "vm/bytecode.h"
-# include "libft.h"
+# include "core/stdlib.h"
 # include <stdbool.h>
 
 typedef struct s_parser

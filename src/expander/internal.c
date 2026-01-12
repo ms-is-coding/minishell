@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:37:50 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/19 22:09:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:33:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
+#include "core/ctype.h"
 
 bool	dquote_escape(char c)
 {

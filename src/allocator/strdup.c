@@ -6,12 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 12:38:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 12:47:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:54:20 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
-#include "libft.h"
+#include "core/string.h"
 
 char	*allocator_strdup(const char *s)
 {

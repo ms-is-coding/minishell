@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:13:39 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/12/01 17:59:24 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:02:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stdbool.h>
 #include "builtins/builtins.h"
 #include "builtins/help_internal.h"
-#include "libft.h"
+#include "core/string.h"
+#include "core/stdio.h"
 
 #define FLAG_D		1
 #define FLAG_M		2

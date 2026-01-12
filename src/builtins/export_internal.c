@@ -6,12 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 15:20:15 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/03 14:28:33 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:11:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
-#include "libft.h"
+#include "core/stdio.h"
 
 void	print_exported(t_env *env)
 {

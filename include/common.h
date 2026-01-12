@@ -17,7 +17,7 @@
 
 # define ENV_THRESHOLD 0.75f
 
-# define MAX_REDIRS 64
+# define MAX_REDIRS 8
 # define MAX_ALIASES 64
 
 # define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/bin"
@@ -27,6 +27,7 @@
 # define ERROR_CHARACTERS 10
 // would write ERROR_CHARACTERS * 2 + 3, but norm...
 # define ERROR_MAX_LENGTH 23
+# define ERROR_HIGHLIGHT "^~~~~~~~~~~~~~~~~~~~~~~~"
 
 static inline void	ignore(__attribute__((__unused__)) void *data)
 {

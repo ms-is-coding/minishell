@@ -6,13 +6,14 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/20 11:43:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/04 17:10:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins/builtins.h"
-#include "builtins/export_internal.h"
 #include "env/env.h"
+#include "core/ctype.h"
+#include "core/string.h"
 
 static bool	is_valid_var(const char *str)
 {
