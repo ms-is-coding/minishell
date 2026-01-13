@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:22:22 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/12 17:02:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:28:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int64_t	time_get(void)
 			(char *)(intptr_t)"/usr/bin/date",
 			(char *)(intptr_t)"+%s %N",
 			NULL});
-	output && (temp = ft_strchr(output, ' '));
+	if (output)
+		temp = ft_strchr(output, ' ');
 	if (!output || !temp)
 		return (0);
 	time = ft_atol_safe(output);
