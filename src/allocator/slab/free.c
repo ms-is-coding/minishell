@@ -3,16 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 14:02:57 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 06:57:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:26:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator_internal.h"
 #include "allocator/slab_internal.h"
 
+/**
+ * @brief Frees a slab allocation.
+ *
+ * @param alloc The allocation to free
+ */
 void	allocator_slab_free(t_allocation alloc)
 {
 	t_slab_region	*region;

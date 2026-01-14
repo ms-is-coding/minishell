@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:13:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:46:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include <unistd.h>
 #include "core/stdio.h"
 
+/**
+ * @brief Inserts a redirection entry into the VM's redirection list.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param target_fd The target file descriptor to redirect
+ * @param file_fd The file descriptor to redirect to
+ */
 static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 {
 	int	i;
@@ -26,6 +33,12 @@ static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 	vm->redirs[i].file_fd = file_fd;
 }
 
+/**
+ * @brief Handles input redirection in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_redir_in(t_vm *vm, t_program *program)
 {
 	int32_t		file_fd;
@@ -50,6 +63,12 @@ void	vm_redir_in(t_vm *vm, t_program *program)
 	program->pc += len;
 }
 
+/**
+ * @brief Handles output redirection in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_redir_out(t_vm *vm, t_program *program)
 {
 	t_opcode	opcode;
@@ -78,6 +97,12 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 	program->pc += len;
 }
 
+/**
+ * @brief Dummy handler for redirection opcodes that skips over the data.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_redir_dummy(t_vm *vm, t_program *program)
 {
 	uint16_t	len;

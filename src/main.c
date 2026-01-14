@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:50:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:12:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@
 
 #define PROMPT_SIZE 0x100
 
+/**
+ * @brief Returns the string representation of a kill signal.
+ *
+ * @param sig Signal number
+ * @return String representation of the signal.
+ */
 static const char	*kill_signals(int sig)
 {
 	return ((const char *[65]){[1] = "HUP", [2] = "INT", [3] = "QUIT",
@@ -58,6 +64,11 @@ static const char	*kill_signals(int sig)
 		[64] = "RTMAX"}[sig]);
 }
 
+/**
+ * @brief Checks if the cursor is at the start of a new line.
+ *
+ * @return true if at the start of a new line, false otherwise.
+ */
 static bool	had_newline(void)
 {
 	struct termios	oldt;
@@ -74,7 +85,7 @@ static bool	had_newline(void)
 	if (read(STDIN_FILENO, buf, sizeof(buf) - 1) > 0)
 	{
 		buf[sizeof(buf) - 1] = 0;
-		if (sscanf(buf, "\033[%d;%dR", &row, &col) == 2
+		if (sscanf(buf, "\033[%d;%dR", &row, &col) == 2 // FIX remove this, it is ILLEGAL
 			&& col != 1)
 		{
 			tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
@@ -86,6 +97,9 @@ static bool	had_newline(void)
 	return (true);
 }
 
+/**
+ * @brief Resets the terminal prompt settings.
+ */
 static void	reset_prompt(void)
 {
 	struct termios	def;
@@ -95,6 +109,12 @@ static void	reset_prompt(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &def);
 }
 
+/**
+ * @brief Constructs the exit codes portion of the prompt.
+ *
+ * @param sh Pointer to the shell structure
+ * @param prompt Buffer to store the constructed prompt
+ */
 static void	prompt_exit_codes(t_shell *sh, char *prompt)
 {
 	const char	*color;
@@ -110,7 +130,7 @@ static void	prompt_exit_codes(t_shell *sh, char *prompt)
 	while (++i < (int64_t)vec_length(sh->vm.exit_codes) - 1)
 	{
 		code = (int64_t)vec_get(sh->vm.exit_codes, i);
-		if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
+		if (kill_signals(code - 128))
 			ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s ",
 				prompt, color, kill_signals(code - 128));
 		else
@@ -118,7 +138,7 @@ static void	prompt_exit_codes(t_shell *sh, char *prompt)
 				prompt, color, code);
 	}
 	code = (int64_t)vec_get(sh->vm.exit_codes, -1);
-	if (code > 128 && code < 128 + 65 && kill_signals(code - 128))
+	if (kill_signals(code - 128))
 		ft_snprintf(prompt, PROMPT_SIZE, "%s%s %s " ANSI_RESET,
 			prompt, color, kill_signals(code - 128));
 	else
@@ -126,6 +146,12 @@ static void	prompt_exit_codes(t_shell *sh, char *prompt)
 			prompt, color, code);
 }
 
+/**
+ * @brief Constructs the git status portion of the prompt.
+ *
+ * @param sh Pointer to the shell structure
+ * @param prompt Buffer to store the constructed prompt
+ */
 static void	prompt_git_status(
 	__attribute__((unused)) t_shell *sh,
 	char *prompt)
@@ -159,6 +185,12 @@ static void	prompt_git_status(
 		prompt, git_prompt);
 }
 
+/**
+ * @brief Constructs the current working directory portion of the prompt.
+ *
+ * @param sh Pointer to the shell structure
+ * @param prompt Buffer to store the constructed prompt
+ */
 static void	prompt_pwd(t_shell *sh, char *prompt)
 {
 	const char	*home;
@@ -176,7 +208,13 @@ static void	prompt_pwd(t_shell *sh, char *prompt)
 	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_BLUE " %s " ANSI_RESET,
 		prompt, pwd);
 }
-
+/**
+ * @brief Constructs the execution time portion of the prompt.
+ *
+ * @param sh Pointer to the shell structure
+ * @param prompt Buffer to store the constructed prompt
+ * @param delta Execution time in milliseconds
+ */
 static void	prompt_time(__attribute__((unused)) t_shell *sh, char *prompt,
 	int64_t delta)
 {
@@ -187,7 +225,7 @@ static void	prompt_time(__attribute__((unused)) t_shell *sh, char *prompt,
 		prompt, delta);
 }
 
-static int	repl(t_shell *sh)
+static int	repl(t_shell *sh) // FIX not commented, needs to still be split
 {
 	int64_t		begin;
 	int64_t		end;
@@ -233,6 +271,13 @@ static int	repl(t_shell *sh)
 	return ((int64_t)vec_get(sh->vm.exit_codes, -1));
 }
 
+/**
+ * @brief Executes a single command.
+ *
+ * @param sh Pointer to the shell structure
+ * @param command Command string to execute
+ * @return Exit code of the command execution.
+ */
 static int	command(t_shell *sh, char *command)
 {
 	t_result	result;
@@ -246,6 +291,11 @@ static int	command(t_shell *sh, char *command)
 	return ((int64_t)vec_get(sh->vm.exit_codes, -1));
 }
 
+/**
+ * @brief Destroys the shell structure and frees allocated resources.
+ *
+ * @param sh Pointer to the shell structure
+ */
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
@@ -254,6 +304,13 @@ static void	sh_destroy(t_shell *sh)
 	allocator_destroy(&sh->allocator);
 }
 
+/**
+ * @brief Gets or sets the global shell instance.
+ *
+ * @param sh Pointer to the shell structure to set, or NULL to get the current
+ * instance
+ * @return Pointer to the current shell instance.
+ */
 static t_shell	*get_shell(t_shell *sh)
 {
 	static t_shell	*save = NULL;
@@ -265,6 +322,11 @@ static t_shell	*get_shell(t_shell *sh)
 
 void	vm_dispatch(t_vm *vm, int sig);
 
+/**
+ * @brief Signal handler for SIGINT and SIGQUIT.
+ *
+ * @param sig Signal number
+ */
 static void	handler(int sig)
 {
 	t_shell	*sh;
@@ -281,11 +343,15 @@ static void	handler(int sig)
 	}
 }
 
+/**
+ * @brief Initializes signal handlers for SIGINT and SIGQUIT.
+ */
 static void	signal_init(void)
 {
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
 }
+
 
 static void	test(t_shell *sh)
 {

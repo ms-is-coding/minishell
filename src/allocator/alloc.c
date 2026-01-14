@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alloc.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 14:10:44 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/15 15:00:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:31:09 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/**
+ * @brief Allocates memory using the allocator.
+ *
+ * @param alc Pointer to the allocator structure
+ * @param size Size of memory to allocate
+ * @param arena Pointer to the arena to allocate from (optional)
+ * @return t_allocation structure containing allocation details
+ */
 t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena)
 {
 	t_allocation	alloc;

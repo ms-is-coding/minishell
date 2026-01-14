@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   rules.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:08:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/12 16:04:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:44:53 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "core/stdlib.h"
 #include "parser/parser.h"
 
+/**
+ * @brief Parses a comment token.
+ *
+ * @param p Pointer to the parser structure
+ * @param t Comment token to parse
+ * @return Always eturns RESULT_OK as comments are ignored.
+ */
 static t_result	parse_comment(t_parser *p, t_token t)
 {
 	(void)p;
@@ -20,6 +27,12 @@ static t_result	parse_comment(t_parser *p, t_token t)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Retrieves the parsing rule for a given token type.
+ *
+ * @param type Token type
+ * @return Corresponding parsing rule.
+ */
 t_parse_rule	parser_get_rule(t_token_type type)
 {
 	return ((t_parse_rule[TOK_COUNT]){

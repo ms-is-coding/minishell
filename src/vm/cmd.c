@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:30:08 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:41:55 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include "core/stdio.h"
 #include <signal.h>
 
+/**
+ * @brief Dispatches the opcode to the corresponding handler function.
+ *
+ * @param opcode The opcode to dispatch
+ */
 static t_exec_handler	dispatch_opcode(t_opcode opcode)
 {
 	if (opcode < 0 || opcode >= OP_COUNT)
@@ -27,6 +32,13 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
 	}[opcode]);
 }
 
+/**
+ * @brief Counts the number of arguments for a command.
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ * @param argc Number of arguments to count
+ * @note If the opcode is invalid, the program will exit with SIGILL.
+ */
 static void	vm_count(t_vm *vm, t_program *program, int argc)
 {
 	t_exec_handler	handler;
@@ -48,6 +60,12 @@ static void	vm_count(t_vm *vm, t_program *program, int argc)
 	}
 }
 
+/**
+ * @brief Handles the command opcode.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_command(t_vm *vm, t_program *program)
 {
 	int32_t	argc;

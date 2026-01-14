@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:04:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:21:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:28:05 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "shell.h"
 #include <stdint.h>
 
+/**
+ * @brief Dummy argument handler that only counts the number of arguments.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_arg_dummy(t_vm *vm, t_program *program)
 {
 	uint16_t	len;
@@ -30,6 +36,12 @@ void	vm_arg_dummy(t_vm *vm, t_program *program)
 	program->pc += len;
 }
 
+/**
+ * @brief Actual argument handler that expands and extracts arguments.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_arg(t_vm *vm, t_program *program)
 {
 	uint16_t	len;

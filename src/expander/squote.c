@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   squote.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 00:44:05 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:34:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:26:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
 #include "core/string.h"
 
+/**
+ * @brief Expands single-quoted strings.
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_squote(t_expander *exp, t_var_expansion_mode mode)
 {
 	while (exp->next_char && exp->next_char != '\'')

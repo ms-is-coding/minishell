@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:34:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:43:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:38:52 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
+/**
+ * @brief Lexes pipe-related tokens.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_pip(t_lexer *lexer)
 {
 	if (lexer_match(lexer, '|'))

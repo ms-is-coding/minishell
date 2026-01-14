@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alloc.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 17:44:54 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 12:54:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:32:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * @brief Allocates a large block of memory outside of the arena system.
+ *
+ * @param arena Pointer to the arena structure
+ * @param size Size of memory to allocate
+ * @return t_allocation structure containing allocation details
+ */
 static t_allocation	large_alloc(t_arena *arena, size_t size)
 {
 	t_large_alloc	*large;
@@ -40,6 +47,14 @@ static t_allocation	large_alloc(t_arena *arena, size_t size)
 	return (alloc);
 }
 
+/**
+ * @brief Finds a suitable arena for allocation.
+ *
+ * @param alc Pointer to the allocator structure
+ * @param arena Pointer to the starting arena
+ * @param size Size of memory to allocate
+ * @return Pointer to the suitable arena, or NULL on failure.
+ */
 static t_arena	*find_arena(t_allocator *alc, t_arena *arena, size_t size)
 {
 	t_arena	*candidate;
@@ -66,6 +81,13 @@ static t_arena	*find_arena(t_allocator *alc, t_arena *arena, size_t size)
 	return (candidate);
 }
 
+/**
+ * @brief Allocates memory from a specified arena.
+ *
+ * @param alc Pointer to the allocator structure
+ * @param arena Pointer to the arena to allocate from
+ * @param size Size of memory to allocate
+ */
 t_allocation	allocator_arena_alloc(
 	t_allocator *alc, t_arena *arena, size_t size)
 {

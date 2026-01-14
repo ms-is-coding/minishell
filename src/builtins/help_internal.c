@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 13:53:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/04 17:12:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:30:45 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ static const char	*g_bad_words[] = {
 	NULL
 };
 
+/**
+ * @brief Checks if any of the provided arguments contain bad words.
+ *
+ * @param argv Array of command-line arguments
+ * @return true if bad words are found, false otherwise.
+ */
 static bool	find_bad_words(char **argv)
 {
 	size_t	i;
@@ -41,6 +47,12 @@ static bool	find_bad_words(char **argv)
 	return (false);
 }
 
+/**
+ * @brief Checks if the user is excessively asking for help.
+ *
+ * @param argv Array of command-line arguments
+ * @return true if help is requested three times or more, false otherwise.
+ */
 static bool	is_begging_for_help(char **argv)
 {
 	size_t	help_count;
@@ -55,6 +67,12 @@ static bool	is_begging_for_help(char **argv)
 	return (help_count >= 2);
 }
 
+/**
+ * @brief Sanitizes the help command arguments.
+ *
+ * @param argv Array of command-line arguments
+ * @return 0 if arguments are clean, non-zero error code otherwise.
+ */
 int	sanitize_help(char **argv)
 {
 	if (find_bad_words(argv))

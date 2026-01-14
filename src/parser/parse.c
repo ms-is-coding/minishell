@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:56:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:40:10 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,26 @@
 #include "parser/parser.h"
 #include "vm/bytecode.h"
 
+/**
+ * @brief Handles parse errors for unterminated strings & prints a message.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Token that caused the parse error
+ * @return Result indicating a parse error.
+ */
 t_result	parse_error(t_parser *p, t_token token)
 {
 	print_error(p, token, "Unterminated string");
 	return (RESULT_ERROR);
 }
 
+/**
+ * @brief Parses a pipeline expression.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Pipeline token to parse
+ * @return Result of the parsing operation.
+ */
 t_result	parse_pipe(t_parser *p, t_token token)
 {
 	if ((p->program.data[p->program.len - 1] & OPCODE_MASK) == OP_EXEC)
@@ -29,6 +43,13 @@ t_result	parse_pipe(t_parser *p, t_token token)
 	return (parser_parse_expr(p, parser_get_rule(token.type).precedence));
 }
 
+/**
+ * @brief Parses the input line and constructs the program bytecode.
+ *
+ * @param p Pointer to the parser structure
+ * @param line Input line to parse
+ * @return Result of the parsing operation.
+ */
 t_result	parser_parse(t_parser *p, char *line)
 {
 	t_result	result;

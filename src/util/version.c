@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   license.c                                          :+:      :+:    :+:   */
+/*   version.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:03:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:35:10 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:12:20 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ const char	g_license_text[]
 	"This program comes with ABSOLUTELY NO WARRANTY.\n"
 	"This is free software, and you are welcome to redistribute it.";
 
+/**
+ * @brief Displays the version and license information.
+ */
 void	help_version(void)
 {
 	ft_printf("Trash, version " TRASH_VERSION "\n\n%s\n", g_license_text);

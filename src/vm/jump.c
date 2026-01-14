@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   jump.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:12:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:13:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:46:23 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/**
+ * @brief Performs a conditional jump in the program based on the last exit
+ * code.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param program Pointer to the program being executed
+ */
 void	vm_jump(t_vm *vm, t_program *program)
 {
 	int32_t		jmp_pos;

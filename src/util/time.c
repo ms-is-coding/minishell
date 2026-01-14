@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:22:22 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 15:28:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:41:32 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 
 #if defined(__is_42sh)
 
+/**
+ * @brief Gets the current time in milliseconds using CLOCK_MONOTONIC.
+ *
+ * @return Current time in milliseconds.
+ */
 int64_t	time_get(void)
 {
 	struct timespec	ts;
@@ -28,6 +33,11 @@ int64_t	time_get(void)
 
 #else
 
+/**
+ * @brief Gets the current time in milliseconds by executing the date command.
+ *
+ * @return Current time in milliseconds.
+ */
 int64_t	time_get(void)
 {
 	char	*output;

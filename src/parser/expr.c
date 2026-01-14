@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:01:19 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:02:54 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include "core/math.h"
 #include "core/string.h"
 
+/**
+ * @brief Prints the line of code where the error occurred.
+ *
+ * @param p Pointer to the parser structure
+ * @param token The token where the error occurred
+ */
 static void	print_line(t_parser *p, t_token token)
 {
 	if (token.pos.len > ERROR_MAX_LENGTH)
@@ -32,7 +38,7 @@ static void	print_line(t_parser *p, t_token token)
 			p->lexer->input + token.pos.col - 1);
 }
 
-void	print_error(t_parser *p, t_token token, const char *message)
+void	print_error(t_parser *p, t_token token, const char *message) //FIX function too long
 {
 	ft_dprintf(2, "%*s┌─ " ANSI_CYAN "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
 		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET ANSI_BOLD ANSI_RED
@@ -64,7 +70,7 @@ void	print_error(t_parser *p, t_token token, const char *message)
 	ft_dprintf(2, " %s" ANSI_RESET "\n", message);
 }
 
-t_result	parser_parse_expr(t_parser *p, t_precedence prec)
+t_result	parser_parse_expr(t_parser *p, t_precedence prec) //function too long
 {
 	t_token			token;
 	t_token			oper_token;

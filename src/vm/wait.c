@@ -3,18 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:50:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:49:40 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm/vm_internal.h"
+#include <stddef.h>
 #include <signal.h>
 #include <sys/wait.h>
 #include "core/stdio.h"
 
+/**
+ * @brief Sends a signal to all child processes managed by the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param sig Signal to send to the child processes
+ */
 void	vm_dispatch(t_vm *vm, int sig)
 {
 	int	i;
@@ -27,8 +34,16 @@ void	vm_dispatch(t_vm *vm, int sig)
 	}
 }
 
+/**
+ * @brief Returns the string representation of a kill signal.
+ *
+ * @param sig Signal number
+ * @return String representation of the signal.
+ */
 static const char	*kill_signals(int sig)
 {
+	if (sig < 0 || sig >= 65)
+		return (NULL);
 	return ((const char *[65]){[1] = "HUP", [2] = "INT", [3] = "QUIT",
 		[4] = "ILL", [5] = "TRAP", [6] = "ABRT", [7] = "BUS",
 		[8] = "FPE", [9] = "KILL", [10] = "USR1", [11] = "SEGV", [12] = "USR2",
@@ -40,6 +55,12 @@ static const char	*kill_signals(int sig)
 		[64] = "RTMAX"}[sig]);
 }
 
+/**
+ * @brief Waits for all child processes to finish and collects their exit codes.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param program Pointer to the program being executed (unused)
+ */
 void	vm_wait(
 	t_vm *vm,
 	__attribute__((unused)) t_program *program)

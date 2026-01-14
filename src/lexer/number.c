@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   number.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:49:18 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:42:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:38:45 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
+/**
+ * @brief Lexes number tokens, handling redirection operators.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_nbr(t_lexer *lexer)
 {
 	lexer->fd = lexer->curr_char - '0';

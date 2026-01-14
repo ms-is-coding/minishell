@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   advance.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 07:30:58 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:42:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:36:24 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ static t_lex_fn	g_lex_fns[128] = {
 	lex_wrd, lex_wrd, lex_wrd, lex_err, lex_pip, lex_err, lex_wrd, lex_err
 };
 
+/**
+ * @brief Advances the lexer to the next token.
+ *
+ * @param lexer Pointer to the lexer structure
+ * @return The next token.
+ */
 t_token	lexer_advance(t_lexer *lexer)
 {
 	char		c;

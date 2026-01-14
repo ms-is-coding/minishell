@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 13:57:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/11 16:38:36 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:27:13 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include <stdint.h>
 #include <assert.h>
 
+/**
+ * @brief Initializes the custom memory allocator.
+ *
+ * @param alc Pointer to the allocator to initialize
+ */
 void	allocator_init(t_allocator *alc)
 {
 	int	i;
@@ -43,6 +48,13 @@ void	allocator_init(t_allocator *alc)
 	_ = get_allocator(alc);
 }
 
+/**
+ * @brief Retrieves the global allocator instance.
+ *
+ * @param alc Pointer to the allocator to set as the global instance, or NULL
+ * to retrieve the current instance
+ * @return Pointer to the global allocator instance.
+ */
 __attribute__((__warn_unused_result__))
 t_allocator	*get_allocator(t_allocator *alc)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:06:01 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:51:48 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:31:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 
 #ifdef NDEBUG
 
+/**
+ * @brief Initializes debug-specific CLI options (no-op in release builds).
+ *
+ * @param cli Pointer to the CLI structure
+ */
 static void	cli_init_debug(t_cli *cli)
 {
 	(void)cli;
@@ -23,6 +28,11 @@ static void	cli_init_debug(t_cli *cli)
 
 #else
 
+/**
+ * @brief Initializes debug-specific CLI options.
+ *
+ * @param cli Pointer to the CLI structure
+ */
 static void	cli_init_debug(t_cli *cli)
 {
 	cli_add(cli, "disassemble", 'd', 0);
@@ -30,6 +40,14 @@ static void	cli_init_debug(t_cli *cli)
 
 #endif
 
+/**
+ * @brief Initializes the CLI structure with command-line arguments.
+ *
+ * @param cli Pointer to the CLI structure
+ * @param argc Argument count
+ * @param argv Argument vector
+ * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	cli_init(t_cli *cli, int argc, char **argv)
 {
 	cli->name = argv[0];
@@ -50,6 +68,11 @@ t_result	cli_init(t_cli *cli, int argc, char **argv)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Destroys the CLI structure and frees associated resources.
+ *
+ * @param cli Pointer to the CLI structure
+ */
 void	cli_destroy(t_cli *cli)
 {
 	allocator_free_ptr(cli->positional);

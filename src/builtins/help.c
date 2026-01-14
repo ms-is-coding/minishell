@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:13:39 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/04 17:02:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:41:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,16 +163,6 @@ static const char	*g_help_false[] = {
 	"    Always fails.",
 	NULL};
 
-static const char	*g_help_logout[] = {
-	"logout",
-	"Exit a login shell.",
-	"logout [n]",
-	"    Exit a login shell.\n"
-	"\n"
-	"    Exit a login shell with exit status N. Returns an error if not\n"
-	"    executed in a login shell.",
-	NULL};
-
 static const char	*g_help_pwd[] = {
 	"pwd",
 	"Print the name of the current working directory.",
@@ -195,21 +185,6 @@ static const char	*g_help_readonly[] = {
 	"\n"
 	"Exit Status:\n"
 	"returns 0 success unless NAME is invalid.",
-	NULL};
-
-static const char	*g_help_return[] = {
-	"return",
-	"Return from a shell function.",
-	"return [n]",
-	"    Return from a shell function.\n"
-	"\n"
-	"   Causes a function of sourced script to exit with the return value\n"
-	"   specified by N. If N is omitted, the return status is that of the\n"
-	"   last command executed within the function or script.\n"
-	"\n"
-	"   Exit Status:\n"
-	"   Returns N, or failure if the shell is not executing a function or\n"
-	"   script.\n",
 	NULL};
 
 static const char	*g_help_true[] = {
@@ -277,16 +252,21 @@ static t_help		g_help[] = {
 {"exit", g_exit_help},
 {"export", g_export_help},
 {"false", g_help_false},
-{"logout", g_help_logout},
 {"pwd", g_help_pwd},
 {"readonly", g_help_readonly},
-{"return", g_help_return},
 {"true", g_help_true},
 {"type", g_help_type},
 {"help", g_help_help},
 {NULL, NULL}
 };
 
+/**
+ * @brief Parses the command-line options and gets the corresponding flags.
+ *
+ * @param opt The command-line option string
+ * @param flags Pointer to the flags variable to be updated
+ * @return true if valid flags were found, false otherwise
+ */
 static bool	get_flags(const char *opt, char *flags)
 {
 	int		i;
@@ -312,6 +292,12 @@ static bool	get_flags(const char *opt, char *flags)
 	return (true);
 }
 
+/**
+ * @brief Sets the flags based on the command-line arguments.
+ *
+ * @param argv Pointer to the array of command-line arguments
+ * @return The combined flags.
+ */
 static char	set_flags(int *argc, char ***argv)
 {
 	char	flags;
@@ -335,7 +321,10 @@ static char	set_flags(int *argc, char ***argv)
 	return (flags);
 }
 
-static int	print_cmd_list(void)
+/**
+ * @brief Prints the list of available commands with brief descriptions.
+ */
+static void	print_cmd_list(void)
 {
 	size_t	i;
 
@@ -348,9 +337,15 @@ static int	print_cmd_list(void)
 			g_help[i].name, g_help[i].topic[2]);
 		i++;
 	}
-	return (0);
 }
 
+/**
+ * @brief Prints help information for a specific command based on flags.
+ *
+ * @param topic The help topic array for the command
+ * @param flags The flags indicating the format of help to print
+ * @return true if help was printed, false otherwise.
+ */
 static bool	print_cmd_help(const char **topic, char flags)
 {
 	if (!topic)
@@ -370,6 +365,15 @@ static bool	print_cmd_help(const char **topic, char flags)
 	return (true);
 }
 
+/**
+ * @brief Displays help information for builtin commands.
+ *
+ * @param sh Pointer to the shell structure (unused)
+ * @param argc Argument count (unused)
+ * @param argv Array of command-line arguments
+ * @param envp Environment pointer (unused)
+ * @return 0 if all arguments are valid, error code otherwise.
+ */
 int	builtin_help(
 	__attribute__((unused)) t_shell *sh,
 	__attribute__((unused)) int argc,
@@ -385,7 +389,7 @@ int	builtin_help(
 	if (flags & FLAG_ERR)
 		return (builtin_error(ctx("help", argv[0]), ERR_INVALID_OPT, 1));
 	if (!*argv)
-		return (print_cmd_list());
+		return (print_cmd_list(), 0);
 	status = sanitize_help(argv);
 	if (status)
 		return (status);

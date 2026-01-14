@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/04 17:07:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:17:54 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 #define SUBJ_LIMIT	16
 #define INFO_LIMIT	92
 
+/**
+ * @brief Retrieves the error information string corresponding to the error
+ * code.
+ *
+ * @param err The error code
+ * @return The error information string.
+ */
 static const char	*get_error_info(t_error err)
 {
 	static const char	*info[] = {
@@ -52,6 +59,13 @@ static const char	*get_error_info(t_error err)
 	return (info[err]);
 }
 
+/**
+ * @brief Constructs the context portion of the error message.
+ *
+ * @param buf Buffer to store the constructed context
+ * @param ctx The context of the error (builtin name and subject)
+ * @return The size of the constructed context.
+ */
 static size_t	get_context(char *buf, t_context ctx)
 {
 	size_t	i;
@@ -76,6 +90,15 @@ static size_t	get_context(char *buf, t_context ctx)
 	return (i);
 }
 
+/**
+ * @brief Constructs the complete error message including context and error
+ * information.
+ *
+ * @param buf Buffer to store the constructed error message
+ * @param err The error code
+ * @param ctx The context of the error (builtin name and subject)
+ * @return The size of the constructed error message.
+ */
 static size_t	get_error_message(char *buf, t_error err, t_context ctx)
 {
 	size_t	i;
@@ -92,6 +115,13 @@ static size_t	get_error_message(char *buf, t_error err, t_context ctx)
 	return (i);
 }
 
+/**
+ * @brief Creates a context structure for error handling.
+ *
+ * @param builtin The name of the built-in command
+ * @param subject The subject related to the error (can be NULL)
+ * @return The constructed context structure.
+ */
 t_context	ctx(const char *builtin, const char *subject)
 {
 	t_context	ctx;
@@ -105,6 +135,14 @@ t_context	ctx(const char *builtin, const char *subject)
 	return (ctx);
 }
 
+/**
+ * @brief Handles built-in command errors by printing appropriate messages.
+ *
+ * @param ctx The context of the error (builtin name and subject)
+ * @param err The error code
+ * @param int_code The integer code to return
+ * @return The provided integer code.
+ */
 int	builtin_error(t_context ctx, t_error err, int int_code)
 {
 	char	msg[MSG_LIMIT];

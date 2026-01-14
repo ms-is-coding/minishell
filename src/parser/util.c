@@ -3,21 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:15:20 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/27 18:14:23 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:59:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.h"
 
+/**
+ * @brief Advances the parser to the next token.
+ *
+ * @param p Pointer to the parser structure
+ */
 void	parser_advance(t_parser *p)
 {
 	p->prev_token = p->curr_token;
 	p->curr_token = lexer_advance(p->lexer);
 }
 
+/**
+ * @brief Consumes a token of the expected type.
+ *
+ * @param p Pointer to the parser structure
+ * @param type Expected token type
+ * @param error Error message to display if the token type does not match
+ * @return RESULT_OK if the token type matches, otherwise RESULT_ERROR.
+ */
 t_result	parser_consume(t_parser *p,
 	t_token_type type, const char *error)
 {
@@ -33,6 +46,13 @@ t_result	parser_consume(t_parser *p,
 	return (RESULT_ERROR);
 }
 
+/**
+ * @brief Checks if the current token matches the expected type and advances the parser.
+ *
+ * @param p Pointer to the parser structure
+ * @param type Expected token type
+ * @return true if the token type matches and the parser advanced, false otherwise.
+ */
 bool	parser_match(t_parser *p, t_token_type type)
 {
 	if (p->curr_token.type == type)

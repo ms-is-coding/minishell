@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 16:39:19 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:33:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:32:49 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include "core/stdio.h"
 #include "core/string.h"
 
+/**
+ * @brief Builds an array of environment variables in the format "KEY=VALUE".
+ *
+ * @param env Pointer to the environment structure
+ * @param arena Pointer to the arena for memory allocation
+ * @return Array of strings representing the environment variables, or NULL on
+ * failure.
+ */
 char	**env_build(t_env *env, t_arena *arena)
 {
 	char	**e;

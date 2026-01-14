@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   show.c                                             :+:      :+:    :+:   */
+/*   warn.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 17:05:43 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:34:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:01:03 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ static struct s_help	g_help[HELP_COUNT] = {
 	"https://tinyurl.com/57fh7f4s"}
 };
 
+/**
+ * @brief Displays a warning message based on the provided help code.
+ *
+ * @param code The help code corresponding to the warning message
+ */
 void	help_warn(t_help_code code)
 {
 	ft_dprintf(2, ANSI_YELLOW"WARNING: "ANSI_RESET"%s"

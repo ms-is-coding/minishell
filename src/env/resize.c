@@ -3,21 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   resize.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:54:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/21 17:02:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:10:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env_internal.h"
 #include <stddef.h>
 
+/**
+ * @brief Scales the given size by 1.5 using a fast method.
+ *
+ * @param x The size to scale
+ * @return The scaled size.
+ */
 static inline size_t	scale_1_5_fast(size_t x)
 {
 	return (x + (x >> 1));
 }
 
+/**
+ * @brief Resizes the environment's bucket array to accommodate more entries.
+ *
+ * @param env Pointer to the environment structure
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	env_resize(t_env *env)
 {
 	t_env_bucket	*old_buckets;

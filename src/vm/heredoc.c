@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:30:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:45:46 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 #include "core/string.h"
 #include "core/stdio.h"
 
+/**
+ * @brief Inserts a redirection into the VM's redirection list.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param target_fd The target file descriptor
+ * @param file_fd The file descriptor to redirect to
+ */
 static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 {
 	int	i;
@@ -28,6 +35,13 @@ static void	redir_insert(t_vm *vm, int32_t target_fd, int32_t file_fd)
 	vm->redirs[i].file_fd = file_fd;
 }
 
+/**
+ * @brief Handles the heredoc input loop.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param filename The temporary file to store heredoc input
+ * @param delim The delimiter string to end heredoc input
+ */
 static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 {
 	char	*line;
@@ -56,6 +70,12 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 	vm->here_doc = false;
 }
 
+/**
+ * @brief Handles the heredoc opcode in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine
+ * @param program Pointer to the program being executed
+ */
 void	vm_heredoc(t_vm *vm, t_program *program)
 {
 	int32_t		file_fd;

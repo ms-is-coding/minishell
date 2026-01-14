@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:10:56 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:56:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:55:28 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "core/string.h"
 #include <stddef.h>
 
+/**
+ * @brief Parses a command starting with a word token.
+ *
+ * @param p Pointer to the parser structure
+ * @param t Initial word token of the command
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	parse_command(t_parser *p, t_token t)
 {
 	size_t	pos;
@@ -39,6 +46,13 @@ static t_result	parse_command(t_parser *p, t_token t)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses a word token, either as part of a command or as an argument.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Word token to parse
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	parse_word(t_parser *p, t_token token)
 {
 	if (!p->in_cmd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:20:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 11:34:08 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:58:41 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "parser/parser.h"
 #include "vm/bytecode.h"
 
+/**
+ * @brief Parses a semicolon token, indicating the end of a command.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Semicolon token to parse
+ * @return RESULT_OK on success, otherwise RESULT_ERROR.
+ */
 t_result	parse_semi(t_parser *p, t_token token)
 {
 	if (p->curr_token.type == TOK_EOF

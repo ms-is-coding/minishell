@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 00:41:34 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:30:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:42:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include "vm/vm_internal.h"
 #include "core/stdio.h"
 
+/**
+ * @brief Executes a command in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param program Pointer to the program being executed
+ */
 void	vm_exec(t_vm *vm, t_program *program)
 {
 	t_opcode	op;

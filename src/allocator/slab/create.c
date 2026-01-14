@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 00:25:37 by smamalig          #+#    #+#             */
-/*   Updated: 2025/09/16 17:35:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:26:01 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
 #include "allocator/allocator_internal.h"
 
+/**
+ * @brief Creates a new slab region within the allocator.
+ *
+ * @param alc Pointer to the allocator instance
+ * @return Pointer to the newly created slab region, or NULL on failure
+ */
 t_slab_region	*allocator_slab_create(t_allocator *alc)
 {
 	t_slab_region	*slab;

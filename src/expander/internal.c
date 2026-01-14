@@ -3,21 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   internal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 17:37:50 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:33:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:35:15 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
 #include "core/ctype.h"
 
+/**
+ * @brief Checks if a character should be escaped in double quotes.
+ * @param c The character to check
+ * @return true if the character should be escaped, false otherwise.
+ */
 bool	dquote_escape(char c)
 {
 	return (c == '$' || c == '\\' || c == '"');
 }
 
+/**
+ * @brief Retrieves the next character from the expander.
+ * @param exp Pointer to the expander
+ * @return The next character, or '\0' if the end is reached.
+ */
 char	expander_next(t_expander *exp)
 {
 	char	ret;
@@ -36,6 +46,12 @@ char	expander_next(t_expander *exp)
 	return (ret);
 }
 
+/**
+ * @brief Checks if a character is a variable operator.
+ *
+ * @param sc The character to check
+ * @return true if the character is a variable operator, false otherwise.
+ */
 bool	is_var_operator(char sc)
 {
 	unsigned char	c;

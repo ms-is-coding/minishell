@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:59:01 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:35:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:58:00 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/**
+ * @brief Reads all data from the given file descriptor until EOF.
+ *
+ * @param fd File descriptor to read from
+ * @return Pointer to the read data buffer, or NULL on error.
+ */
 static char	*read_stdout(int fd)
 {
 	char		tmp[1024];
@@ -47,6 +53,9 @@ static char	*read_stdout(int fd)
 	return (buf);
 }
 
+/**
+ * @brief Redirects stderr to /dev/null.
+ */
 static void	close_stderr(void)
 {
 	int	devnull;
@@ -56,6 +65,12 @@ static void	close_stderr(void)
 	close(devnull);
 }
 
+/**
+ * @brief Executes a command and captures its standard output.
+ *
+ * @param argv Argument vector for the command to execute
+ * @return Pointer to the captured output buffer, or NULL on error.
+ */
 char	*exec_with_output(char **argv)
 {
 	pid_t	pid;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   group.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:36:17 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:42:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:37:37 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 #define UNREACHABLE TOK_ERROR
 
+/**
+ * @brief Lexes group-related tokens.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_grp(t_lexer *lexer)
 {
 	if (lexer->curr_char == '(')

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 22:10:09 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:07:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:38:21 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 
 #define BUF_SIZE	4096
 
+/**
+ * @brief Parses the command-line options and gets the corresponding flags.
+ *
+ * @param opt The command-line option string
+ * @param flags Pointer to the flags variable to be updated
+ * @return true if valid flags were found, false otherwise
+ */
 static bool	get_flags(const char *opt, char *flags)
 {
 	int		i;
@@ -52,6 +59,12 @@ static bool	get_flags(const char *opt, char *flags)
 	return (true);
 }
 
+/**
+ * @brief Sets the flags based on the command-line arguments.
+ *
+ * @param argv Pointer to the array of command-line arguments
+ * @return The combined flags.
+ */
 static char	set_flags(char ***argv)
 {
 	char	flags;
@@ -71,6 +84,12 @@ static char	set_flags(char ***argv)
 	return (flags);
 }
 
+/**
+ * @brief Flushes the buffer to standard output.
+ *
+ * @param buf The buffer to flush
+ * @param ptr Pointer to the current position in the buffer
+ */
 static void	flush_buffer(char *buf, char **ptr)
 {
 	if (*ptr > buf)
@@ -80,6 +99,17 @@ static void	flush_buffer(char *buf, char **ptr)
 	}
 }
 
+/**
+ * @brief Fills the buffer with the given source string, handling escape
+ * sequences if needed.
+ *
+ * @param src The source string to fill from
+ * @param buf The buffer to fill
+ * @param ptr Pointer to the current position in the buffer
+ * @param flags The flags indicating how to handle escape sequences
+ * @return true if an early termination escape sequence was encountered, false
+ * otherwise.
+ */
 static bool	fill_buffer(const char *src, char *buf, char **ptr, char flags)
 {
 	int		c;
@@ -109,6 +139,15 @@ static bool	fill_buffer(const char *src, char *buf, char **ptr, char flags)
 	return (false);
 }
 
+/**
+ * @brief Echoes the given arguments to standard output.
+ *
+ * @param sh Pointer to the shell structure (unused)
+ * @param argc Argument count (unused)
+ * @param argv Argument vector
+ * @param envp Environment variables (unused)
+ * @return Exit status code.
+ */
 int	builtin_echo(
 	__attribute__((unused)) t_shell *sh,
 	__attribute__((unused)) int argc,

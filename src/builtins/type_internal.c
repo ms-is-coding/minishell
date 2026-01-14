@@ -6,16 +6,23 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:11 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/04 17:12:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:45:55 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <linux/limits.h>
+#include <limits.h>
 #include <stddef.h>
 #include <unistd.h>
 #include "builtins/type_internal.h"
 #include "core/string.h"
 
+/**
+ * @brief Fills the buffer with the type of the command.
+ *
+ * @param buf Buffer to fill
+ * @param type Type of the command
+ * @return Length of the filled string.
+ */
 static size_t	fill_t(char *buf, char type)
 {
 	if (type & TYPE_EXEC)
@@ -26,6 +33,14 @@ static size_t	fill_t(char *buf, char type)
 		return (ft_strlcpy(buf, "unknown", 8));
 }
 
+/**
+ * @brief Fills the buffer with the path of the command if it's executable.
+ *
+ * @param buf Buffer to fill
+ * @param path Path of the command
+ * @param type Type of the command
+ * @return Length of the filled string.
+ */
 static size_t	fill_p(char *buf, const char *path, char type)
 {
 	if (!(type & TYPE_EXEC))
@@ -33,6 +48,15 @@ static size_t	fill_p(char *buf, const char *path, char type)
 	return (ft_strlcpy(buf, path, PATH_MAX));
 }
 
+/**
+ * @brief Fills the buffer with detailed information about the command.
+ *
+ * @param buf Buffer to fill
+ * @param name Name of the command
+ * @param path Path of the command
+ * @param type Type of the command
+ * @return Length of the filled string.
+ */
 static size_t	fill_e(char *buf, const char *name, const char *path, char type)
 {
 	ft_strlcpy(buf, name, PATH_MAX);
@@ -47,6 +71,14 @@ static size_t	fill_e(char *buf, const char *name, const char *path, char type)
 		return (ft_strlcat(buf, " is unknown", PATH_MAX));
 }
 
+/**
+ * @brief Outputs type information based on the provided flags.
+ *
+ * @param name Name of the command
+ * @param path Path of the command
+ * @param type Type of the command
+ * @param flags Flags indicating the output format
+ */
 void	type_info(const char *name, const char *path, char type, char flags)
 {
 	char	buf[PATH_MAX];

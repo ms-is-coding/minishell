@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   amp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:35:14 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/07 18:35:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:36:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
+/**
+ * @brief Lexes ampersand-related tokens.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_amp(t_lexer *lexer)
 {
 	if (lexer_match(lexer, '&'))

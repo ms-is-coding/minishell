@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 17:14:55 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:03:29 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:24:23 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "vm/bytecode.h"
 #include <stdint.h>
 
+/**
+ * @brief Reads a 16-bit unsigned integer from the program's bytecode at the
+ * current program counter and advances it.
+ *
+ * @param program Pointer to the program structure
+ * @return The 16-bit unsigned integer read from the bytecode.
+ */
 uint16_t	program_get_u16(t_program *program)
 {
 	uint16_t	val;
@@ -23,6 +30,13 @@ uint16_t	program_get_u16(t_program *program)
 	return (val);
 }
 
+/**
+ * @brief Reads a 32-bit integer from the program's bytecode at the current
+ * program counter and advances it.
+ *
+ * @param program Pointer to the program structure
+ * @return The 32-bit integer read from the bytecode.
+ */
 int32_t	program_get_i32(t_program *program)
 {
 	int32_t	val;

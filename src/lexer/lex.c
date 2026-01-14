@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:02:49 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:42:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:38:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include <limits.h>
 #include <stdbool.h>
 
+/**
+ * @brief Loops through double-quoted strings.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	dquote_loop(t_lexer *lexer)
 {
 	while (lexer->next_char && lexer->next_char != '"')
@@ -28,6 +34,12 @@ static t_result	dquote_loop(t_lexer *lexer)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Loops through single-quoted strings.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	squote_loop(t_lexer *lexer)
 {
 	while (lexer->next_char && lexer->next_char != '\'')
@@ -38,6 +50,12 @@ static t_result	squote_loop(t_lexer *lexer)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Lexes word tokens.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_wrd(t_lexer *lexer)
 {
 	lexer_back(lexer);

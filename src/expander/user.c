@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/06 22:40:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:19:18 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 #include "core/string.h"
 #include "core/stdio.h"
 
+/**
+ * @brief Extracts the username from the expander's next characters.
+ * @param exp Pointer to the expander
+ * @return Pointer to the extracted username, or NULL if no username is found.
+ */
 static char	*extract_user(t_expander *exp)
 {
 	static char	user[256];
@@ -33,6 +38,12 @@ static char	*extract_user(t_expander *exp)
 	return (user);
 }
 
+/**
+ * @brief Extracts the home directory of a given user using the getent command.
+ *
+ * @param user The username whose home directory is to be extracted
+ * @return Pointer to the home directory string, or NULL if not found.
+ */
 static const char	*extract_home(const char *user)
 {
 	const char	*str;
@@ -58,6 +69,14 @@ static const char	*extract_home(const char *user)
 	return (str);
 }
 
+/**
+ * @brief Retrieves the home directory of a specified user and updates the
+ * expander.
+ *
+ * @param exp Pointer to the expander
+ * @param user The username whose home directory is to be retrieved
+ * @param mode The variable expansion mode
+ */
 static void	get_user_home(t_expander *exp, const char *user,
 				t_var_expansion_mode mode)
 {
@@ -78,6 +97,13 @@ static void	get_user_home(t_expander *exp, const char *user,
 	ft_free((void *)(intptr_t)home);
 }
 
+/**
+ * @brief Retrieves the home directory of the current user and updates the
+ * expander. Also sets the HOME environment variable.
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)
 {
 	const char	*home;
@@ -96,6 +122,12 @@ static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)
 		ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
 }
 
+/**
+ * @brief Expands the user home directory in the expander.
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_user(t_expander *exp, t_var_expansion_mode mode)
 {
 	t_shell		*sh;

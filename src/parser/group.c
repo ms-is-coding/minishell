@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   group.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:21:08 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/12 16:06:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:56:22 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "vm/bytecode.h"
 #include "core/string.h"
 
+/**
+ * @brief Parses a grouped expression enclosed in parentheses.
+ *
+ * @param p Pointer to the parser structure
+ * @param token The opening parenthesis token
+ * @return Result of the parsing operation.
+ */
 t_result	parse_group(t_parser *p, t_token token)
 {
 	t_result	result;

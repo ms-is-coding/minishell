@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:42:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:46:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Dispatches the opcode to the corresponding handler function.
+ *
+ * @param opcode The opcode to dispatch
+ * @return The handler function for the given opcode, or NULL if invalid.
+ */
 static t_exec_handler	dispatch_opcode(t_opcode opcode)
 {
 	if (opcode < 0 || opcode >= OP_COUNT)
@@ -32,6 +38,12 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
 	}[opcode]);
 }
 
+/**
+ * @brief Runs the virtual machine with the given program.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param program Pointer to the program to execute.
+ */	
 void	vm_run(t_vm *vm, t_program *program)
 {
 	t_exec_handler	handler;

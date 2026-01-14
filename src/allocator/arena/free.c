@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 16:13:50 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 00:43:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:25:47 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "allocator/allocator_internal.h"
 #include <stdlib.h>
 
+/**
+ * @brief Frees the given arena and its associated memory blocks.
+ *
+ * @param alc Pointer to the allocator instance
+ * @param arena Pointer to the arena to be freed
+ */
 void	allocator_arena_free(t_allocator *alc, t_arena *arena)
 {
 	t_arena	*temp;

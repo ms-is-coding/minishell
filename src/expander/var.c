@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:34:02 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:25:02 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@
 #include "shell.h"
 #include <stdlib.h>
 
-// $VERSION
-// $TRASH_VERSION ?
-// $?
-// $$
-// $RANDOM
-// others TBD
-// regular variables
-
+/**
+ * @brief Extracts the variable and retrieves its value from the environment.
+ *
+ * @param exp Pointer to the expander
+ * @return The value of the extracted variable, or NULL if not found.
+ */
 static const char	*extract_var(t_expander *exp)
 {
 	char		key[256];
@@ -51,6 +49,12 @@ static const char	*extract_var(t_expander *exp)
 	return (env_get(&((t_shell *)exp->sh)->env, key));
 }
 
+/**
+ * @brief Expands a variable without considering IFS (Internal Field Separator).
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_var_no_ifs(t_expander *exp, t_var_expansion_mode mode)
 {
 	const char	*value;
@@ -63,6 +67,12 @@ void	expander_var_no_ifs(t_expander *exp, t_var_expansion_mode mode)
 	exp->len += ft_strlen(value);
 }
 
+/**
+ * @brief Extracts variable values considering IFS (Internal Field Separator).
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_var_extract(t_expander *exp, t_var_expansion_mode mode)
 {
 	t_allocator	*alc;
@@ -78,6 +88,12 @@ void	expander_var_extract(t_expander *exp, t_var_expansion_mode mode)
 	exp->len = 0;
 }
 
+/**
+ * @brief Expands a variable considering IFS (Internal Field Separator).
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_var(t_expander *exp, t_var_expansion_mode mode)
 {
 	const char	*value;

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 15:25:53 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/04 17:09:37 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:38:41 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 #define FLAG_N		1
 #define FLAG_ERR	2
 
+/**
+ * @brief Parses the command-line options and gets the corresponding flags.
+ *
+ * @param opt The command-line option string
+ * @param flags Pointer to the flags variable to be updated
+ * @return true if valid flags were found, false otherwise
+ */
 static bool	get_flags(const char *opt, char *flags)
 {
 	int		i;
@@ -41,6 +48,12 @@ static bool	get_flags(const char *opt, char *flags)
 	return (true);
 }
 
+/**
+ * @brief Sets the flags based on the command-line arguments.
+ *
+ * @param argv Pointer to the array of command-line arguments
+ * @return The combined flags.
+ */
 static char	set_flags(int *argc, char ***argv)
 {
 	char	flags;
@@ -64,6 +77,12 @@ static char	set_flags(int *argc, char ***argv)
 	return (flags);
 }
 
+/**
+ * @brief Validates if a string is a valid environment variable name.
+ *
+ * @param str The string to validate
+ * @return true if valid, false otherwise.
+ */
 static bool	is_valid_var(const char *str)
 {
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
@@ -78,6 +97,14 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
+/**
+ * @brief Sets an environment variable to be exported.
+ *
+ * @param env Pointer to the environment structure
+ * @param arg The argument string containing the variable assignment
+ * @param flags Flags indicating export options
+ * @return 0 on success, non-zero on failure.
+ */
 static int	set_export(t_env *env, const char *arg, char flags)
 {
 	char	*key;
@@ -104,6 +131,15 @@ static int	set_export(t_env *env, const char *arg, char flags)
 	return (0);
 }
 
+/**
+ * @brief Sets environment variables to be exported to child processes.
+ *
+ * @param sh Pointer to the shell structure
+ * @param argc Argument count (unused)
+ * @param argv Argument vector
+ * @param envp Environment variables (unused)
+ * @return Exit code of the export command.
+ */
 int	builtin_export(
 	t_shell *sh,
 	__attribute__((unused)) int argc,

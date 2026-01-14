@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 15:29:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:27:27 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include "core/string.h"
 #include "shell.h"
 
+/**
+ * @brief Expands quotes without variable expansion.
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_expand_quotes(t_expander *exp, t_var_expansion_mode mode)
 {
 	while (exp->next_char)
@@ -41,6 +47,12 @@ inline bool	my_readdir(DIR *dir, struct dirent **dirent)
 	return (true);
 }
 
+/**
+ * @brief Expands wildcard characters in the current directory.
+ *
+ * @param exp Pointer to the expander
+ * @param mode The variable expansion mode
+ */
 void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
 {
 	DIR				*dir;
@@ -68,7 +80,12 @@ void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
 	}
 	closedir(dir);
 }
-
+ /**
+ * @brief Expands the input string based on the specified mode.
+ *
+ * @param exp Pointer to the expander structure
+ * @param mode The variable expansion mode
+ */
 void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 {
 	int	prev_argc;

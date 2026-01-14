@@ -6,12 +6,20 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:47:51 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/21 22:36:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:34:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
 
+/**
+ * @brief Removes an environment variable from the environment.
+ *
+ * @param env Pointer to the environment structure
+ * @param key The key of the environment variable to remove
+ * @return RESULT_OK on success, RESULT_ERROR if the key does not exist,
+ * RESULT_RDONLY if the variable is read-only.
+ */
 t_result	env_remove(t_env *env, const char *key)
 {
 	t_env_bucket	*bucket;

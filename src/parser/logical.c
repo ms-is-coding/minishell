@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   logical.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:20:53 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:01:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:58:24 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "core/string.h"
 #include "parser/parser.h"
 
+/**
+ * @brief Parses a logical AND expression.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Current token being parsed
+ * @return Result of the parsing operation.
+ */
 t_result	parse_and(t_parser *p, t_token token)
 {
 	size_t		pos;
@@ -28,6 +35,13 @@ t_result	parse_and(t_parser *p, t_token token)
 	return (result);
 }
 
+/**
+ * @brief Parses a logical OR expression.
+ *
+ * @param p Pointer to the parser structure
+ * @param token Current token being parsed
+ * @return Result of the parsing operation.
+ */
 t_result	parse_or(t_parser *p, t_token token)
 {
 	size_t		pos;

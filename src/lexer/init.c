@@ -3,17 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:27:16 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:53:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:32:05 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer.h"
 #include "core/stdlib.h"
 
-t_result	lexer_init(t_lexer *lexer, char *input)
+/**
+ * @brief Initializes the lexer with the given input string.
+ *
+ * @param lexer Pointer to the lexer structure
+ * @param input Input string to tokenize
+ * @return Result of the initialization operation
+ */
+t_result	lexer_init(t_lexer *lexer, char *input) // why not void return ?
 {
 	lexer->input = input;
 	lexer->end = false;

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 13:12:32 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:07:16 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:40:22 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ static struct s_builtin	g_builtins[] = {
 {"exit", builtin_exit, 6385204799ul},
 {"export", builtin_export, 6953488276103ul},
 {"false", builtin_false, 210712121072ul},
-{"logout", builtin_logout, 6953751227231ul},
+	// {"logout", builtin_logout, 6953751227231ul},
 {"pwd", builtin_pwd, 193502992ul},
 {"readonly", builtin_readonly, 7572877634356771ul},
-{"return", builtin_return, 6953974653989ul},
+	// {"return", builtin_return, 6953974653989ul},
 	// {"set", builtin_set, 193505681ul},
 {"true", builtin_true, 6385737701ul},
 {"type", builtin_type, 6385745159ul},
@@ -45,6 +45,12 @@ static struct s_builtin	g_builtins[] = {
 {NULL, NULL, 0}
 };
 
+/**
+ * @brief Finds a builtin function by its name.
+ *
+ * @param name The name of the builtin command.
+ * @return The function pointer to the builtin function, or NULL if not found.
+ */
 t_builtin_fn	_builtin_find(const char *name)
 {
 	size_t	hash;

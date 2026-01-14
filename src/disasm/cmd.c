@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:20:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 22:56:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:38:07 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "disasm/disasm_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Disassembles the CMD instruction.
+ *
+ * @param program Pointer to the program being disassembled
+ * @param offset_ptr Pointer to the current offset in the program
+ */
 void	disasm_cmd(t_program *program, size_t *offset_ptr)
 {
-	int32_t	argv;
-
-	argv = disasm_print_i32(program, offset_ptr, 1);
-	(void)argv;
+	disasm_print_i32(program, offset_ptr, 1);
 	disasm_print_desc("CMD");
 }

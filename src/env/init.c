@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:32:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:08:30 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "core/string.h"
 #include <string.h>
 
+/**
+ * @brief Counts the number of environment variables in the given envp array.
+ *
+ * @param envp The environment variable array
+ * @return The number of environment variables.
+ */
 static size_t	envp_count(char **envp)
 {
 	size_t	count;
@@ -26,6 +32,11 @@ static size_t	envp_count(char **envp)
 	return (count);
 }
 
+/**
+ * @brief Initializes default environment variable values.
+ *
+ * @param env Pointer to the environment structure
+ */
 static void	env_init_default_values(t_env *env)
 {
 	char	*tmp;
@@ -44,11 +55,25 @@ static void	env_init_default_values(t_env *env)
 	ft_free(tmp);
 }
 
+/**
+ * @brief Scales the given size by approximately 1.25 using a fast method.
+ *
+ * @param x The original size
+ * @return The scaled size.
+ */
 static inline size_t	scale_1_25_fast(size_t x)
 {
 	return (x + (x >> 2));
 }
 
+/**
+ * @brief Initializes the environment structure with the given envp array.
+ *
+ * @param env Pointer to the environment structure to initialize
+ * @param allocator Pointer to the allocator to use for memory management
+ * @param envp The environment variable array
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 {
 	size_t	i;

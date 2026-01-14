@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:53:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:32:02 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,28 @@
 #include "core/stdio.h"
 #include "core/string.h"
 
+/**
+ * @brief Parses a positional argument and adds it to the CLI structure.
+ *
+ * @param cli Pointer to the CLI structure
+ * @param arg The positional argument to parse
+ * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	parse_positional(t_cli *cli, const char *arg)
 {
 	cli->positional[cli->pos_i++] = arg;
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses a short option from the command-line arguments.
+ *
+ * @param cli Pointer to the CLI structure
+ * @param argc Argument count
+ * @param argv Argument vector
+ * @param i Pointer to the current index in argv
+ * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	parse_short(t_cli *cli, int argc, char **argv, int *i)
 {
 	const char		short_name = argv[*i][1];
@@ -56,6 +72,15 @@ static t_result	parse_short(t_cli *cli, int argc, char **argv, int *i)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses a long option from the command-line arguments.
+ *
+ * @param cli Pointer to the CLI structure
+ * @param argc Argument count
+ * @param argv Argument vector
+ * @param i Pointer to the current index in argv
+ * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
+ */
 static t_result	parse_long(t_cli *cli, int argc, char **argv, int *i)
 {
 	const char		*long_name = argv[*i] + 2;
@@ -94,6 +119,14 @@ static t_result	parse_long(t_cli *cli, int argc, char **argv, int *i)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses command-line arguments and populates the CLI structure.
+ *
+ * @param cli Pointer to the CLI structure
+ * @param argc Argument count
+ * @param argv Argument vector
+ * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	cli_parse(t_cli *cli, int argc, char **argv)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:11:19 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:44:47 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include "core/string.h"
 #include "core/stdio.h"
 
+/**
+ * @brief Parses the command-line options and gets the corresponding flags.
+ *
+ * @param opt The command-line option string
+ * @param flags Pointer to the flags variable to be updated
+ * @return true if valid flags were found, false otherwise
+ */
 static bool	get_flags(const char *opt, char *flags)
 {
 	int		i;
@@ -44,6 +51,12 @@ static bool	get_flags(const char *opt, char *flags)
 	return (true);
 }
 
+/**
+ * @brief Sets the flags based on the command-line arguments.
+ *
+ * @param argv Pointer to the array of command-line arguments
+ * @return The combined flags.
+ */
 static char	set_flags(int *argc, char ***argv)
 {
 	char	flags;
@@ -67,6 +80,13 @@ static char	set_flags(int *argc, char ***argv)
 	return (flags);
 }
 
+/**
+ * @brief Tries to find and report a builtin command.
+ *
+ * @param name The name of the command to check
+ * @param flags Flags for type information
+ * @return true if the command is a builtin, false otherwise.
+ */
 static bool	try_builtin(char *name, char flags)
 {
 	t_builtin_fn	fn;
@@ -78,6 +98,14 @@ static bool	try_builtin(char *name, char flags)
 	return (true);
 }
 
+/**
+ * @brief Tries to find and execute a command in the system PATH.
+ *
+ * @param arg Command argument (executable name)
+ * @param env_path The PATH environment variable
+ * @param flags Flags for type information
+ * @return true if the command is found and executable, false otherwise.
+ */
 static bool	try_exec(const char *arg, const char *env_path, char flags)
 {
 	static char	path[PATH_MAX];
@@ -99,6 +127,15 @@ static bool	try_exec(const char *arg, const char *env_path, char flags)
 	return (false);
 }
 
+/**
+ * @brief Identifies the type of commands provided as arguments.
+ *
+ * @param sh Pointer to the shell structure
+ * @param argc Argument count (unused)
+ * @param argv Argument vector
+ * @param envp Environment variables (unused)
+ * @return Exit status of the command.
+ */
 int	builtin_type(
 	t_shell *sh,
 	__attribute__((unused)) int argc,

@@ -6,12 +6,18 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 18:33:22 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/17 22:23:24 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/14 17:03:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
+/**
+ * @brief Parses an octal escape sequence from the string.
+ *
+ * @param s Pointer to the string pointer
+ * @return The integer value of the octal escape sequence.
+ */
 static int	get_escape_octal(const char **s)
 {
 	int		i;
@@ -32,6 +38,12 @@ static int	get_escape_octal(const char **s)
 	return (val);
 }
 
+/**
+ * @brief Parses a hexadecimal escape sequence from the string.
+ *
+ * @param s Pointer to the string pointer
+ * @return The integer value of the hexadecimal escape sequence.
+ */
 static int	get_escape_hex(const char **s)
 {
 	int		i;
@@ -60,6 +72,12 @@ static int	get_escape_hex(const char **s)
 	return (val);
 }
 
+/**
+ * @brief Parses an escape character from the string.
+ *
+ * @param s Pointer to the string pointer
+ * @return The integer value of the escape character.
+ */
 int	get_escape_char(const char **s)
 {
 	if (**s == 'a')

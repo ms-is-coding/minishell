@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:37:25 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:54:09 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:39:05 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "core/stdio.h"
 #include "ansi.h"
 
+/**
+ * @brief Returns the string representation of a token type.
+ *
+ * @param t The token.
+ * @return The string representation of the token type.
+ */
 static const char	*get_data(t_token t)
 {
 	return ((const char *[]){"error", "word", "var", "asgn", "<", ">", "<>",
@@ -24,6 +30,11 @@ static const char	*get_data(t_token t)
 		"elif", "comment", "EOF"}[t.type]);
 }
 
+/**
+ * @brief Prints the details of a token.
+ *
+ * @param token The token to print.
+ */
 void	print_token(t_token token)
 {
 	ft_printf(ANSI_ITALIC ANSI_WHITE "Token" ANSI_RESET " ");

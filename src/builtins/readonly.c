@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:10:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:39:45 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 #include "core/ctype.h"
 #include "core/string.h"
 
+/**
+ * @brief Checks if a variable name is valid.
+ *
+ * @param str The variable name string
+ * @return true if the variable name is valid, false otherwise.
+ */
 static bool	is_valid_var(const char *str)
 {
 	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
@@ -29,6 +35,14 @@ static bool	is_valid_var(const char *str)
 	return (true);
 }
 
+/**
+ * @brief Separates an export argument into key and value.
+ *
+ * @param arg The argument string containing the variable assignment
+ * @param key Pointer to store the extracted key
+ * @param value Pointer to store the extracted value
+ * @return 0 on success, non-zero on failure.
+ */
 static int	separate_export(const char *arg, char **key, char **value)
 {
 	char	*eq;
@@ -47,6 +61,15 @@ static int	separate_export(const char *arg, char **key, char **value)
 	return (0);
 }
 
+/**
+ * @brief Marks environment variables as read-only.
+ *
+ * @param sh Pointer to the shell structure
+ * @param argc Argument count (unused)
+ * @param argv Argument vector
+ * @param envp Environment pointer (unused)
+ * @return Exit status of the command.
+ */
 int	builtin_readonly(
 	t_shell *sh,
 	__attribute__((unused)) int argc,

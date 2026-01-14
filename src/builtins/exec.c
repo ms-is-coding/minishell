@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:54:35 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:24:01 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 #include "core/string.h"
 #include "core/stdio.h"
 
+/**
+ * @brief Finds the executable path for a given command argument.
+ *
+ * @param arg Command argument (executable name)
+ * @param envp Environment variables
+ * @return Path to the executable if found, NULL otherwise.
+ */
 static char	*find_exec(const char *arg, char **envp)
 {
 	static char	path[PATH_MAX];
@@ -41,6 +48,15 @@ static char	*find_exec(const char *arg, char **envp)
 	return (NULL);
 }
 
+/**
+ * @brief Executes a command, replacing the current process image.
+ *
+ * @param sh Pointer to the shell structure (unused)
+ * @param argc Argument count (unused)
+ * @param argv Argument vector
+ * @param envp Environment variables
+ * @return Exit code of the execution.
+ */
 int	builtin_exec(
 	__attribute__((unused)) t_shell *sh,
 	__attribute__((unused)) int argc,

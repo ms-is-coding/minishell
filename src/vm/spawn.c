@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:17:23 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:50:02 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/**
+ * @brief Finds the executable path for a given command argument.
+ *
+ * @param arg The command argument to find the executable for
+ * @param env_path The PATH environment variable string
+ * @return The full path to the executable if found, NULL otherwise
+ */
 static char	*find_exec(const char *arg, const char *env_path)
 {
 	static char	path[PATH_MAX];
@@ -39,7 +46,11 @@ static char	*find_exec(const char *arg, const char *env_path)
 	}
 	return (NULL);
 }
-
+/**
+ * @brief Closes the pipes used in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ */
 static void	close_pipes(t_vm *vm)
 {
 	if (vm->prev_fd > 2)
@@ -50,6 +61,11 @@ static void	close_pipes(t_vm *vm)
 		close(vm->pipe_fd[STDOUT_FILENO]);
 }
 
+/**
+ * @brief Destroys the shell instance and frees associated resources.
+ *
+ * @param sh Pointer to the shell structure
+ */
 static void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
@@ -60,6 +76,11 @@ static void	sh_destroy(t_shell *sh)
 	close_pipes(&sh->vm);
 }
 
+/**
+ * @brief Sets up the file descriptors for the command execution.
+ *
+ * @param vm Pointer to the virtual machine instance
+ */
 static void	setup_fds(t_vm *vm)
 {
 	int	i;
@@ -74,6 +95,12 @@ static void	setup_fds(t_vm *vm)
 	close_pipes(vm);
 }
 
+/**
+ * @brief Resets the file descriptors in the virtual machine after command
+ * execution.
+ *
+ * @param vm Pointer to the virtual machine instance
+ */
 static void	reset_fds(t_vm *vm)
 {
 	int	i;
@@ -94,6 +121,12 @@ static void	reset_fds(t_vm *vm)
 	vm->redir_count = 0;
 }
 
+/**
+ * @brief Checks if the current command is part of a pipeline.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @return true if the command is in a pipeline, false otherwise.
+ */
 static bool	is_command_in_pipeline(t_vm *vm)
 {
 	return (vm->prev_fd != STDIN_FILENO
@@ -101,6 +134,11 @@ static bool	is_command_in_pipeline(t_vm *vm)
 		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
 }
 
+/**
+ * @brief Runs an empty command in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ */
 static void	run_empty_command(t_vm *vm)
 {
 	pid_t	pid;
@@ -119,6 +157,14 @@ static void	run_empty_command(t_vm *vm)
 	return ;
 }
 
+/**
+ * @brief Executes a built-in command in the virtual machine.
+ *
+ * @param sh Pointer to the shell structure
+ * @param vm Pointer to the virtual machine instance
+ * @param env Array of environment variables
+ * @return Exit status code of the built-in command
+ */
 static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
 {
 	t_builtin_fn	builtin;
@@ -145,6 +191,11 @@ static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
 	return (exit_code);
 }
 
+/**
+ * @brief Spawns a new process to execute a command in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ */
 void	vm_spawn(t_vm *vm)
 {
 	char			**env;

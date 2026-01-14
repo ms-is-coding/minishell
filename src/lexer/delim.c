@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   delim.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:32:43 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 16:42:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:37:13 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer/lexer_internal.h"
 
+/**
+ * @brief Lexes delimiter-related tokens.
+ *
+ * @param lexer Pointer to the lexer instance
+ * @return The lexed token.
+ */
 t_token	lex_dlm(t_lexer *lexer)
 {
 	if (lexer_match(lexer, ';'))

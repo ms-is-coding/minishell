@@ -3,17 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 08:15:08 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/30 08:26:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:45:26 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "disasm/disasm_internal.h"
 
+/**
+ * @brief Disassembles a heredoc operation.
+ *
+ * @param program Pointer to the program being disassembled
+ * @param offset_ptr Pointer to the current offset in the program
+ */
 void	disasm_heredoc(t_program *program, size_t *offset_ptr)
-
 {	
 	uint16_t	len;
 

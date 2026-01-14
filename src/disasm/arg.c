@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   arg.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:27:35 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/08 22:57:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:36:12 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "disasm/disasm_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Disassembles the ARG instruction.
+ *
+ * @param program Pointer to the program being disassembled
+ * @param offset_ptr Pointer to the current offset in the program
+ */
 void	disasm_arg(t_program *program, size_t *offset_ptr)
 {
 	uint16_t	len;

@@ -3,21 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:13:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 02:20:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:48:33 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander_internal.h"
 #include "shell.h"
 
+/**
+ * @brief Initializes the expander structure.
+ *
+ * @param exp Pointer to the expander structure
+ * @param sh Pointer to the shell structure
+ */
 void	expander_init(t_expander *exp, void *sh)
 {
 	exp->sh = sh;
 }
 
+/**
+ * @brief Sets up the expander for a new argument.
+ *
+ * @param exp Pointer to the expander structure
+ * @param frame Pointer to the execution frame
+ * @param arg The argument string to expand
+ * @param len The length of the argument string
+ */
 void	expander_setup(
 	t_expander *exp,
 	t_exec_frame *frame,

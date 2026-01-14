@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   disasm.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 19:47:14 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:42:06 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:01:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include <stdint.h>
 #include "core/stdio.h"
 
+/**
+ * @brief Returns the disassembler function for a given opcode.
+ *
+ * @param opcode The opcode to get the disassembler for
+ * @return The disassembler function corresponding to the opcode.
+ */
 static t_disassembler	disasm_opcode(t_opcode opcode)
 {
 	if (opcode < 0 || opcode >= OP_COUNT)
@@ -34,6 +40,11 @@ static t_disassembler	disasm_opcode(t_opcode opcode)
 	}[opcode]);
 }
 
+/**
+ * @brief Disassembles a given program and prints the output.
+ *
+ * @param program The program to disassemble
+ */
 void	disasm(t_program *program)
 {
 	t_disassembler	handler;

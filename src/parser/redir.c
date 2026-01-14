@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 15:02:02 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/23 13:24:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:01:26 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "parser/parser.h"
 #include "vm/bytecode.h"
 
+/**
+ * @brief Parses an output redirection token.
+ *
+ * @param p Pointer to the parser structure
+ * @param t Output redirection token to parse
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	parse_r_out(t_parser *p, t_token t)
 {
 	t_token	filename;
@@ -37,6 +44,13 @@ t_result	parse_r_out(t_parser *p, t_token t)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses an input redirection token.
+ *
+ * @param p Pointer to the parser structure
+ * @param t Input redirection token to parse
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	parse_r_in(t_parser *p, t_token t)
 {
 	t_token	filename;
@@ -57,6 +71,13 @@ t_result	parse_r_in(t_parser *p, t_token t)
 	return (RESULT_OK);
 }
 
+/**
+ * @brief Parses a heredoc redirection token.
+ *
+ * @param p Pointer to the parser structure
+ * @param t Heredoc redirection token to parse
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	parse_heredoc(t_parser *p, t_token t)
 {
 	t_token	delim;

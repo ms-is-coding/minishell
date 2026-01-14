@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 13:58:31 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/03 00:46:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:28:44 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 #include "allocator/allocator_internal.h"
 #include <stdint.h>
 
+/**
+ * @brief Creates a new arena for the allocator.
+ *
+ * @param alc Pointer to the allocator structure
+ * @return Pointer to the newly created arena, or NULL on failure.
+ */
 t_arena	*allocator_arena_new(t_allocator *alc)
 {
 	t_arena	*arena;
