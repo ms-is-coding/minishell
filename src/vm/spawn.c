@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:50:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:12:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,6 @@ static void	close_pipes(t_vm *vm)
 		close(vm->pipe_fd[STDIN_FILENO]);
 	if (vm->pipe_fd[STDOUT_FILENO] > 2)
 		close(vm->pipe_fd[STDOUT_FILENO]);
-}
-
-/**
- * @brief Destroys the shell instance and frees associated resources.
- *
- * @param sh Pointer to the shell structure
- */
-static void	sh_destroy(t_shell *sh)
-{
-	cli_destroy(&sh->cli);
-	vec_free(sh->vm.exit_codes);
-	vec_free(sh->vm.pids);
-	env_destroy(&sh->env);
-	allocator_destroy(&sh->allocator);
-	close_pipes(&sh->vm);
 }
 
 /**

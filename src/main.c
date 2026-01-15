@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:12:32 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:13:26 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ static int	command(t_shell *sh, char *command)
  *
  * @param sh Pointer to the shell structure
  */
-static void	sh_destroy(t_shell *sh)
+void	sh_destroy(t_shell *sh)
 {
 	cli_destroy(&sh->cli);
 	env_destroy(&sh->env);

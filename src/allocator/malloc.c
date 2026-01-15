@@ -6,14 +6,13 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:15:57 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:10:12 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:13:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "allocator/allocator.h"
 #include "allocator/allocator_internal.h"
 #include "core/string.h"
-#include <cerrno>
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
