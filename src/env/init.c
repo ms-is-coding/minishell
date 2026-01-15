@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:08:30 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:55:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	env_init_default_values(t_env *env)
 
 	if (!env_get(env, "PATH"))
 		env_set(env, "PATH", DEFAULT_PATH,
-			ENV_FLAG_EXPORT | ENV_FLAG_STACK_KEY);
+			ENV_FLAG_EXPORT | ENV_FLAG_STACK);
 	tmp = exec_with_output((char *[]){
 			(char *)(intptr_t)"/usr/bin/id",
 			(char *)(intptr_t)"-u", NULL});
