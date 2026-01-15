@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/26 11:58:15 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:57:44 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum e_error
 	ERR_PREV_DIR,
 	ERR_CURR_DIR,
 	ERR_BAD_SET,
-	ERR_TOO_LONG,
+	ERR_READONLY,
 	ERR_NOT_NUMERIC,
 	ERR_404,
 	ERR_NO_PERM,

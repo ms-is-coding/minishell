@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 12:35:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/14 17:17:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:58:31 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ static const char	*get_error_info(t_error err)
 	[ERR_INVALID_ID] = ": not a valid identifier",
 	[ERR_NO_HOME] = ": HOME not found",
 	[ERR_NO_OLDPWD] = ": OLDPWD not found",
-	[ERR_PREV_DIR] = ": Roll-backed to previous DIR, which does not exist",
-	[ERR_CURR_DIR] = ": Current DIR does not exist",
+	[ERR_PREV_DIR] = ": roll-backed to previous DIR, which does not exist",
+	[ERR_CURR_DIR] = ": current DIR does not exist",
 	[ERR_BAD_SET] = ": could not set variable",
-	[ERR_TOO_LONG] = ": path too long",
+	[ERR_READONLY] = ": cannot unset, readonly variable",
 	[ERR_NOT_NUMERIC] = ": numeric argument required",
 	[ERR_404] = ": not found",
 	[ERR_NO_PERM] = ": Permission denied",
