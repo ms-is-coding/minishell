@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 15:20:54 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/15 15:43:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static int	repl(t_shell *sh) // FIX not commented, needs to still be split
 			continue ;
 		len = 0;
 		prompt[0] = '\0';
-		prompt_user(sh, prompt, &len);
 		prompt_pwd(sh, prompt, &len);
 		prompt_exit_codes(sh, prompt, &len);
 		ft_strlcat(prompt, "> ", PROMPT_SIZE);
