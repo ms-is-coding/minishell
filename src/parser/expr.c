@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 14:02:54 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:58:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	print_error(t_parser *p, t_token token, const char *message) //FIX function
 	if (token.pos.len > ERROR_MAX_LENGTH)
 		ft_dprintf(2, ANSI_RED "%.*s", ERROR_MAX_LENGTH, ERROR_HIGHLIGHT);
 	else
-		ft_dprintf(2, "%.*s", token.pos.len, ERROR_HIGHLIGHT);
+		ft_dprintf(2, ANSI_RED "%.*s", token.pos.len, ERROR_HIGHLIGHT);
 	ft_dprintf(2, " %s" ANSI_RESET "\n", message);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 18:03:47 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:40:10 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:59:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ t_result	parse_error(t_parser *p, t_token token)
  */
 t_result	parse_pipe(t_parser *p, t_token token)
 {
+	if (p->mode == PARSER_MODE_GROUP)
+	{
+		print_error(p, token, "Pipes cannot be used when parentheses are"\
+			" present");
+		return (RESULT_ERROR);
+	}
+	p->mode = PARSER_MODE_PIPE;
 	if ((p->program.data[p->program.len - 1] & OPCODE_MASK) == OP_EXEC)
 		p->program.data[p->program.len - 1] = OP_EXEC | EXEC_PIPELINE_BIT;
 	else

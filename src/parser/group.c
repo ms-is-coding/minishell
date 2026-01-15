@@ -6,13 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:21:08 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 19:56:22 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:59:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parser.h"
-#include "vm/bytecode.h"
-#include "core/string.h"
 
 /**
  * @brief Parses a grouped expression enclosed in parentheses.
@@ -25,7 +23,13 @@ t_result	parse_group(t_parser *p, t_token token)
 {
 	t_result	result;
 
-	(void)token;
+	if (p->mode == PARSER_MODE_PIPE)
+	{
+		print_error(p, token, "Parentheses cannot be used inside pipelines or"\
+			" redirections");
+		return (RESULT_ERROR);
+	}
+	p->mode = PARSER_MODE_GROUP;
 	result = parser_parse_expr(p, PREC_NUL);
 	if (result != RESULT_OK)
 		return (result);
