@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:12:55 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:15:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "core/stdio.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -36,6 +37,12 @@ static char	*find_exec(const char *arg, const char *env_path)
 
 	if (!arg)
 		return (NULL);
+	if (!env_path)
+	{
+		if (access(arg, F_OK) == 0)
+			return ((char *)(intptr_t)arg);
+		return (NULL);
+	}
 	while (ft_strchr(env_path, ':'))
 	{
 		len = ft_strcspn(env_path, ":");
@@ -189,9 +196,8 @@ void	vm_spawn(t_vm *vm)
 	t_shell			*sh;
 	t_builtin_fn	builtin;
 	int				exit_code;
+	struct stat		path_stat;
 
-	if (vec_length(vm->exit_codes) == 0)
-		vec_clear(vm->exit_codes);
 	if (vm->had_error)
 	{
 		vm->had_error = false;
@@ -221,11 +227,24 @@ void	vm_spawn(t_vm *vm)
 		}
 		if (ft_strchr(vm->frame.argv[0], '/'))
 		{
+			if (stat(vm->frame.argv[0], &path_stat) == 0)
+			{
+				if (S_ISDIR(path_stat.st_mode))
+				{
+					ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
+					sh_destroy(sh);
+					exit(126);
+				}
+			}
 			if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
+			{
 				ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
+				exit(127);
+			}
 			secure_execve(vm->frame.argv[0], vm->frame.argv, env);
 			ft_dprintf(2, "%s: cannot execute binary file: %m\n",
 				vm->frame.argv[0]);
+			sh_destroy(sh);
 			exit(126);
 		}
 		exec = find_exec(vm->frame.argv[0], env_get(&sh->env, "PATH"));
@@ -234,6 +253,15 @@ void	vm_spawn(t_vm *vm)
 			ft_dprintf(2, "command not found: %s\n", vm->frame.argv[0]);
 			sh_destroy(sh);
 			exit(127);
+		}
+		if (stat(vm->frame.argv[0], &path_stat) == 0)
+		{
+			if (S_ISDIR(path_stat.st_mode))
+			{
+				ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
+				sh_destroy(sh);
+				exit(126);
+			}
 		}
 		secure_execve(exec, vm->frame.argv, env);
 		ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);

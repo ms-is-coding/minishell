@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 15:44:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:17:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef struct s_parser
 	bool		in_cmd;
 	uint8_t		redirs;
 
-	enum e_mode {
+	enum	e_mode
+	{
 		PARSER_MODE_NONE,
 		PARSER_MODE_PIPE,
 		PARSER_MODE_GROUP,

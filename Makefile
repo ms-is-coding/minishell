@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/15 13:14:20 by mattcarniel      ###   ########.fr        #
+#    Updated: 2026/01/15 15:21:22 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ SRC_BUILTINS 	:= $(addprefix builtins/, _find.c cd.c echo.c env.c error.c \
 					echo_internal.c export_internal.c \
 					type_internal.c help_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
-					cmd.c exec.c heredoc.c)
+					cmd.c exec.c heredoc.c init.c)
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
 					exec.c redir.c jump.c heredoc.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
@@ -67,8 +67,8 @@ SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
 					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
 SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
 					char.c dquote.c squote.c user.c)
-SRC_UTIL		:= $(addprefix util/, warn.c version.c exec.c git.c time.c \
-					secure.c)
+SRC_UTIL		:= $(addprefix util/, warn.c version.c exec.c time.c \
+					secure.c signals.c prompt.c)
 
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \

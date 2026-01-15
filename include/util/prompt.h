@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   git.h                                              :+:      :+:    :+:   */
+/*   prompt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/18 18:09:25 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/19 00:41:09 by smamalig         ###   ########.fr       */
+/*   Created: 2026/01/15 13:01:36 by smamalig          #+#    #+#             */
+/*   Updated: 2026/01/15 14:17:25 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GIT_H
-# define GIT_H
+#ifndef PROMPT_H
+# define PROMPT_H
 
-typedef struct git_status {
-	char	branch[128];
-	char	upstream[128];
-	int		ahead;
-	int		behind;
+# include <sys/types.h>
 
-	int		staged;
-	int		dirty;
-	int		untracked;
-	int		conflicts;
-}	t_git_status;
+typedef struct s_shell	t_shell;
 
-t_git_status	git_status_read(void);
+void	prompt_exit_codes(t_shell *sh, char *prompt, ssize_t *len);
+void	prompt_pwd(t_shell *sh, char *prompt, ssize_t *len);
 
-#endif // GIT_H
+#endif

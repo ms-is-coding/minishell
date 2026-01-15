@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:12:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:46:23 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:00:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	vm_jump(t_vm *vm, t_program *program)
 
 	op = program->data[program->pc++];
 	jmp_pos = program_get_i32(program);
-	exit_code = (int64_t)vec_get(vm->exit_codes, -1);
+	exit_code = (int32_t)(int64_t)vec_get(vm->exit_codes, -1);
 	should_jump = (exit_code == 0);
 	if (op & JUMP_NEG_BIT)
 		should_jump = !should_jump;

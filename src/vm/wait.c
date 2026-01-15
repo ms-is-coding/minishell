@@ -6,10 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 13:13:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 15:22:49 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "util/signals.h"
 #include "vm/vm_internal.h"
 #include <stddef.h>
 #include <signal.h>
@@ -26,33 +27,14 @@ void	vm_dispatch(t_vm *vm, int sig)
 {
 	int	i;
 
+	if (!vm->active)
+		return ;
 	i = 0;
 	while (i < (int)vec_length(vm->pids))
 	{
-		kill((int64_t)vec_get(vm->pids, i), sig);
+		kill((int32_t)(int64_t)vec_get(vm->pids, i), sig);
 		i++;
 	}
-}
-
-/**
- * @brief Returns the string representation of a kill signal.
- *
- * @param sig Signal number
- * @return String representation of the signal.
- */
-static const char	*kill_signals(int sig)
-{
-	if (sig < 0 || sig >= 65)
-		return (NULL);
-	return ((const char *[65]){[1] = "HUP", [2] = "INT", [3] = "QUIT",
-		[4] = "ILL", [5] = "TRAP", [6] = "ABRT", [7] = "BUS",
-		[8] = "FPE", [9] = "KILL", [10] = "USR1", [11] = "SEGV", [12] = "USR2",
-		[13] = "PIPE", [14] = "ALRM", [15] = "TERM", [16] = "STKFLT",
-		[17] = "CHLD", [18] = "CONT", [19] = "STOP", [20] = "TSTP",
-		[21] = "TTIN", [22] = "TTOU", [23] = "URG", [24] = "XCPU",
-		[25] = "XFSZ", [26] = "VTALRM", [27] = "PROF", [28] = "WINCH",
-		[29] = "POLL", [30] = "PWR", [31] = "SYS", [34] = "RTMIN",
-		[64] = "RTMAX"}[sig]);
 }
 
 /**
@@ -70,10 +52,11 @@ void	vm_wait(
 	int		code;
 
 	i = -1;
+	vm->last_exit_code = (int32_t)(int64_t)vec_get(vm->exit_codes, -1);
 	while (++i < (int)vec_length(vm->pids))
 	{
 		code = 1;
-		if (waitpid((int64_t)vec_get(vm->pids, i), &stat, 0) == -1)
+		if (waitpid((int32_t)(int64_t)vec_get(vm->pids, i), &stat, 0) == -1)
 			code = 1;
 		else if (WIFEXITED(stat))
 			code = WEXITSTATUS(stat);
@@ -84,8 +67,8 @@ void	vm_wait(
 		else if (WIFCONTINUED(stat))
 			code = 0;
 		if (WCOREDUMP(stat))
-			ft_dprintf(2, "[%lli] %s (core dumped)\n",
-				(int64_t)vec_get(vm->pids, i), kill_signals(code - 128));
+			ft_dprintf(2, "[%i] %s (core dumped)\n", (int32_t)(int64_t)
+				vec_get(vm->pids, i), kill_signals(code - 128));
 		vec_push(vm->exit_codes, (void *)(int64_t)code);
 	}
 	vec_clear(vm->pids);

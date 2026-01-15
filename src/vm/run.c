@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:46:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:00:13 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	vm_run(t_vm *vm, t_program *program)
 	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
 	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
 	program->pc = 0UL;
-	vm->pids = vec_new(16);
 	vm->active = true;
 	vm->redir_count = 0;
+	vm->last_exit_code = (int32_t)(int64_t)vec_get(vm->exit_codes, -1);
+	vec_clear(vm->exit_codes);
 	while (program->pc < program->len)
 	{
 		handler = dispatch_opcode(program->data[program->pc] & OPCODE_MASK);
@@ -66,6 +67,5 @@ void	vm_run(t_vm *vm, t_program *program)
 		}
 		handler(vm, program);
 	}
-	vec_free(vm->pids);
 	vm->active = false;
 }
