@@ -6,12 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 23:59:58 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 18:55:08 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:59:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util/exec.h"
-#include "util/help.h"
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -50,7 +49,7 @@ int	secure_open(const char *file, int oflag)
 
 #if defined(__is_42sh)
 
-# if defined(__GLIBC__) || defined (__APPLE__) || defined(__FreeBSD__)
+# if defined(__GLIBC__) || defined(__FreeBSD__)
 
 /**
  * @brief Executes a program securely using fexecve.
@@ -75,7 +74,7 @@ int	secure_execve(const char *path, char *const *argv, char *const *envp)
 	__builtin_unreachable();
 }
 
-# else // __GLIBC__ || __APPLE__ || __FreeBSD__
+# else // __GLIBC__ || __FreeBSD__
 
 #  ifdef SYS_execveat
 
@@ -103,9 +102,13 @@ int	secure_execve(const char *path, char *const *argv, char *const *envp)
 }
 #  endif
 
-#  error "Secure execve is not available"
+int	secure_execve(const char *path, char *const *argv, char *const *envp)
+{
+	execve(path, argv, envp);
+	return (-1);
+}
 
-# endif // __GLIBC__ || __APPLE__ || __FreeBSD__
+# endif // __GLIBC__ || __FreeBSD__
 
 #else // __is_42sh
 
