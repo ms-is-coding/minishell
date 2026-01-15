@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/14 19:49:21 by mattcarniel      ###   ########.fr        #
+#    Updated: 2026/01/15 13:14:20 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ RESET			= \e[m
 
 LIBFT_DIR		:= $(LIB_DIR)/libft
 LIBFT			:= $(LIBFT_DIR)/libft.a
-LDLIBS			:= -lftcore -lftalloc -lftvector -lftprintf -lftmath -lreadline
+LDLIBS			:= -lftcore -lftvector -lftprintf -lftmath -lreadline
 LDFLAGS			:= -L$(LIBFT_DIR)
 
 INCLUDES		:= -Iinclude -I$(LIBFT_DIR)/include
@@ -167,7 +167,7 @@ re: fclean
 
 .PHONY: norm
 norm:
-	echo $(SRCS) | xargs -n1 -P$(shell nproc) norminette
+	@echo $(SRCS) | xargs -n1 -P$(shell nproc) norminette | grep -v OK!
 
 
 .PHONY: tidy
