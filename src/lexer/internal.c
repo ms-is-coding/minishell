@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:33:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 19:40:28 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:21:51 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	is_operator(char sc)
 }
 
 /**
- * @brief Advances the lexer to the next character, updating its state accordingly.
+ * @brief Moves the lexer to the next character, updating its state accordingly.
  *
  * @param lexer Pointer to the lexer structure
  * @return The next character.

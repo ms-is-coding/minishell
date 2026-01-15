@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:15:20 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 13:59:50 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 12:22:58 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ t_result	parser_consume(t_parser *p,
 }
 
 /**
- * @brief Checks if the current token matches the expected type and advances the parser.
+ * @brief Checks if the current token matches the expected type and advances
+ * the parser.
  *
  * @param p Pointer to the parser structure
  * @param type Expected token type
- * @return true if the token type matches and the parser advanced, false otherwise.
+ * @return true if the token type matches and the parser advanced, false
+ * otherwise.
  */
 bool	parser_match(t_parser *p, t_token_type type)
 {

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:15:14 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 14:45:07 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 13:10:44 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ int32_t	disasm_print_i32(t_program *program, size_t *offset_ptr, int start)
 }
 
 /**
- * @brief Prints a 16-bit unsigned integer from the program data with color coding.
+ * @brief Prints a 16-bit unsigned integer from the program data with color
+ * coding.
  *
  * @param program Pointer to the program containing the data
  * @param offset_ptr Pointer to the current offset in the program data
@@ -109,7 +110,8 @@ uint16_t	disasm_print_u16(t_program *program, size_t *offset_ptr, int start)
 }
 
 /**
- * @brief Prints a string of specified length from the program data with color coding.
+ * @brief Prints a string of specified length from the program data with color
+ * coding.
  *
  * @param program Pointer to the program containing the data
  * @param offset_ptr Pointer to the current offset in the program data

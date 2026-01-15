@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:49:40 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 13:13:39 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	vm_wait(
 		else if (WIFCONTINUED(stat))
 			code = 0;
 		if (WCOREDUMP(stat))
-			ft_dprintf(2, "[%li] %s (core dumped)\n",
+			ft_dprintf(2, "[%lli] %s (core dumped)\n",
 				(int64_t)vec_get(vm->pids, i), kill_signals(code - 128));
 		vec_push(vm->exit_codes, (void *)(int64_t)code);
 	}

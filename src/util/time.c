@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:22:22 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:41:32 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 13:15:18 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int64_t	time_get(void)
 	int64_t	ns;
 
 	output = exec_with_output((char *[]){
-			(char *)(intptr_t)"/usr/bin/date",
+			(char *)(intptr_t)"/bin/date",
 			(char *)(intptr_t)"+%s %N",
 			NULL});
 	if (output)

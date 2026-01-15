@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:13:26 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:13:59 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ static void	prompt_time(__attribute__((unused)) t_shell *sh, char *prompt,
 
 	if (delta <= 0)
 		return ;
-	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_YELLOW " %lims " ANSI_RESET,
+	ft_snprintf(prompt, PROMPT_SIZE, "%s" ANSI_YELLOW " %llims " ANSI_RESET,
 		prompt, delta);
 }
 

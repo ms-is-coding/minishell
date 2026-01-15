@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 11:15:57 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:13:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:10:00 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>
-
 
 /**
  * @brief Allocates memory using the custom allocator.

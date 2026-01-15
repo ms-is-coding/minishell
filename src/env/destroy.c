@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 06:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:33:10 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 13:11:11 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	env_free_bucket(t_env_bucket *bucket)
 	}
 	allocator_free_ptr((void *)(intptr_t)bucket->key);
 }
+
 /**
  * @brief Destroys the environment structure and frees associated resources.
  *
