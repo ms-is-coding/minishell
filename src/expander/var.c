@@ -6,13 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:25:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:56:40 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander/expander.h"
 #include "expander/expander_internal.h"
-#include "vector/vector.h"
 #include "core/string.h"
 #include "shell.h"
 #include <stdlib.h>
@@ -33,8 +32,8 @@ static const char	*extract_var(t_expander *exp)
 	{
 		expander_next(exp);
 		if (exp->curr_char == '?')
-			return (ft_itoa_unsafe((int64_t)vec_get(((t_shell *)exp->sh)
-						->vm.exit_codes, -1)));
+			return (ft_itoa_unsafe((int32_t)(int64_t)
+				((t_shell *)exp->sh)->vm.last_exit_code));
 		if (exp->curr_char == '$')
 			return (ft_itoa_unsafe(getpid()));
 		return ("");

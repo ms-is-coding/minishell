@@ -6,17 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:27:27 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:56:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator.h"
 #include <sys/types.h>
 #include <dirent.h>
 #include "expander/expander.h"
 #include "expander/expander_internal.h"
 #include "core/string.h"
-#include "shell.h"
 
 /**
  * @brief Expands quotes without variable expansion.
@@ -53,11 +51,10 @@ inline bool	my_readdir(DIR *dir, struct dirent **dirent)
  * @param exp Pointer to the expander
  * @param mode The variable expansion mode
  */
-void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
+static void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
-	t_allocator		*alc;
 
 	dir = opendir(".");
 	while (my_readdir(dir, &dirent))
@@ -66,21 +63,20 @@ void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
 			continue ;
 		if (mode == VEXPM_PREPARE)
 		{
-			alc = &((t_shell *)exp->sh)->allocator;
-			exp->frame->argv[exp->frame->argc]
-				= allocator_alloc(alc, dirent->d_reclen,
-					exp->frame->arena).data;
-			if (!exp->frame->argv[exp->frame->argc])
-				return ;
-			exp->frame->argv[exp->frame->argc][0] = '\0';
+			exp->len = ft_strlen(dirent->d_name);
+			expander_var_extract(exp, mode);
+			ft_strlcpy(exp->frame->argv[exp->frame->argc - 1],
+				dirent->d_name, 256);
 		}
-		else if (mode == VEXPM_EXTRACT)
-			ft_strlcpy(exp->frame->argv[exp->frame->argc], dirent->d_name, 256);
-		exp->frame->argc++;
+		else
+			exp->frame->argc++;
 	}
+	if (mode == VEXPM_PREPARE)
+		exp->frame->argc = exp->prev_argc;
 	closedir(dir);
 }
- /**
+
+/**
  * @brief Expands the input string based on the specified mode.
  *
  * @param exp Pointer to the expander structure
@@ -88,17 +84,13 @@ void	expander_wildcard(t_expander *exp, t_var_expansion_mode mode)
  */
 void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 {
-	int	prev_argc;
-
+	exp->force_extract = false;
 	if (mode == VEXPM_PREPARE)
-		prev_argc = exp->frame->argc;
+		exp->prev_argc = exp->frame->argc;
 	if (exp->next_char == '~')
 		expander_user(exp, mode);
 	if (exp->next_char == '*')
-	{
-		expander_next(exp);
-		expander_wildcard(exp, mode);
-	}
+		return (expander_wildcard(exp, mode));
 	while (exp->next_char)
 	{
 		expander_next(exp);
@@ -111,7 +103,8 @@ void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 		else
 			expander_char(exp, mode);
 	}
-	expander_var_extract(exp, mode);
+	if (exp->len > 0 || exp->force_extract)
+		expander_var_extract(exp, mode);
 	if (mode == VEXPM_PREPARE)
-		exp->frame->argc = prev_argc;
+		exp->frame->argc = exp->prev_argc;
 }

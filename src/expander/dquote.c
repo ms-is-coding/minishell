@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 00:45:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:25:59 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/15 11:55:23 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
  */
 void	expander_dquote_no_var(t_expander *exp, t_var_expansion_mode mode)
 {
+	exp->force_extract = true;
 	while (exp->next_char && exp->next_char != '"')
 	{
 		expander_next(exp);
@@ -41,6 +42,7 @@ void	expander_dquote_no_var(t_expander *exp, t_var_expansion_mode mode)
  */
 void	expander_dquote(t_expander *exp, t_var_expansion_mode mode)
 {
+	exp->force_extract = true;
 	while (exp->next_char && exp->next_char != '"')
 	{
 		expander_next(exp);
