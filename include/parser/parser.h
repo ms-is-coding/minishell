@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:55:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:44:42 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,14 @@ typedef struct s_parser
 	int			argc;
 	bool		in_cmd;
 	uint8_t		redirs;
-	char		reserved[2];
+
+	enum e_mode {
+		PARSER_MODE_NONE,
+		PARSER_MODE_PIPE,
+		PARSER_MODE_GROUP,
+	}	mode;
+
+	char		reserved[1];
 }	t_parser;
 
 typedef enum e_precedence

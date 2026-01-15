@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 17:04:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:12:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VM_H
 
 # include "allocator/allocator.h"
+#include "core/stdlib.h"
 # include "vector/vector.h"
 # include "bytecode.h"
 # include "common.h"
@@ -48,14 +49,17 @@ typedef struct s_vm
 	int				pipe_fd[2];
 	int				prev_fd;
 	int				redir_count;
+	int				last_exit_code;
 
 	bool			active;
 	bool			here_doc;
 	bool			had_error;
 
-	uint8_t			reserved[5];
+	uint8_t			reserved[1];
 }	t_vm;
 
-void	vm_run(t_vm *vm, t_program *program);
+t_result	vm_init(t_vm *vm);
+void		vm_run(t_vm *vm, t_program *program);
+void		vm_dispatch(t_vm *vm, int sig);
 
 #endif // VM_H

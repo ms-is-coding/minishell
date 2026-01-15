@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/18 18:04:53 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/13 16:31:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ typedef struct s_shell
 	t_env		env;
 	t_vm		vm;
 }	t_shell;
+
+void	sh_destroy(t_shell *sh);
 
 #endif

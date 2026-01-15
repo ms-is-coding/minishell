@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:25:47 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/17 01:58:22 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:47:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ typedef struct s_expander
 	size_t			len;
 	size_t			i;
 
+	int				prev_argc;
+
 	char			curr_char;
 	char			next_char;
 	bool			end;
-
-	char			reserved[5];
+	bool			force_extract;
 }	t_expander;
 
 typedef enum e_var_expansion_mode
