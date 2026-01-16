@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:44:16 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/14 16:59:16 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 20:26:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static bool	get_pwds(t_shell *sh, const char *cwd, char **old, char **new)
 	{
 		if (ft_strcmp(cwd, "..") == 0)
 			builtin_error(ctx("cd", cwd), ERR_PREV_DIR, 1);
-		if (ft_strcmp(cwd, ".") == 0)
+		else if (ft_strcmp(cwd, ".") == 0)
 			builtin_error(ctx("cd", cwd), ERR_CURR_DIR, 1);
 		else
 			builtin_error(ctx("cd", cwd), ERR_PERROR, 1);
