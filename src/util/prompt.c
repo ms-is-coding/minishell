@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:01:30 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 14:20:55 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:34:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,6 @@
 #include <sys/types.h>
 #include <termios.h>
 
-#define GIT_SZ 128
-
-/**
- * @brief Checks if the cursor is at the start of a new line.
- *
- * @return true if at the start of a new line, false otherwise.
- */
-static bool	had_newline(void)
-{
-	struct termios	oldt;
-	struct termios	newt;
-	int				row;
-	int				col;
-	char			buf[32];
-
-	tcgetattr(STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~(unsigned)(ICANON | ECHO);
-	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-	ft_printf("\033[6n");
-	if (read(STDIN_FILENO, buf, sizeof(buf) - 1) > 0)
-	{
-		buf[sizeof(buf) - 1] = 0;
-		if (sscanf(buf, "\033[%d;%dR", &row, &col) == 2 // FIX remove this, it is ILLEGAL
-			&& col != 1)
-		{
-			tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-			ft_printf("\n");
-			return (false);
-		}
-	}
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	return (true);
-}
-
 /**
  * @brief Constructs the exit codes portion of the prompt.
  *
@@ -69,8 +34,6 @@ void	prompt_exit_codes(t_shell *sh, char *prompt, ssize_t *len)
 	int			code;
 	int			i;
 
-	if (!had_newline())
-		*len += ft_snprintf(prompt, PROMPT_SIZE, ANSI_MAGENTA "⤶ " ANSI_RESET);
 	color = ANSI_RED;
 	if (vec_get(sh->vm.exit_codes, -1) == 0)
 		color = ANSI_GREEN;
@@ -81,13 +44,13 @@ void	prompt_exit_codes(t_shell *sh, char *prompt, ssize_t *len)
 		killsig = kill_signals(code - 128);
 		(void)(!killsig && (killsig = ft_itoa_unsafe(code)));
 		*len += ft_snprintf(prompt + *len, (size_t)(PROMPT_SIZE - *len),
-				"%s %s |", color, killsig);
+				"%s%s|", color, killsig);
 	}
 	code = (int32_t)(int64_t)vec_get(sh->vm.exit_codes, -1);
 	killsig = kill_signals(code - 128);
 	(void)(!killsig && (killsig = ft_itoa_unsafe(code)));
 	*len += ft_snprintf(prompt + *len, (size_t)(PROMPT_SIZE - *len),
-			"%s %s " ANSI_RESET, color, killsig);
+			"%s%s " ANSI_RESET, color, killsig);
 }
 
 /**
@@ -111,5 +74,5 @@ void	prompt_pwd(t_shell *sh, char *prompt, ssize_t *len)
 	if (ft_strstr(pwd, home))
 		ft_snprintf(pwd, PATH_MAX, "~%s", pwd + ft_strlen(home));
 	*len += ft_snprintf(prompt + *len, (size_t)(PROMPT_SIZE - *len),
-			ANSI_BLUE "[%s]" ANSI_RESET, pwd);
+			ANSI_BLUE "[%s] " ANSI_RESET, pwd);
 }
