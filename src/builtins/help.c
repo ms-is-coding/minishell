@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:13:39 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/14 18:41:36 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 16:46:47 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 static const char	*g_license_text[] = {
 	"TraSH - The Trash Shell",
 	"0.0.0-beta",
-	"    Copyright (C) 2025 ms-is-coding and SkarEye\n"
-	"    License GPLv3: GNU GPL v.3 <https://gnu.org/licenses/gpl-3.0.html>\n"
-	"    This program comes with ABSOLUTELY NO WARRANTY.\n"
-	"    This is free software, and you are welcome to redistribute it.",
+	"\tCopyright (C) 2025 ms-is-coding and SkarEye\n"
+	"\tLicense GPLv3: GNU GPL v.3 <https://gnu.org/licenses/gpl-3.0.html>\n"
+	"\tThis program comes with ABSOLUTELY NO WARRANTY.\n"
+	"\tThis is free software, and you are welcome to redistribute it.",
 	NULL};
 
 static const char	g_cmd_info[] = {
@@ -44,133 +44,133 @@ static const char	*g_help_cd[] = {
 	"cd",
 	"Change the shell working directory.",
 	"cd [dir]",
-	"    Change the shell working directory.\n"
+	"\tChange the shell working directory.\n"
 	"\n"
-	"    Change the current directory to DIR. The default DIR is the value of\n"
-	"    the HOME shell variable. If DIR is '-', it is converted to $OLDPWD.\n"
+	"\tChange the current directory to DIR. The default DIR is the value of\n"
+	"\tthe HOME shell variable. If DIR is '-', it is converted to $OLDPWD.\n"
 	"\n"
-	"    If DIR begins with a slash (/), DIR is considered an absolute path.\n"
-	"    Otherwise, it's considered relative to the current working directory.\n"
+	"\tIf DIR begins with a slash (/), DIR is considered an absolute path.\n"
+	"\tOtherwise, it's considered relative to the current working directory.\n"
 	"\n"
-	"    The environment variables $PWD and $OLDPWD are updated if the\n"
-	"    directory is changed.\n"
+	"\tThe environment variables $PWD and $OLDPWD are updated if the\n"
+	"\tdirectory is changed.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 if the directory is changed; non-zero otherwise.",
+	"\tExit Status:\n"
+	"\tReturns 0 if the directory is changed; non-zero otherwise.",
 	NULL};
 
 static const char	*g_help_echo[] = {
 	"echo",
 	"Write arguments to standard output.",
 	"echo [-neE] [arg ...]",
-	"    Write arguments to standard output.\n"
+	"\tWrite arguments to standard output.\n"
 	"\n"
-	"    Display the ARGs separated by a single space character and followed\n"
-	"    by a newline, on the standard output.\n"
+	"\tDisplay the ARGs separated by a single space character and followed\n"
+	"\tby a newline, on the standard output.\n"
 	"\n"
-	"    Options:\n"
-	"      -n\tdo not append a newline\n"
-	"      -e\tenable interpretation of the following backslash escapes\n"
-	"      -E\texplicitly suppress interpretation of backslash escapes\n"
+	"\tOptions:\n"
+	"\t  -n\tdo not append a newline\n"
+	"\t  -e\tenable interpretation of the following backslash escapes\n"
+	"\t  -E\texplicitly suppress interpretation of backslash escapes\n"
 	"\n"
-	"    An argument of '--' disables further option processing.\n"
+	"\tAn argument of '--' disables further option processing.\n"
 	"\n"
-	"    `echo' interprets the following backslash-escaped characters:\n"
-	"    \\a\talert (bell)\n"
-	"    \\b\tbackspace\n"
-	"    \\c\tsurpress further output\n"
-	"    \\e\tescape character\n"
-	"    \\E\tescape character\n"
-	"    \\f\tform feed\n"
-	"    \\n\tnew line\n"
-	"    \\r\tcarriage return\n"
-	"    \\t\thorizontal tab\n"
-	"    \\v\tvertical tab\n"
-	"    \\\\\tbackslash\n"
-	"    \\0nnn\tThe character whose ASCII code is NNN (octal). NNN can be\n"
-	"    0 to 3 octal digits.\n"
-	"    \\xHH\tThe eight-bit character whose value is HH (hexadecimal). HH\n"
-	"    can be one or two hex digits.\n"
+	"\t`echo' interprets the following backslash-escaped characters:\n"
+	"\t  \\a\talert (bell)\n"
+	"\t  \\b\tbackspace\n"
+	"\t  \\c\tsurpress further output\n"
+	"\t  \\e\tescape character\n"
+	"\t  \\E\tescape character\n"
+	"\t  \\f\tform feed\n"
+	"\t  \\n\tnew line\n"
+	"\t  \\r\tcarriage return\n"
+	"\t  \\t\thorizontal tab\n"
+	"\t  \\v\tvertical tab\n"
+	"\t  \\\\\tbackslash\n"
+	"\t  \\0nnn\tThe character whose ASCII code is NNN (octal). NNN can be\n"
+	"\t  \t0 to 3 octal digits.\n"
+	"\t  \\xHH\tThe eight-bit character whose value is HH (hexadecimal). HH\n"
+	"\t  \tcan be one or two hex digits.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 unless a write error occurs.",
+	"\tExit Status:\n"
+	"\tReturns 0 unless a write error occurs.",
 	NULL};
 
 static const char	*g_help_env[] = {
 	"env",
 	"Print environment or run a command in a modified environment.",
 	"env [cmd [arg ...]]",
-	"    Print environment or run a command in a modified environment.\n"
+	"\tPrint environment or run a command in a modified environment.\n"
 	"\n"
-	"    Print the environment variables to standard output.\n"
-	"    If CMD is specified, it is executed with ARGs as its arguments.\n"
+	"\tPrint the environment variables to standard output.\n"
+	"\tIf CMD is specified, it is executed with ARGs as its arguments.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 if all variables are printed or the CMD is executed\n"
-	"    successfully; non-zero otherwise.",
+	"\tExit Status:\n"
+	"\tReturns 0 if all variables are printed or the CMD is executed\n"
+	"\tsuccessfully; non-zero otherwise.",
 	NULL};
 
-static const char	*g_exec_help[] = {
+static const char	*g_help_exec[] = {
 	"exec",
 	"Replace the shell with the given command.",
 	"exec [cmd [arg ...]]",
-	"    Replace the shell with the given command.\n"
+	"\tReplace the shell with the given command.\n"
 	"\n"
-	"    Execute CMD, replacing this shell with the specified progam.\n"
-	"    ARGs become the arguments to CMD.\n"
+	"\tExecute CMD, replacing this shell with the specified progam.\n"
+	"\tARGs become the arguments to CMD.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 if CMD is executed successfully; non-zero otherwise.",
+	"\tExit Status:\n"
+	"\tReturns 0 if CMD is executed successfully; non-zero otherwise.",
 	NULL};
 
-static const char	*g_exit_help[] = {
+static const char	*g_help_exit[] = {
 	"exit",
 	"Exit the shell.",
 	"exit [n]",
-	"    Exit the shell.\n"
+	"\tExit the shell.\n"
 	"\n"
-	"    Exit the shell with a status of N. If N is omitted, the exit status\n"
-	"    is that of the last command executed.\n",
+	"\tExit the shell with a status of N. If N is omitted, the exit status\n"
+	"\tis that of the last command executed.\n",
 	NULL};
 
-static const char	*g_export_help[] = {
+static const char	*g_help_export[] = {
 	"export",
 	"Set export attribute for shell variables.",
 	"export [-n] [name[=value] ...]",
-	"    Set export attribute for shell variables.\n"
+	"\tSet export attribute for shell variables.\n"
 	"\n"
-	"    Mark each NAME for automatic export to the environment of\n"
-	"    subsequently executed commands. If VALUE is supplied, assign VALUE\n"
-	"    before exporting.\n"
-	"    If no NAMEs are given, display the list of all exported variables.\n"
+	"\tMark each NAME for automatic export to the environment of\n"
+	"\tsubsequently executed commands. If VALUE is supplied, assign VALUE\n"
+	"\tbefore exporting.\n"
+	"\tIf no NAMEs are given, display the list of all exported variables.\n"
 	"\n"
-	"    Options:\n"
-	"      -n\tremove the export property from each NAME\n"
+	"\tOptions:\n"
+	"\t  -n\tremove the export property from each NAME\n"
 	"\n"
-	"    An argument of '--' disables further option processing.\n"
+	"\tAn argument of '--' disables further option processing.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 unless an invalid option is given or NAME is invalid.",
+	"\tExit Status:\n"
+	"\tReturns 0 unless an invalid option is given or NAME is invalid.",
 	NULL};
 
 static const char	*g_help_false[] = {
 	"false",
 	"Do nothing, unsuccessfully.",
 	"false",
-	"    Do nothing, unsuccessfully.\n"
+	"\tDo nothing, unsuccessfully.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Always fails.",
+	"\tExit Status:\n"
+	"\tAlways fails.",
 	NULL};
 
 static const char	*g_help_pwd[] = {
 	"pwd",
 	"Print the name of the current working directory.",
 	"pwd",
-	"    Print the name of the current working directory.\n"
+	"\tPrint the name of the current working directory.\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 unless the current directory cannot be read.",
+	"\tExit Status:\n"
+	"\tReturns 0 unless the current directory cannot be read.",
 	NULL};
 
 static const char	*g_help_readonly[] = {
@@ -191,51 +191,51 @@ static const char	*g_help_true[] = {
 	"true",
 	"Do nothing, successfully.",
 	"true",
-	"    Do nothing, successfully."
+	"\tDo nothing, successfully."
 	"\n"
-	"    Exit Status:\n"
-	"    Always succeeds.",
+	"\tExit Status:\n"
+	"\tAlways succeeds.",
 	NULL};
 
 static const char	*g_help_type[] = {
 	"type",
 	"Display information about command type.",
 	"type [-aptP] [name ...]",
-	"    For each NAME, indicate how it would be interpreted if used as a\n"
-	"    command name.\n"
+	"\tFor each NAME, indicate how it would be interpreted if used as a\n"
+	"\tcommand name.\n"
 	"\n"
-	"    Options:\n"
-	"      -a\tdisplay all locations containing an executable named NAME;\n"
-	"        \tincludes builtins if the `-p' flag is not also used\n"
-	"      -P\tforce a PATH search for each NAME, even if it is a shell\n"
-	"        \tbuiltin, and returns the name of the disk file that would be\n"
-	"        \texecuted\n"
-	"      -p\treturns either the name of the disk file that would be\n"
-	"        \texecuted, or nothing if `type -t NAME' would not return `file'\n"
-	"      -t\toutput a single word which is one of `builtin' or `file' if\n"
-	"        \tNAME is a shell builtin or disk file, respectively\n"
+	"\tOptions:\n"
+	"\t  -a\tdisplay all locations containing an executable named NAME;\n"
+	"\t  \tincludes builtins if the `-p' flag is not also used\n"
+	"\t  -P\tforce a PATH search for each NAME, even if it is a shell\n"
+	"\t  \tbuiltin, and returns the name of the disk file that would be\n"
+	"\t  \texecuted\n"
+	"\t  -p\treturns either the name of the disk file that would be\n"
+	"\t  \texecuted, or nothing if `type -t NAME' would not return `file'\n"
+	"\t  -t\toutput a single word which is one of `builtin' or `file' if\n"
+	"\t  \tNAME is a shell builtin, disk file or not found respectively\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 if all NAMEs are found; fails if any are not found.",
+	"\tExit Status:\n"
+	"\tReturns 0 if all NAMEs are found; fails if any are not found.",
 	NULL};
 
 static const char	*g_help_help[] = {
 	"help",
 	"Display information about builtin commands.",
 	"help [-dms] [pattern ...]",
-	"    Display information about builtin commands.\n"
+	"\tDisplay information about builtin commands.\n"
 	"\n"
-	"    Display brief summaries of builtin commands. If PATTERN is\n"
-	"    specified, gives detailed help on all commands matching PATTERN,\n"
-	"    otherwise the list of help topics is printed.\n"
+	"\tDisplay brief summaries of builtin commands. If PATTERN is\n"
+	"\tspecified, gives detailed help on all commands matching PATTERN,\n"
+	"\totherwise the list of help topics is printed.\n"
 	"\n"
-	"    Options:\n"
-	"      -d\tdisplay short usage information for each topic\n"
-	"      -m\tdisplay usage in pseudo-manpage format\n"
-	"      -s\tdisplay only a short usage synopsis for each topic\n"
+	"\tOptions:\n"
+	"\t  -d\tdisplay short usage information for each topic\n"
+	"\t  -m\tdisplay usage in pseudo-manpage format\n"
+	"\t  -s\tdisplay only a short usage synopsis for each topic\n"
 	"\n"
-	"    Exit Status:\n"
-	"    Returns 0 unless PATTERN is not found or an invalid option is given.",
+	"\tExit Status:\n"
+	"\tReturns 0 unless PATTERN is not found or an invalid option is given.",
 	NULL};
 
 typedef struct s_help
@@ -248,9 +248,9 @@ static t_help		g_help[] = {
 {"cd", g_help_cd},
 {"echo", g_help_echo},
 {"env", g_help_env},
-{"exec", g_exec_help},
-{"exit", g_exit_help},
-{"export", g_export_help},
+{"exec", g_help_exec},
+{"exit", g_help_exit},
+{"export", g_help_export},
 {"false", g_help_false},
 {"pwd", g_help_pwd},
 {"readonly", g_help_readonly},
@@ -354,7 +354,7 @@ static bool	print_cmd_help(const char **topic, char flags)
 		ft_printf("%s - %s\n", topic[0], topic[1]);
 	else if (flags & FLAG_M)
 	{
-		ft_printf("NAME\n    %s - %s\n\nSYNOPSIS\n    %s\n\n"
+		ft_printf("NAME\n\t%s - %s\n\nSYNOPSIS\n\t%s\n\n"
 			"DESCRIPTION\n%s\n\nIMPLEMENTATION\n%s\n",
 			topic[0], topic[1], topic[2], topic[3], g_license_text[2]);
 	}
