@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/16 18:16:12 by smamalig         ###   ########.fr        #
+#    Updated: 2026/01/16 18:23:09 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ SRC_UTIL		:= $(addprefix util/, warn.c version.c exec.c time.c \
 SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 					$(SRC_BUILTINS) $(SRC_VM) $(SRC_ALLOCATOR) $(SRC_DISASM) \
 					$(SRC_ENV) $(SRC_EXPANDER) $(SRC_EXEC) $(SRC_UTIL) \
-					main.c
+					repl.c main.c
 
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))

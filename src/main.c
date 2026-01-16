@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:33:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:36:07 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,82 +32,14 @@
 #include "util/prompt.h"
 #include "util/help.h"
 #include "parser/parser.h"
-#include "disasm/disasm.h"
 #include "cli/cli.h"
 #include "vm/vm.h"
 #include "core/stdio.h"
 #include "core/string.h"
 #include "core/stdlib.h"
 
-#include "ansi.h"
 #include "shell.h"
-
-/**
- * @brief Resets the terminal prompt settings.
- */
-static void	reset_prompt(void)
-{
-	struct termios	def;
-
-	tcgetattr(STDIN_FILENO, &def);
-	def.c_lflag |= (ICANON | ECHO);
-	tcsetattr(STDIN_FILENO, TCSANOW, &def);
-}
-
-static int	repl(t_shell *sh) // FIX not commented, needs to still be split
-{
-	char		*line;
-	t_result	result;
-	char		prompt[PROMPT_SIZE];
-	ssize_t		len;
-
-	sh->should_exit = false;
-	while (!sh->should_exit)
-	{
-		if (sh->vm.active)
-			continue ;
-		len = 0;
-		prompt[0] = '\0';
-		prompt_pwd(sh, prompt, &len);
-		prompt_exit_codes(sh, prompt, &len);
-		ft_strlcat(prompt, "$ ", PROMPT_SIZE);
-		reset_prompt();
-		line = readline(prompt);
-		if (!line)
-			break ;
-		add_history(line);
-		ft_printf(ANSI_RESET);
-		result = parser_parse(&sh->parser, line);
-		if (result == RESULT_OK)
-		{
-			if (cli_is_set(&sh->cli, "disassemble"))
-				disasm(&sh->parser.program);
-			vm_run(&sh->vm, &sh->parser.program);
-		}
-		else
-		{
-			vec_clear(sh->vm.exit_codes);
-			vec_push(sh->vm.exit_codes, (void *)2);
-		}
-		free(line);
-	}
-	ft_printf("exit\n");
-	return ((int32_t)(int64_t)vec_get(sh->vm.exit_codes, -1));
-}
-
-/**
- * @brief Destroys the shell structure and frees allocated resources.
- *
- * @param sh Pointer to the shell structure
- */
-void	sh_destroy(t_shell *sh)
-{
-	cli_destroy(&sh->cli);
-	vec_free(sh->vm.exit_codes);
-	vec_free(sh->vm.pids);
-	env_destroy(&sh->env);
-	allocator_destroy(&sh->allocator);
-}
+#include "repl.h"
 
 /**
  * @brief Gets or sets the global shell instance.
@@ -147,12 +79,39 @@ static void	handler(int sig)
 }
 
 /**
+ * @brief Destroys the shell structure and frees allocated resources.
+ *
+ * @param sh Pointer to the shell structure
+ */
+void	sh_destroy(t_shell *sh)
+{
+	cli_destroy(&sh->cli);
+	vec_free(sh->vm.exit_codes);
+	vec_free(sh->vm.pids);
+	env_destroy(&sh->env);
+	allocator_destroy(&sh->allocator);
+}
+
+/**
  * @brief Initializes signal handlers for SIGINT and SIGQUIT.
  */
-static void	signal_init(void)
+static void	sh_init(t_shell *sh, int argc, char **argv, char **envp)
 {
+	ft_memset(sh, 0, sizeof(t_shell));
+	get_shell(sh);
+	allocator_init(&sh->allocator);
+	expander_init(&sh->expander, sh);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
+	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
+		|| env_init(&sh->env, &sh->allocator, envp) != RESULT_OK
+		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK
+		|| vm_init(&sh->vm) != RESULT_OK)
+	{
+		ft_dprintf(2, "Error: failed to initialize minishell\n");
+		sh_destroy(sh);
+		_exit(2);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -165,19 +124,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_dprintf(2, "Error: cannot minishell run in a pipeline\n");
 		return (1);
 	}
-	ft_memset(&sh, 0, sizeof(t_shell));
-	get_shell(&sh);
-	allocator_init(&sh.allocator);
-	expander_init(&sh.expander, &sh);
-	signal_init();
-	if (cli_init(&sh.cli, argc, argv) != RESULT_OK
-		|| env_init(&sh.env, &sh.allocator, envp) != RESULT_OK
-		|| parser_init(&sh.parser, &sh.lexer) != RESULT_OK
-		|| vm_init(&sh.vm) != RESULT_OK)
-	{
-		sh_destroy(&sh);
-		return (2);
-	}
+	sh_init(&sh, argc, argv, envp);
 	rl_outstream = stderr;
 	rl_instream = stdin;
 	sh.vm.shell = &sh;
