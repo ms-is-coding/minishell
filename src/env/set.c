@@ -6,10 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:27:14 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 11:55:14 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:03:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env/env.h"
 #include "env/env_internal.h"
 
 /**
@@ -42,7 +43,6 @@ t_result	env_set(
 	if (bucket->flags & ENV_FLAG_RDONLY)
 		return (RESULT_RDONLY);
 	bucket->is_tombstone = 0;
-	bucket->key = malloc(1);
 	env_free_bucket(bucket);
 	bucket->key = key;
 	bucket->value = value;
