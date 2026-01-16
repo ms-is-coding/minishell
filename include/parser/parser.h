@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:17:46 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 17:35:09 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include "core/stdlib.h"
 # include <stdbool.h>
 
+enum e_mode {
+	PARSER_MODE_NONE,
+	PARSER_MODE_PIPE,
+	PARSER_MODE_GROUP
+};
+
 typedef struct s_parser
 {
 	t_lexer		*lexer;
@@ -26,18 +32,13 @@ typedef struct s_parser
 	t_token		curr_token;
 	t_token		prev_token;
 
+	enum e_mode	mode;
 	int			argc;
 	bool		in_cmd;
 	uint8_t		redirs;
 
-	enum	e_mode
-	{
-		PARSER_MODE_NONE,
-		PARSER_MODE_PIPE,
-		PARSER_MODE_GROUP,
-	}	mode;
+	char		reserved[6];
 
-	char		reserved[1];
 }	t_parser;
 
 typedef enum e_precedence

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 16:31:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:29:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef struct s_shell
 	t_cli		cli;
 	t_env		env;
 	t_vm		vm;
+
+	bool		should_exit;
+	char		reserved[7];
 }	t_shell;
 
 void	sh_destroy(t_shell *sh);

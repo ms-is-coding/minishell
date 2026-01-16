@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 18:44:47 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 16:34:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int	builtin_type(
 	char		flags;
 	bool		found;
 
+	found = false;
 	argv++;
 	path = env_get(&sh->env, "PATH");
 	flags = set_flags(&argc, &argv);
