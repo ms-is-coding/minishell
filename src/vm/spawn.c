@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:35:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:15:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,174 +54,67 @@ static char	*find_exec(const char *arg, const char *env_path)
 	return (NULL);
 }
 
-/**
- * @brief Closes the pipes used in the virtual machine.
- *
- * @param vm Pointer to the virtual machine instance
- */
-static void	close_pipes(t_vm *vm)
+static void	vm_spawn_absolute(t_vm *vm, char **env)
 {
-	if (vm->prev_fd > 2)
-		close(vm->prev_fd);
-	if (vm->pipe_fd[STDIN_FILENO] > 2)
-		close(vm->pipe_fd[STDIN_FILENO]);
-	if (vm->pipe_fd[STDOUT_FILENO] > 2)
-		close(vm->pipe_fd[STDOUT_FILENO]);
-}
+	struct stat	path_stat;
 
-/**
- * @brief Sets up the file descriptors for the command execution.
- *
- * @param vm Pointer to the virtual machine instance
- */
-static void	setup_fds(t_vm *vm)
-{
-	int	i;
-
-	if (vm->prev_fd != STDIN_FILENO)
-		dup2(vm->prev_fd, STDIN_FILENO);
-	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
-		dup2(vm->pipe_fd[STDOUT_FILENO], STDOUT_FILENO);
-	i = -1;
-	while (++i < vm->redir_count)
-		dup2(vm->redirs[i].file_fd, vm->redirs[i].target_fd);
-	close_pipes(vm);
-}
-
-/**
- * @brief Resets the file descriptors in the virtual machine after command
- * execution.
- *
- * @param vm Pointer to the virtual machine instance
- */
-static void	reset_fds(t_vm *vm)
-{
-	int	i;
-
-	if (vm->prev_fd != STDIN_FILENO)
-		close(vm->prev_fd);
-	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
-		close(vm->pipe_fd[1]);
-	vm->prev_fd = vm->pipe_fd[STDIN_FILENO];
-	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
-	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;
-	i = -1;
-	while (++i < vm->redir_count)
+	if (stat(vm->frame.argv[0], &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
-		if (vm->redirs[i].file_fd >= 0)
-			close(vm->redirs[i].file_fd);
-	}
-	vm->redir_count = 0;
-}
-
-/**
- * @brief Checks if the current command is part of a pipeline.
- *
- * @param vm Pointer to the virtual machine instance
- * @return true if the command is in a pipeline, false otherwise.
- */
-static bool	is_command_in_pipeline(t_vm *vm)
-{
-	return (vm->prev_fd != STDIN_FILENO
-		|| vm->pipe_fd[STDIN_FILENO] != STDIN_FILENO
-		|| vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO);
-}
-
-/**
- * @brief Runs an empty command in the virtual machine.
- *
- * @param vm Pointer to the virtual machine instance
- */
-static void	run_empty_command(t_vm *vm)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		setup_fds(vm);
+		ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
 		sh_destroy(vm->shell);
-		_exit(0);
+		exit(126);
 	}
-	if (pid > 0)
-		vec_push(vm->pids, (void *)(intptr_t)pid);
-	reset_fds(vm);
-	allocator_arena_free(vm->allocator, vm->frame.arena);
-	return ;
+	if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
+	{
+		ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
+		exit(127);
+	}
+	secure_execve(vm->frame.argv[0], vm->frame.argv, env);
+	ft_dprintf(2, "%s: cannot execute binary file: %m\n",
+		vm->frame.argv[0]);
+	sh_destroy(vm->shell);
+	exit(126);
 }
 
-static void	compute_save(t_vm *vm, int saved_fds[3])
+static void	vm_spawn_command(t_vm *vm, char **env)
 {
-	int			i;
-	int			t;
+	char		*exec;
+	struct stat	path_stat;
 
-	ft_memcpy(saved_fds, &(int [3]){-1, -1, -1}, sizeof(int) * 3);
-	i = -1;
-	while (++i < vm->redir_count)
+	exec = find_exec(vm->frame.argv[0], env_get(&((t_shell *)vm->shell)->env,
+				"PATH"));
+	if (!exec)
 	{
-		t = vm->redirs[i].target_fd;
-		if (t >= 0 && t <= 2 && saved_fds[t] == -1)
-			saved_fds[t] = dup(t);
+		ft_dprintf(2, "command not found: %s\n", vm->frame.argv[0]);
+		sh_destroy(vm->shell);
+		_exit(127);
 	}
-	if (vm->prev_fd != 0 && saved_fds[0] == -1)
-		saved_fds[0] = dup(0);
-	if (vm->pipe_fd[1] != 1)
-		saved_fds[1] = dup(1);
+	if (stat(vm->frame.argv[0], &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+	{
+		ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
+		sh_destroy(vm->shell);
+		_exit(126);
+	}
+	secure_execve(exec, vm->frame.argv, env);
+	ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
+	sh_destroy(vm->shell);
+	_exit(126);
 }
 
-static void	reset_save(t_vm *vm, int saved_fds[3])
+static void	vm_spawn_child(t_vm *vm, t_builtin_fn builtin, char **env)
 {
-	int	i;
+	int			exit_code;
 
-	i = -1;
-	while (++i < 3)
-	{
-		if (saved_fds[i] != -1)
-		{
-			dup2(saved_fds[i], i);
-			close(saved_fds[i]);
-		}
-	}
-	i = -1;
-	while (++i < vm->redir_count)
-	{
-		if (vm->redirs[i].file_fd >= 0)
-			close(vm->redirs[i].file_fd);
-	}
-	vm->redir_count = 0;
-}
-
-/**
- * @brief Executes a built-in command in the virtual machine.
- *
- * @param sh Pointer to the shell structure
- * @param vm Pointer to the virtual machine instance
- * @param env Array of environment variables
- * @return Exit status code of the built-in command
- */
-static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
-{
-	t_builtin_fn	builtin;
-	int				exit_code;
-	int				saved_fds[3];
-
-	compute_save(vm, saved_fds);
-	builtin = _builtin_find(vm->frame.argv[0]);
 	setup_fds(vm);
-	exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
-	reset_save(vm, saved_fds);
-	close_pipes(vm);
-	reset_fds(vm);
-
-	if (sh->should_exit)
+	if (builtin)
 	{
-		sh_destroy(sh);
-		ft_dprintf(2, "exit\n");
-		_exit(exit_code);
+		exit_code = builtin(vm->shell, vm->frame.argc, vm->frame.argv, env);
+		sh_destroy(vm->shell);
+		exit(exit_code);
 	}
-	vm->redir_count = 0;
-	vec_push(vm->exit_codes, (void *)(intptr_t)exit_code);
-	return (exit_code);
+	if (ft_strchr(vm->frame.argv[0], '/'))
+		vm_spawn_absolute(vm, env);
+	vm_spawn_command(vm, env);
 }
 
 /**
@@ -232,12 +125,8 @@ static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
 void	vm_spawn(t_vm *vm)
 {
 	char			**env;
-	char			*exec;
 	int				pid;
-	t_shell			*sh;
 	t_builtin_fn	builtin;
-	int				exit_code;
-	struct stat		path_stat;
 
 	if (vm->had_error)
 	{
@@ -245,70 +134,16 @@ void	vm_spawn(t_vm *vm)
 		vec_push(vm->exit_codes, (void *)1);
 		return ;
 	}
-	sh = vm->shell;
 	if (vm->frame.argc == 0)
 		run_empty_command(vm);
-	env = env_build(&sh->env, vm->frame.arena);
+	env = env_build(&((t_shell *)vm->shell)->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);
 	if (_builtin_find(vm->frame.argv[0]) && !is_command_in_pipeline(vm))
-	{
-		execute_builtin(sh, vm, env);
-		return ;
-	}
+		return (execute_builtin(vm->shell, vm, env));
 	pid = fork();
 	if (pid == 0)
-	{
-		setup_fds(vm);
-		if (builtin)
-		{
-			exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
-			sh_destroy(sh);
-			exit(exit_code);
-		}
-		if (ft_strchr(vm->frame.argv[0], '/'))
-		{
-			if (stat(vm->frame.argv[0], &path_stat) == 0)
-			{
-				if (S_ISDIR(path_stat.st_mode))
-				{
-					ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
-					sh_destroy(sh);
-					exit(126);
-				}
-			}
-			if (access(vm->frame.argv[0], X_OK | F_OK) == -1)
-			{
-				ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
-				exit(127);
-			}
-			secure_execve(vm->frame.argv[0], vm->frame.argv, env);
-			ft_dprintf(2, "%s: cannot execute binary file: %m\n",
-				vm->frame.argv[0]);
-			sh_destroy(sh);
-			exit(126);
-		}
-		exec = find_exec(vm->frame.argv[0], env_get(&sh->env, "PATH"));
-		if (!exec)
-		{
-			ft_dprintf(2, "command not found: %s\n", vm->frame.argv[0]);
-			sh_destroy(sh);
-			exit(127);
-		}
-		if (stat(vm->frame.argv[0], &path_stat) == 0)
-		{
-			if (S_ISDIR(path_stat.st_mode))
-			{
-				ft_dprintf(2, "%s: Is a directory\n", vm->frame.argv[0]);
-				sh_destroy(sh);
-				exit(126);
-			}
-		}
-		secure_execve(exec, vm->frame.argv, env);
-		ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
-		sh_destroy(sh);
-		exit(126);
-	}
+		vm_spawn_child(vm, builtin, env);
 	else if (pid < 0)
 		ft_dprintf(2, "fork failed: %m\n");
 	reset_fds(vm);
