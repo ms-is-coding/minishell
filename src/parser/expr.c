@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 11:58:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:24:53 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,18 @@ static void	print_line(t_parser *p, t_token token)
 			p->lexer->input + token.pos.col - 1);
 }
 
-void	print_error(t_parser *p, t_token token, const char *message) //FIX function too long
+static void	print_header(t_token token)
 {
 	ft_dprintf(2, "%*s┌─ " ANSI_CYAN "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
 		ANSI_RESET ":" ANSI_YELLOW "%d" ANSI_RESET ANSI_BOLD ANSI_RED
 		" Syntax Error" ANSI_RESET "\n " ANSI_BOLD "%d" ANSI_RESET " │ ",
 		ft_intlen(token.pos.row) + 2, "", token.pos.row, token.pos.col,
 		token.pos.row);
+}
+
+t_result	print_error(t_parser *p, t_token token, const char *message)
+{
+	print_header(token);
 	if (token.pos.col - 1 > ERROR_CHARACTERS + 3)
 		ft_dprintf(2, "...%.*s", ERROR_CHARACTERS,
 			p->lexer->input + token.pos.col - 1 - ERROR_CHARACTERS);
@@ -68,37 +73,31 @@ void	print_error(t_parser *p, t_token token, const char *message) //FIX function
 	else
 		ft_dprintf(2, ANSI_RED "%.*s", token.pos.len, ERROR_HIGHLIGHT);
 	ft_dprintf(2, " %s" ANSI_RESET "\n", message);
+	return (RESULT_ERROR);
 }
 
-t_result	parser_parse_expr(t_parser *p, t_precedence prec) //function too long
+t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 {
 	t_token			token;
-	t_token			oper_token;
 	t_parse_rule	rule;
 
 	token = p->curr_token;
 	parser_advance(p);
 	rule = parser_get_rule(token.type);
 	if (!rule.nud)
-	{
-		print_error(p, token, "Unexpected token");
-		return (RESULT_ERROR);
-	}
+		return (print_error(p, token, "Unexpected token"));
 	if (rule.nud(p, token) != RESULT_OK)
 		return (RESULT_ERROR);
 	while (prec < parser_get_rule(p->curr_token.type).precedence)
 	{
-		oper_token = p->curr_token;
-		if (oper_token.type == TOK_EOF)
+		token = p->curr_token;
+		if (token.type == TOK_EOF)
 			break ;
-		rule = parser_get_rule(oper_token.type);
+		rule = parser_get_rule(token.type);
 		if (!rule.led)
-		{
-			print_error(p, oper_token, "Unexpected operator");
-			return (RESULT_ERROR);
-		}
+			return (print_error(p, token, "Unexpected operator"));
 		parser_advance(p);
-		if (rule.led(p, oper_token) != RESULT_OK)
+		if (rule.led(p, token) != RESULT_OK)
 			return (RESULT_ERROR);
 	}
 	if (p->program.data[p->program.len - 1] == OP_EXEC)

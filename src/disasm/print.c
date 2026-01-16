@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:15:14 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 13:10:44 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 17:31:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,6 @@ static void	print_bytes(t_program *program, size_t *offset, int count,
 		}
 		ft_printf("%02x ", program->data[(*offset)++]);
 	}
-}
-
-/**
- * @brief Prints the offset address in the disassembly output.
- *
- * @param offset The offset address to print
- */
-void	disasm_print_addr(size_t offset)
-{
-	ft_printf(ANSI_YELLOW " %5lx" ANSI_RESET ": ", offset);
 }
 
 /**
@@ -124,14 +114,4 @@ void	disasm_print_str(t_program *program, size_t *offset_ptr,
 	ft_printf(ANSI_RED);
 	print_bytes(program, offset_ptr, len, start);
 	ft_printf(ANSI_RESET);
-}
-
-/**
- * @brief Prints the description of the disassembled instruction.
- *
- * @param desc The description string to print
- */
-void	disasm_print_desc(const char *desc)
-{
-	ft_printf("\033[35G%s\n", desc);
 }

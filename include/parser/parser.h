@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:25:58 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 13:17:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:17:46 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_parse_rule
 
 t_parse_rule	parser_get_rule(t_token_type type);
 
-void			print_error(t_parser *p, t_token token, const char *message);
+t_result		print_error(t_parser *p, t_token token, const char *message);
 
 t_result		parse_error(t_parser *p, t_token t);
 t_result		parse_word(t_parser *p, t_token t);

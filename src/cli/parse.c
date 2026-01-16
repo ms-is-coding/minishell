@@ -6,13 +6,30 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:32:02 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 17:15:07 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cli/cli_internal.h"
 #include "core/stdio.h"
 #include "core/string.h"
+
+/**
+ * @brief Handles parsing errors by printing an error message.
+ *
+ * @param err The CLI error code
+ * @return t_result RESULT_ERROR.
+ */
+static t_result	parse_error(t_cli_error err)
+{
+	if (err == CLI_ERR_INVALID_OPT)
+		ft_dprintf(STDERR_FILENO, "Fatal: Invalid option\n");
+	else if (err == CLI_ERR_MISSING_VALUE)
+		ft_dprintf(STDERR_FILENO, "Fatal: Missing value for option\n");
+	else if (err == CLI_ERR_NO_ACCEPT)
+		ft_dprintf(STDERR_FILENO, "Fatal: Option does not accept a value\n");
+	return (RESULT_ERROR);
+}
 
 /**
  * @brief Parses a positional argument and adds it to the CLI structure.
@@ -43,10 +60,7 @@ static t_result	parse_short(t_cli *cli, int argc, char **argv, int *i)
 
 	opt = cli_find_short(cli, short_name);
 	if (!opt || opt->short_name == '\0')
-	{
-		ft_printf("%s: -%c: invalid option\n", cli->name, short_name);
-		return (RESULT_ERROR);
-	}
+		return (parse_error(CLI_ERR_INVALID_OPT));
 	opt->is_set = 1;
 	if (opt->has_value)
 	{
@@ -55,20 +69,14 @@ static t_result	parse_short(t_cli *cli, int argc, char **argv, int *i)
 		else if (argv[*i][2] == '\0')
 		{
 			if (*i + 1 >= argc)
-			{
-				ft_printf("Fatal: Missing value for option\n");
-				return (RESULT_ERROR);
-			}
+				return (parse_error(CLI_ERR_MISSING_VALUE));
 			opt->value = argv[++(*i)];
 		}
 		else
 			opt->value = argv[*i] + 2;
 	}
 	else if (argv[*i][2] != '\0')
-	{
-		ft_printf("Fatal: Argument does not accept a value\n");
-		return (RESULT_ERROR);
-	}
+		return (parse_error(CLI_ERR_NO_ACCEPT));
 	return (RESULT_OK);
 }
 
@@ -92,10 +100,7 @@ static t_result	parse_long(t_cli *cli, int argc, char **argv, int *i)
 		*value++ = '\0';
 	opt = cli_find(cli, long_name);
 	if (!opt || !opt->long_name)
-	{
-		ft_printf("%s: --%s: invalid option\n", argv[0], long_name);
-		return (RESULT_ERROR);
-	}
+		return (parse_error(CLI_ERR_INVALID_OPT));
 	opt->is_set = 1;
 	if (opt->has_value)
 	{
@@ -104,18 +109,12 @@ static t_result	parse_long(t_cli *cli, int argc, char **argv, int *i)
 		else
 		{
 			if (*i + 1 >= argc)
-			{
-				ft_printf("Fatal: Missing value for option\n");
-				return (RESULT_ERROR);
-			}
+				return (parse_error(CLI_ERR_MISSING_VALUE));
 			opt->value = argv[++(*i)];
 		}
 	}
 	else if (value)
-	{
-		ft_printf("Warning: Option does not accept a value\n");
-		return (RESULT_ERROR);
-	}
+		return (parse_error(CLI_ERR_NO_ACCEPT));
 	return (RESULT_OK);
 }
 

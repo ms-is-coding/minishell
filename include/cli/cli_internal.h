@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cli_internal.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:37:21 by smamalig          #+#    #+#             */
-/*   Updated: 2025/10/09 01:58:01 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:58:35 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 # define CLI_INTERNAL_H
 
 # include "cli.h"
+
+typedef enum e_cli_error
+{
+	CLI_ERR_NONE,
+	CLI_ERR_INVALID_OPT,
+	CLI_ERR_MISSING_VALUE,
+	CLI_ERR_NO_ACCEPT,
+	CLI_ERR_COUNT
+}	t_cli_error;
 
 t_cli_option	*cli_find(t_cli *cli, const char *name);
 t_cli_option	*cli_find_short(t_cli *cli, char short_name);

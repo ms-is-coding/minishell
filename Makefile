@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/15 15:21:22 by smamalig         ###   ########.fr        #
+#    Updated: 2026/01/16 17:32:24 by mattcarniel      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,8 +56,8 @@ SRC_BUILTINS 	:= $(addprefix builtins/, _find.c cd.c echo.c env.c error.c \
 					type_internal.c help_internal.c)
 SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 					cmd.c exec.c heredoc.c init.c)
-SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c null.c cmd.c arg.c \
-					exec.c redir.c jump.c heredoc.c)
+SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c print2.c null.c cmd.c \
+					arg.c exec.c redir.c jump.c heredoc.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
 					build.c destroy.c resize.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \

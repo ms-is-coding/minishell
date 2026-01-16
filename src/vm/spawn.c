@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:15:51 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:26:50 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static char	*find_exec(const char *arg, const char *env_path)
 	}
 	return (NULL);
 }
+
 /**
  * @brief Closes the pipes used in the virtual machine.
  *
