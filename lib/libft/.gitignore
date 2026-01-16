@@ -1,0 +1,10 @@
+.cache/
+
+# config files
+.clangd
+compile_commands.json
+
+# build files
+*.o
+*.a
+*.d
