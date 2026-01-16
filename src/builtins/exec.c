@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:34:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 17:24:01 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 19:51:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,16 @@
 #include "core/string.h"
 #include "core/stdio.h"
 
-/**
- * @brief Finds the executable path for a given command argument.
- *
- * @param arg Command argument (executable name)
- * @param envp Environment variables
- * @return Path to the executable if found, NULL otherwise.
- */
-static char	*find_exec(const char *arg, char **envp)
+static const char	*find_env_path(char **envp)
 {
-	static char	path[PATH_MAX];
 	const char	*env_path;
-	size_t		len;
 
-	if (!arg)
-		return (NULL);
 	while (*envp && ft_strncmp("PATH=", *envp, 5) != 0)
 		envp++;
 	if (!*envp)
 		return (NULL);
 	env_path = *envp + 5;
-	while (ft_strchr(env_path, ':'))
-	{
-		len = ft_strcspn(env_path, ":");
-		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
-		if (access(path, F_OK) == 0)
-			return (path);
-		env_path += len + 1;
-	}
-	return (NULL);
+	return (env_path);
 }
 
 /**
@@ -66,23 +47,23 @@ int	builtin_exec(
 	char	*path;
 
 	argv++;
-	if (!*argv)
+	if (!argv[0])
 		return (0);
-	if (ft_strchr(*argv, '/'))
+	if (ft_strchr(argv[0], '/'))
 	{
-		if (access(*argv, F_OK) == -1)
-			builtin_error(ctx("exec", *argv), ERR_404, 127);
-		else if (access(argv[1], X_OK) == -1
-			|| execve(argv[1], argv + 1, envp) == -1)
-			builtin_error(ctx("exec", *argv), ERR_NO_PERM, 126);
+		if (access(argv[0], F_OK) == -1)
+			builtin_error(ctx("exec", argv[0]), ERR_404, 127);
+		else if (access(argv[0], X_OK) == -1
+			|| execve(argv[0], argv, envp) == -1)
+			builtin_error(ctx("exec", argv[0]), ERR_NO_PERM, 126);
 	}
 	else
 	{
-		path = find_exec(*argv, envp);
+		path = find_exec(argv[0], find_env_path(envp));
 		if (!path)
-			builtin_error(ctx("exec", *argv), ERR_404, 127);
+			builtin_error(ctx("exec", argv[0]), ERR_404, 127);
 		else if (access(path, X_OK) == -1 || execve(path, argv, envp) == -1)
-			builtin_error(ctx("exec", *argv), ERR_NO_PERM, 126);
+			builtin_error(ctx("exec", argv[0]), ERR_NO_PERM, 126);
 	}
 	return (0);
 }

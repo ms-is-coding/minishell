@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 18:15:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:48:45 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
  * @param env_path The PATH environment variable string
  * @return The full path to the executable if found, NULL otherwise
  */
-static char	*find_exec(const char *arg, const char *env_path)
+char	*find_exec(const char *arg, const char *env_path)
 {
 	static char	path[PATH_MAX];
 	size_t		len;

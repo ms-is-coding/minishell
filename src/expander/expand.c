@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:33:24 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 11:56:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:58:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,7 @@ void	expander_expand(t_expander *exp, t_var_expansion_mode mode)
 		else
 			expander_char(exp, mode);
 	}
-	if (exp->len > 0 || exp->force_extract)
-		expander_var_extract(exp, mode);
+	expander_var_extract(exp, mode);
 	if (mode == VEXPM_PREPARE)
 		exp->frame->argc = exp->prev_argc;
 }

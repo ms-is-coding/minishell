@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 11:56:40 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:52:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ void	expander_var_extract(t_expander *exp, t_var_expansion_mode mode)
 {
 	t_allocator	*alc;
 
+	if (exp->len <= 0 && !exp->force_extract)
+		return ;
+	exp->force_extract = false;
 	if (mode == VEXPM_PREPARE)
 	{
 		alc = &((t_shell *)exp->sh)->allocator;

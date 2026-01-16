@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 16:12:57 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:43:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ typedef struct s_vm
 t_result	vm_init(t_vm *vm);
 void		vm_run(t_vm *vm, t_program *program);
 void		vm_dispatch(t_vm *vm, int sig);
+
+char		*find_exec(const char *arg, const char *env_path);
 
 #endif // VM_H
