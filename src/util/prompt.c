@@ -6,12 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:01:30 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:34:15 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:21:57 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util/prompt.h"
 #include "ansi.h"
+#include "common.h"
 #include "core/stdio.h"
 #include "core/stdlib.h"
 #include "core/string.h"
@@ -75,4 +76,17 @@ void	prompt_pwd(t_shell *sh, char *prompt, ssize_t *len)
 		ft_snprintf(pwd, PATH_MAX, "~%s", pwd + ft_strlen(home));
 	*len += ft_snprintf(prompt + *len, (size_t)(PROMPT_SIZE - *len),
 			ANSI_BLUE "[%s] " ANSI_RESET, pwd);
+}
+
+const char	*generate_prompt(t_shell *sh)
+{
+	static char	prompt[PROMPT_SIZE];
+	ssize_t		len;
+
+	len = 0;
+	prompt[0] = '\0';
+	prompt_pwd(sh, prompt, &len);
+	prompt_exit_codes(sh, prompt, &len);
+	ft_strlcat(prompt, "$ ", PROMPT_SIZE);
+	return (prompt);
 }
