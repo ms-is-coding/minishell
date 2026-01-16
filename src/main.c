@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 15:43:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 17:33:04 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 #include "allocator/allocator.h"
 #include "env/env.h"
 #include "util/prompt.h"
-#include "util/time.h"
 #include "util/help.h"
 #include "parser/parser.h"
 #include "disasm/disasm.h"
@@ -62,7 +61,8 @@ static int	repl(t_shell *sh) // FIX not commented, needs to still be split
 	char		prompt[PROMPT_SIZE];
 	ssize_t		len;
 
-	while (1)
+	sh->should_exit = false;
+	while (!sh->should_exit)
 	{
 		if (sh->vm.active)
 			continue ;
@@ -70,7 +70,7 @@ static int	repl(t_shell *sh) // FIX not commented, needs to still be split
 		prompt[0] = '\0';
 		prompt_pwd(sh, prompt, &len);
 		prompt_exit_codes(sh, prompt, &len);
-		ft_strlcat(prompt, "> ", PROMPT_SIZE);
+		ft_strlcat(prompt, "$ ", PROMPT_SIZE);
 		reset_prompt();
 		line = readline(prompt);
 		if (!line)
@@ -92,26 +92,6 @@ static int	repl(t_shell *sh) // FIX not commented, needs to still be split
 		free(line);
 	}
 	ft_printf("exit\n");
-	return ((int32_t)(int64_t)vec_get(sh->vm.exit_codes, -1));
-}
-
-/**
- * @brief Executes a single command.
- *
- * @param sh Pointer to the shell structure
- * @param command Command string to execute
- * @return Exit code of the command execution.
- */
-static int	command(t_shell *sh, char *command)
-{
-	t_result	result;
-
-	result = parser_parse(&sh->parser, command);
-	if (result != RESULT_OK)
-		return (2);
-	if (cli_is_set(&sh->cli, "disassemble"))
-		disasm(&sh->parser.program);
-	vm_run(&sh->vm, &sh->parser.program);
 	return ((int32_t)(int64_t)vec_get(sh->vm.exit_codes, -1));
 }
 
@@ -158,10 +138,10 @@ static void	handler(int sig)
 	vm_dispatch(&sh->vm, sig);
 	if (!sh->vm.active)
 	{
-		// if (sig == SIGINT)
-		// 	rl_replace_line("", 0);
-		//rl_clear_visible_line();
-		//rl_redraw_prompt_last_line();
+		if (sig == SIGINT)
+			rl_replace_line("", 0);
+		rl_clear_visible_line();
+		rl_redraw_prompt_last_line();
 		rl_redisplay();
 	}
 }
@@ -175,47 +155,16 @@ static void	signal_init(void)
 	signal(SIGQUIT, handler);
 }
 
-static void	test(t_shell *sh)
-{
-	char		buffer[1024];
-	const char	*filename;
-	int			fd;
-	ssize_t		read_size;
-	int			i;
-
-	i = -1;
-	while (++i < sh->cli.pos_i)
-	{
-		filename = sh->cli.positional[i];
-		fd = open(filename, O_RDONLY);
-		if (fd == -1)
-		{
-			ft_printf("----- OPEN ERROR -----\n");
-			continue ;
-		}
-		read_size = read(fd, buffer, 1024);
-		if (read_size == -1)
-		{
-			ft_printf("----- READ ERROR -----\n");
-			continue ;
-		}
-		if (read_size == 1024)
-		{
-			ft_printf("----- PARTIAL DATA -----\n");
-			continue ;
-		}
-		buffer[read_size] = 0;
-		parser_parse(&sh->parser, buffer);
-		vm_run(&sh->vm, &sh->parser.program);
-		close(fd);
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell				sh;
 	int					exit_code;
 
+	if (!isatty(0) || !isatty(1) || !isatty(2))
+	{
+		ft_dprintf(2, "Error: cannot minishell run in a pipeline\n");
+		return (1);
+	}
 	ft_memset(&sh, 0, sizeof(t_shell));
 	get_shell(&sh);
 	allocator_init(&sh.allocator);
@@ -233,21 +182,9 @@ int	main(int argc, char **argv, char **envp)
 	rl_instream = stdin;
 	sh.vm.shell = &sh;
 	sh.vm.allocator = &sh.allocator;
-	if (cli_is_set(&sh.cli, "login"))
-		ft_printf("Running as login shell\n");
-	if (cli_is_set_short(&sh.cli, 'c'))
-		exit_code = command(&sh, cli_get_short(&sh.cli, 'c'));
-	else if (cli_is_set(&sh.cli, "version"))
-	{
+	exit_code = 0;
+	if (cli_is_set(&sh.cli, "version"))
 		help_version();
-		exit_code = 0;
-	}
-	else if (sh.cli.pos_i > 0)
-	{
-		test(&sh);
-		sh_destroy(&sh);
-		exit(0);
-	}
 	else
 		exit_code = repl(&sh);
 	sh_destroy(&sh);

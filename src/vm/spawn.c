@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:26:50 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 17:35:21 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,47 @@ static void	run_empty_command(t_vm *vm)
 	return ;
 }
 
+static void	compute_save(t_vm *vm, int saved_fds[3])
+{
+	int			i;
+	int			t;
+
+	ft_memcpy(saved_fds, &(int [3]){-1, -1, -1}, sizeof(int) * 3);
+	i = -1;
+	while (++i < vm->redir_count)
+	{
+		t = vm->redirs[i].target_fd;
+		if (t >= 0 && t <= 2 && saved_fds[t] == -1)
+			saved_fds[t] = dup(t);
+	}
+	if (vm->prev_fd != 0 && saved_fds[0] == -1)
+		saved_fds[0] = dup(0);
+	if (vm->pipe_fd[1] != 1)
+		saved_fds[1] = dup(1);
+}
+
+static void	reset_save(t_vm *vm, int saved_fds[3])
+{
+	int	i;
+
+	i = -1;
+	while (++i < 3)
+	{
+		if (saved_fds[i] != -1)
+		{
+			dup2(saved_fds[i], i);
+			close(saved_fds[i]);
+		}
+	}
+	i = -1;
+	while (++i < vm->redir_count)
+	{
+		if (vm->redirs[i].file_fd >= 0)
+			close(vm->redirs[i].file_fd);
+	}
+	vm->redir_count = 0;
+}
+
 /**
  * @brief Executes a built-in command in the virtual machine.
  *
@@ -162,23 +203,22 @@ static int	execute_builtin(t_shell *sh, t_vm *vm, char **env)
 {
 	t_builtin_fn	builtin;
 	int				exit_code;
-	int				saved_stdin;
-	int				saved_stdout;
-	int				saved_stderr;
+	int				saved_fds[3];
 
+	compute_save(vm, saved_fds);
 	builtin = _builtin_find(vm->frame.argv[0]);
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stderr = dup(STDERR_FILENO);
 	setup_fds(vm);
 	exit_code = builtin(sh, vm->frame.argc, vm->frame.argv, env);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stderr, STDERR_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-	close(saved_stderr);
+	reset_save(vm, saved_fds);
 	close_pipes(vm);
+	reset_fds(vm);
+
+	if (sh->should_exit)
+	{
+		sh_destroy(sh);
+		ft_dprintf(2, "exit\n");
+		_exit(exit_code);
+	}
 	vm->redir_count = 0;
 	vec_push(vm->exit_codes, (void *)(intptr_t)exit_code);
 	return (exit_code);
