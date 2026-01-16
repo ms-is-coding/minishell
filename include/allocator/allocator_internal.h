@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:55 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/07 06:20:21 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/16 18:39:31 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,19 @@ void			allocator_slab_destroy(t_allocator *alc,
 t_allocation	allocator_slab_alloc(t_allocator *alc, size_t size);
 void			allocator_slab_free(t_allocation alloc);
 
+__attribute__((__always_inline__))
 static inline bool	is_arena(t_arena *arena)
 {
 	return (!(arena->id & ARENA_FLAG_LARGE));
 }
 
+__attribute__((__always_inline__))
 static inline bool	is_arena_active(t_arena *arena)
 {
 	return (arena->id & ARENA_FLAG_ACTIVE);
 }
 
+__attribute__((__always_inline__))
 static inline t_arena_id	real_arena_id(t_arena *arena)
 {
 	return (arena->id & ARENA_ID_MASK);

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 18:39:45 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/16 18:41:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int	builtin_readonly(
 
 	argv++;
 	status = 0;
+	key = NULL;
+	value = NULL;
 	while (*argv)
 	{
 		bucket = env_find_key(&sh->env, *argv);
