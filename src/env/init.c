@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 11:55:04 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:45:48 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 
 	i = 0;
 	env->capacity = scale_1_25_fast(envp_count(envp));
+	if (env->capacity < 16)
+		env->capacity = 16;
 	env->buckets = allocator_calloc(env->capacity, sizeof(t_env_bucket));
 	if (!env->buckets)
 		return (RESULT_ERROR);
