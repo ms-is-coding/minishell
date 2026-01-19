@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 16:34:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/19 23:02:03 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static bool	try_exec(const char *arg, const char *env_path, char flags)
 
 	if (!arg || !env_path)
 		return (false);
-	while (ft_strchr(env_path, ':'))
+	while (*env_path)
 	{
 		len = ft_strcspn(env_path, ":");
 		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
@@ -122,7 +122,9 @@ static bool	try_exec(const char *arg, const char *env_path, char flags)
 			type_info(arg, path, TYPE_EXEC, flags);
 			return (true);
 		}
-		env_path += len + 1;
+		env_path += len;
+		if (*env_path == ':')
+			env_path++;
 	}
 	return (false);
 }
