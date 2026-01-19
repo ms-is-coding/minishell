@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:59:35 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 18:11:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:51:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	reset_fds(t_vm *vm)
 	if (vm->prev_fd != STDIN_FILENO)
 		close(vm->prev_fd);
 	if (vm->pipe_fd[STDOUT_FILENO] != STDOUT_FILENO)
-		close(vm->pipe_fd[1]);
+		close(vm->pipe_fd[STDOUT_FILENO]);
 	vm->prev_fd = vm->pipe_fd[STDIN_FILENO];
 	vm->pipe_fd[STDIN_FILENO] = STDIN_FILENO;
 	vm->pipe_fd[STDOUT_FILENO] = STDOUT_FILENO;

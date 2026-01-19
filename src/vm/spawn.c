@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 19:48:45 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/18 20:14:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	vm_spawn(t_vm *vm)
 	env = env_build(&((t_shell *)vm->shell)->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);
-	if (_builtin_find(vm->frame.argv[0]) && !is_command_in_pipeline(vm))
+	if (builtin && !is_command_in_pipeline(vm))
 		return (execute_builtin(vm->shell, vm, env));
 	pid = fork();
 	if (pid == 0)
