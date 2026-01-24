@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 22:15:14 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:31:06 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:19:33 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	disasm_print_opcode(t_program *program, size_t *offset)
  * @param program Pointer to the program containing the data
  * @param offset_ptr Pointer to the current offset in the program data
  * @param start Starting index for formatting
- * @return The 32-bit integer read from the program data
+ * @return The 32-bit integer read from the program data.
  */
 int32_t	disasm_print_i32(t_program *program, size_t *offset_ptr, int start)
 {
@@ -86,7 +86,7 @@ int32_t	disasm_print_i32(t_program *program, size_t *offset_ptr, int start)
  * @param program Pointer to the program containing the data
  * @param offset_ptr Pointer to the current offset in the program data
  * @param start Starting index for formatting
- * @return The 16-bit unsigned integer read from the program data
+ * @return The 16-bit unsigned integer read from the program data.
  */
 uint16_t	disasm_print_u16(t_program *program, size_t *offset_ptr, int start)
 {

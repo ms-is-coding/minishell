@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/19 23:05:17 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/24 16:29:18 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
  *
  * @param arg The command argument to find the executable for
  * @param env_path The PATH environment variable string
- * @return The full path to the executable if found, NULL otherwise
+ * @return The full path to the executable if found, NULL otherwise.
  */
 char	*find_exec(const char *arg, const char *env_path)
 {
@@ -56,6 +56,12 @@ char	*find_exec(const char *arg, const char *env_path)
 	return (NULL);
 }
 
+/**
+ * @brief Executes a command with an absolute path.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param env The environment variables array
+ */
 static void	vm_spawn_absolute(t_vm *vm, char **env)
 {
 	struct stat	path_stat;
@@ -78,6 +84,12 @@ static void	vm_spawn_absolute(t_vm *vm, char **env)
 	exit(126);
 }
 
+/**
+ * @brief Executes a command by searching for it in the PATH.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param env The environment variables array
+ */
 static void	vm_spawn_command(t_vm *vm, char **env)
 {
 	char		*exec;
@@ -103,6 +115,13 @@ static void	vm_spawn_command(t_vm *vm, char **env)
 	_exit(126);
 }
 
+/**
+ * @brief Spawns a child process to execute a command in the virtual machine.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @param builtin The built-in function to execute, if any
+ * @param env The environment variables array
+ */
 static void	vm_spawn_child(t_vm *vm, t_builtin_fn builtin, char **env)
 {
 	int			exit_code;

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 15:10:31 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 14:06:12 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:18:42 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *
  * @param cli Pointer to the CLI structure
  * @param name Long name of the option to find
- * @return Pointer to the found CLI option, or NULL if not found
+ * @return Pointer to the found CLI option, or NULL if not found.
  */
 t_cli_option	*cli_find(t_cli *cli, const char *name)
 {
@@ -40,7 +40,7 @@ t_cli_option	*cli_find(t_cli *cli, const char *name)
  *
  * @param cli Pointer to the CLI structure
  * @param short_name Short name of the option to find
- * @return Pointer to the found CLI option, or NULL if not found
+ * @return Pointer to the found CLI option, or NULL if not found.
  */
 t_cli_option	*cli_find_short(t_cli *cli, char short_name)
 {

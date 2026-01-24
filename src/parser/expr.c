@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 18:13:49 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:24:53 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:23:12 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ static void	print_line(t_parser *p, t_token token)
 			p->lexer->input + token.pos.col - 1);
 }
 
+/**
+ * @brief Prints the header for the syntax error message.
+ *
+ * @param token The token where the error occurred
+ */
 static void	print_header(t_token token)
 {
 	ft_dprintf(2, "%*s┌─ " ANSI_CYAN "REPL" ANSI_RESET ":" ANSI_YELLOW "%d"
@@ -47,6 +52,14 @@ static void	print_header(t_token token)
 		token.pos.row);
 }
 
+/**
+ * @brief Prints a detailed syntax error message.
+ *
+ * @param p Pointer to the parser structure
+ * @param token The token where the error occurred
+ * @param message The error message to display
+ * @return RESULT_ERROR indicating an error occurred.
+ */
 t_result	print_error(t_parser *p, t_token token, const char *message)
 {
 	print_header(token);
@@ -76,6 +89,13 @@ t_result	print_error(t_parser *p, t_token token, const char *message)
 	return (RESULT_ERROR);
 }
 
+/**
+ * @brief Parses an expression with the given precedence.
+ *
+ * @param p Pointer to the parser structure
+ * @param prec The precedence level for parsing
+ * @return RESULT_OK on success, RESULT_ERROR on failure.
+ */
 t_result	parser_parse_expr(t_parser *p, t_precedence prec)
 {
 	t_token			token;

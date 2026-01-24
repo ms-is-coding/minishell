@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 06:32:47 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 13:11:11 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:19:57 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	env_free_bucket(t_env_bucket *bucket)
  * @brief Destroys the environment structure and frees associated resources.
  *
  * @param env Pointer to the environment structure
- * @note It is assumed that key and value are stored in a single allocation
+ * @note It is assumed that key and value are stored in a single allocation.
  */
 void	env_destroy(t_env *env)
 {

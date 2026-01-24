@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:33:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/13 16:15:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/24 16:27:28 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "core/stdlib.h"
 #include "vm/vm.h"
 
+/**
+ * @brief Initializes the virtual machine instance.
+ *
+ * @param vm Pointer to the virtual machine instance
+ * @return Result of the initialization operation.
+ */
 t_result	vm_init(t_vm *vm)
 {
 	vm->prev_fd = 0;

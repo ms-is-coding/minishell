@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:56:07 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:39:20 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:18:35 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /**
  * @brief Adds a new option to the CLI structure.
  *
- * @param cli Pointer to the CLI structure.
- * @param long_name Long name of the option.
- * @param short_name Short name (character) of the option.
+ * @param cli Pointer to the CLI structure
+ * @param long_name Long name of the option
+ * @param short_name Short name (character) of the option
  * @param has_value Boolean indicating if the option requires a value.
  */
 void	cli_add(

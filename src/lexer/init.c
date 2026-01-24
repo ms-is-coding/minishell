@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:27:16 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:20:57 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:22:11 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *
  * @param lexer Pointer to the lexer structure
  * @param input Input string to tokenize
- * @return Result of the initialization operation
+ * @return Result of the initialization operation.
  */
 t_result	lexer_init(t_lexer *lexer, char *input)
 {

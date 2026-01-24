@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:27:42 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 15:34:04 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:17:52 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	allocator_slab_assign(t_slab_region *slab, t_allocation *alloc)
  *
  * @param alc Pointer to the allocator structure
  * @param size Size of memory to allocate
- * @return t_allocation structure containing allocation details
+ * @return t_allocation structure containing allocation details.
  */
 t_allocation	allocator_slab_alloc(t_allocator *alc, size_t size)
 {

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 14:10:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 15:31:09 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:18:06 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param alc Pointer to the allocator structure
  * @param size Size of memory to allocate
  * @param arena Pointer to the arena to allocate from (optional)
- * @return t_allocation structure containing allocation details
+ * @return t_allocation structure containing allocation details.
  */
 t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena)
 {

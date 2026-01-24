@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 16:25:28 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 19:43:58 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/24 16:16:36 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define VM_H
 
 # include "allocator/allocator.h"
-#include "core/stdlib.h"
+# include "core/stdlib.h"
 # include "vector/vector.h"
 # include "bytecode.h"
 # include "common.h"

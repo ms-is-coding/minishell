@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:00:13 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/24 16:28:05 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
  * @brief Runs the virtual machine with the given program.
  *
  * @param vm Pointer to the virtual machine instance
- * @param program Pointer to the program to execute.
+ * @param program Pointer to the program to execute
  */	
 void	vm_run(t_vm *vm, t_program *program)
 {

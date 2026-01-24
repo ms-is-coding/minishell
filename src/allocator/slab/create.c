@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 00:25:37 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:26:01 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 16:17:44 by mattcarniel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @brief Creates a new slab region within the allocator.
  *
  * @param alc Pointer to the allocator instance
- * @return Pointer to the newly created slab region, or NULL on failure
+ * @return Pointer to the newly created slab region, or NULL on failure.
  */
 t_slab_region	*allocator_slab_create(t_allocator *alc)
 {
