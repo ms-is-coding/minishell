@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:31:38 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 11:17:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 #include "core/stdlib.h"
 
 #include "shell.h"
-#include "repl.h"
 
 /**
  * @brief Gets or sets the global shell instance.
@@ -90,6 +89,9 @@ void	sh_destroy(t_shell *sh)
 	vec_free(sh->vm.pids);
 	env_destroy(&sh->env);
 	allocator_destroy(&sh->allocator);
+	close(0);
+	close(1);
+	close(2);
 }
 
 /**
@@ -97,12 +99,21 @@ void	sh_destroy(t_shell *sh)
  */
 static void	sh_init(t_shell *sh, int argc, char **argv, char **envp)
 {
+	struct sigaction	sa;
+
 	ft_memset(sh, 0, sizeof(t_shell));
 	get_shell(sh);
 	allocator_init(&sh->allocator);
 	expander_init(&sh->expander, sh);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		(ft_dprintf(2, "Error: sigaction(SIGINT) failed\n"), _exit(2));
+	sa.sa_handler = SIG_IGN;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		(ft_dprintf(2, "Error: sigaction(SIGQUIT) failed\n"), _exit(2));
 	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
 		|| env_init(&sh->env, &sh->allocator, envp) != RESULT_OK
 		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK
@@ -121,10 +132,11 @@ int	main(int argc, char **argv, char **envp)
 
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 	{
-		ft_dprintf(2, "Error: cannot minishell run in a pipeline\n");
+		ft_dprintf(2, "Error: cannot run minishell in a pipeline\n");
 		return (1);
 	}
 	sh_init(&sh, argc, argv, envp);
+	rl_catch_signals = 0;
 	rl_outstream = stderr;
 	rl_instream = stdin;
 	sh.vm.shell = &sh;

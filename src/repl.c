@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:59:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/16 18:30:56 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 11:10:19 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <sys/wait.h>
 
+#include "core/string.h"
 #include "util/prompt.h"
 #include "parser/parser.h"
 #include "disasm/disasm.h"
@@ -36,19 +37,6 @@
 
 #include "ansi.h"
 #include "shell.h"
-#include "repl.h"
-
-/**
- * @brief Resets the terminal prompt settings.
- */
-static void	reset_prompt(void)
-{
-	struct termios	def;
-
-	tcgetattr(STDIN_FILENO, &def);
-	def.c_lflag |= (ICANON | ECHO);
-	tcsetattr(STDIN_FILENO, TCSANOW, &def);
-}
 
 /**
  * @brief Checks the result of the parsing and executes the program if
@@ -72,6 +60,11 @@ static void	check_result(t_shell *sh, t_result result)
 	}
 }
 
+static int	is_empty_line(char *line)
+{
+	return (ft_strspn(line, " \t\n\v\r") == ft_strlen(line));
+}
+
 int	repl(t_shell *sh)
 {
 	char		*line;
@@ -84,11 +77,13 @@ int	repl(t_shell *sh)
 		if (sh->vm.active)
 			continue ;
 		prompt = generate_prompt(sh);
-		reset_prompt();
 		line = readline(prompt);
 		if (!line)
 			break ;
-		add_history(line);
+		if (line[0] != '\0')
+			add_history(line);
+		if (is_empty_line(line))
+			continue ;
 		ft_printf(ANSI_RESET);
 		result = parser_parse(&sh->parser, line);
 		check_result(sh, result);
