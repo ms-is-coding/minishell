@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 13:25:08 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:10:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ static char	*extract_user(t_expander *exp)
 static const char	*extract_home(const char *user)
 {
 	const char	*str;
+	const char	*save;
 	int			i;
 
 	str = exec_with_output((char *[]){
 			(char *)(intptr_t)"/usr/bin/getent",
 			(char *)(intptr_t)"passwd",
 			(char *)(intptr_t)user, NULL});
+	save = str;
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -66,6 +68,8 @@ static const char	*extract_home(const char *user)
 	}
 	if (ft_strchr(str, ':'))
 		ft_strchr(str, ':')[0] = '\0';
+	str = ft_strdup(str);
+	ft_free((void *)(intptr_t)save);
 	return (str);
 }
 

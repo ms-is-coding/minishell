@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:59:31 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/25 11:10:19 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:01:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ int	repl(t_shell *sh)
 		check_result(sh, result);
 		free(line);
 	}
-	return ((int32_t)(int64_t)vec_get(sh->vm.exit_codes, -1));
+	return (sh->vm.last_exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 13:43:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:54:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ static void	sh_init(t_shell *sh, int argc, char **argv, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell				sh;
-	int					exit_code;
+	t_shell	sh;
+	int		exit_code;
 
 	if (!isatty(0) || !isatty(1) || !isatty(2))
 	{

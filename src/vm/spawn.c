@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 11:27:05 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:16:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*find_exec(const char *arg, const char *env_path)
 			return ((char *)(intptr_t)arg);
 		return (NULL);
 	}
+	if (!arg[0] || ft_strcmp(arg, ".") || ft_strcmp(arg, ".."))
+		return (NULL);
 	while (*env_path)
 	{
 		len = ft_strcspn(env_path, ":");
@@ -159,7 +161,7 @@ void	vm_spawn(t_vm *vm)
 		return ;
 	}
 	if (vm->frame.argc == 0)
-		run_empty_command(vm);
+		return (run_empty_command(vm));
 	env = env_build(&((t_shell *)vm->shell)->env, vm->frame.arena);
 	vm->frame.argv[vm->frame.argc] = NULL;
 	builtin = _builtin_find(vm->frame.argv[0]);

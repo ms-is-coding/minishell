@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:06:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 13:20:32 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:03:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	vm_redir_in(t_vm *vm, t_program *program)
 		ft_dprintf(2, "%s: %m\n", filename);
 		vm->had_error = true;
 	}
-	free(filename);
+	ft_free(filename);
 	redir_insert(vm, target_fd, file_fd);
 	program->pc += len;
 }
@@ -93,7 +93,7 @@ void	vm_redir_out(t_vm *vm, t_program *program)
 		ft_dprintf(2, "%s: %m\n", filename);
 		vm->had_error = true;
 	}
-	free(filename);
+	ft_free(filename);
 	redir_insert(vm, target_fd, file_fd);
 	program->pc += len;
 }
