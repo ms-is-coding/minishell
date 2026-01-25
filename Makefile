@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/16 18:38:56 by smamalig         ###   ########.fr        #
+#    Updated: 2026/01/25 11:18:10 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ CFLAGS_DEBUG	:= -Og -g3 -Wshadow -Wpadded -Wconversion -Wstrict-prototypes \
 					-Wnull-dereference -Wformat=2 -fstack-protector-strong
 CFLAGS_RELEASE	:= -O2 -DNDEBUG -march=native -D__is_42sh
 CFLAGS_SANITIZE	:= -fsanitize=address,undefined,leak
-
 
 ifeq ($(MODE), release)
 	CFLAGS += $(CFLAGS_RELEASE)
@@ -78,14 +77,6 @@ SRC_FILES		:= $(SRC_CLI) $(SRC_LEXER) $(SRC_PARSER) $(SRC_BYTECODE) \
 SRCS			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS			:= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS			:= $(OBJS:.o=.d)
-
-RED				= \e[31m
-GREEN			= \e[32m
-YELLOW			= \e[33m
-BLUE			= \e[34m
-MAGENTA			= \e[35m
-CYAN			= \e[36m
-RESET			= \e[m
 
 LIBFT_DIR		:= $(LIB_DIR)/libft
 LIBFT			:= $(LIBFT_DIR)/libft.a
