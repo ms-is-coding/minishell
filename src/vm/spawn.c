@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:29:18 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 11:27:05 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,13 @@ static void	vm_spawn_child(t_vm *vm, t_builtin_fn builtin, char **env)
 {
 	int			exit_code;
 
+	signal(SIGINT, SIG_DFL);
 	setup_fds(vm);
 	if (builtin)
 	{
 		exit_code = builtin(vm->shell, vm->frame.argc, vm->frame.argv, env);
+		close(1);
+		reset_fds(vm);
 		sh_destroy(vm->shell);
 		exit(exit_code);
 	}

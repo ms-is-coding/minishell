@@ -6,16 +6,19 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:28:05 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 11:26:01 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm/vm_internal.h"
 #include "vector/vector.h"
 #include "core/stdio.h"
+#include "shell.h"
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
 
 /**
  * @brief Dispatches the opcode to the corresponding handler function.
@@ -39,6 +42,26 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
 }
 
 /**
+ * @brief Signal handler for SIGINT and SIGQUIT.
+ *
+ * @param sig Signal number
+ */
+static void	sig_handler(int sig)
+{
+	t_shell	*sh;
+
+	sh = get_shell(0);
+	if (!sh->vm.active)
+	{
+		if (sig == SIGINT)
+			rl_replace_line("", 0);
+		rl_clear_visible_line();
+		rl_redraw_prompt_last_line();
+		rl_redisplay();
+	}
+}
+
+/**
  * @brief Runs the virtual machine with the given program.
  *
  * @param vm Pointer to the virtual machine instance
@@ -56,6 +79,7 @@ void	vm_run(t_vm *vm, t_program *program)
 	vm->redir_count = 0;
 	vm->last_exit_code = (int32_t)(int64_t)vec_get(vm->exit_codes, -1);
 	vec_clear(vm->exit_codes);
+	signal(SIGINT, SIG_IGN);
 	while (program->pc < program->len)
 	{
 		handler = dispatch_opcode(program->data[program->pc] & OPCODE_MASK);
@@ -67,5 +91,6 @@ void	vm_run(t_vm *vm, t_program *program)
 		}
 		handler(vm, program);
 	}
+	signal(SIGINT, sig_handler);
 	vm->active = false;
 }

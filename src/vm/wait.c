@@ -6,36 +6,15 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:26:41 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 15:22:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 11:23:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util/signals.h"
 #include "vm/vm_internal.h"
 #include <stddef.h>
-#include <signal.h>
 #include <sys/wait.h>
 #include "core/stdio.h"
-
-/**
- * @brief Sends a signal to all child processes managed by the virtual machine.
- *
- * @param vm Pointer to the virtual machine instance
- * @param sig Signal to send to the child processes
- */
-void	vm_dispatch(t_vm *vm, int sig)
-{
-	int	i;
-
-	if (!vm->active)
-		return ;
-	i = 0;
-	while (i < (int)vec_length(vm->pids))
-	{
-		kill((int32_t)(int64_t)vec_get(vm->pids, i), sig);
-		i++;
-	}
-}
 
 /**
  * @brief Waits for all child processes to finish and collects their exit codes.
