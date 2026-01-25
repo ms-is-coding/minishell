@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 22:10:17 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 14:16:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:22:20 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*find_exec(const char *arg, const char *env_path)
 			return ((char *)(intptr_t)arg);
 		return (NULL);
 	}
-	if (!arg[0] || ft_strcmp(arg, ".") || ft_strcmp(arg, ".."))
+	if (!arg[0] || ft_strcmp(arg, ".") == 0 || ft_strcmp(arg, "..") == 0)
 		return (NULL);
 	while (*env_path)
 	{
@@ -79,7 +79,7 @@ static void	vm_spawn_absolute(t_vm *vm, char **env)
 		ft_dprintf(2, "%s: %m\n", vm->frame.argv[0]);
 		exit(127);
 	}
-	secure_execve(vm->frame.argv[0], vm->frame.argv, env);
+	execve(vm->frame.argv[0], vm->frame.argv, env);
 	ft_dprintf(2, "%s: cannot execute binary file: %m\n",
 		vm->frame.argv[0]);
 	sh_destroy(vm->shell);
@@ -111,7 +111,7 @@ static void	vm_spawn_command(t_vm *vm, char **env)
 		sh_destroy(vm->shell);
 		_exit(126);
 	}
-	secure_execve(exec, vm->frame.argv, env);
+	execve(exec, vm->frame.argv, env);
 	ft_dprintf(2, "%s: cannot execute binary file: %m\n", vm->frame.argv[0]);
 	sh_destroy(vm->shell);
 	_exit(126);

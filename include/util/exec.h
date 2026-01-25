@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 03:03:54 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/22 00:14:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 14:19:59 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,5 @@
 char		*exec_with_output(char **argv);
 
 int			secure_open(const char *file, int oflag);
-int			secure_execve(const char *path, char *const *argv,
-				char *const *envp)
-			__attribute__((nonnull(1, 2)));
 
 #endif // EXEC_H
