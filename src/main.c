@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 11:17:07 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 11:27:12 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
  * instance
  * @return Pointer to the current shell instance.
  */
-static t_shell	*get_shell(t_shell *sh)
+t_shell	*get_shell(t_shell *sh)
 {
 	static t_shell	*save = NULL;
 
@@ -57,16 +57,15 @@ static t_shell	*get_shell(t_shell *sh)
 }
 
 /**
- * @brief Signal handler for SIGINT and SIGQUIT.
+ * @brief Signal handler for SIGINT.
  *
  * @param sig Signal number
  */
-static void	handler(int sig)
+static void	sig_handler(int sig)
 {
 	t_shell	*sh;
 
 	sh = get_shell(0);
-	vm_dispatch(&sh->vm, sig);
 	if (!sh->vm.active)
 	{
 		if (sig == SIGINT)
@@ -99,21 +98,12 @@ void	sh_destroy(t_shell *sh)
  */
 static void	sh_init(t_shell *sh, int argc, char **argv, char **envp)
 {
-	struct sigaction	sa;
-
 	ft_memset(sh, 0, sizeof(t_shell));
 	get_shell(sh);
 	allocator_init(&sh->allocator);
 	expander_init(&sh->expander, sh);
-	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		(ft_dprintf(2, "Error: sigaction(SIGINT) failed\n"), _exit(2));
-	sa.sa_handler = SIG_IGN;
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		(ft_dprintf(2, "Error: sigaction(SIGQUIT) failed\n"), _exit(2));
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (cli_init(&sh->cli, argc, argv) != RESULT_OK
 		|| env_init(&sh->env, &sh->allocator, envp) != RESULT_OK
 		|| parser_init(&sh->parser, &sh->lexer) != RESULT_OK

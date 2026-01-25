@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 16:29:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 11:24:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "cli/cli.h"
 # include "env/env.h"
 # include "vm/vm.h"
+# include <signal.h>
 
 typedef struct s_shell
 {
@@ -35,6 +36,10 @@ typedef struct s_shell
 	char		reserved[7];
 }	t_shell;
 
+extern volatile sig_atomic_t	g_sigint;
+
+t_shell	*get_shell(t_shell *sh);
+int		repl(t_shell *sh);
 void	sh_destroy(t_shell *sh);
 
 #endif
