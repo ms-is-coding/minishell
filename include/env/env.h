@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/04 16:52:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 12:03:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "allocator/allocator.h"
 # include "core/stdlib.h"
+#include <limits.h>
 
 typedef uint8_t	t_env_flags;
 
@@ -51,6 +52,11 @@ t_result		env_set(t_env *env, const char *key, const char *value,
 const char		*env_get(t_env *env, const char *key);
 t_result		env_remove(t_env *env, const char *key);
 char			**env_build(t_env *env, t_arena *arena);
+
+t_result		env_set_flag(t_env *env, const char *key, t_env_flags flag);
+t_result		env_toggle_flag(t_env *env, const char *key, t_env_flags flag);
+t_result		env_clear_flag(t_env *env, const char *key, t_env_flags flag);
+bool			env_exists(t_env *env, const char *key);
 
 // internal function, use with caution
 t_env_bucket	*env_find_key(t_env *env, const char *key);

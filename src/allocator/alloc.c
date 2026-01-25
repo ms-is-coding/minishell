@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 14:10:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:18:06 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:16:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena)
 
 	if (arena)
 		return (allocator_arena_alloc(alc, arena, size));
-	if (size <= MAX_ALLOC_SIZE)
-		return (allocator_slab_alloc(alc, size));
 	alloc.size = size;
 	alloc.kind = ALLOC_HEAP;
 	alloc.data = malloc(size);

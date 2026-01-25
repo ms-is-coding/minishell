@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/19 12:45:48 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:24:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	env_init_default_values(t_env *env)
 	if (!tmp)
 		return ;
 	tmp[ft_strlen(tmp) - 1] = '\0';
-	env_set(env, "UID", allocator_strdup(tmp),
+	env_set(env, "UID", ft_strdup(tmp),
 		ENV_FLAG_RDONLY | ENV_FLAG_INTEGER | ENV_FLAG_STACK_KEY);
 	ft_free(tmp);
 }
@@ -84,14 +84,14 @@ t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 	env->capacity = scale_1_25_fast(envp_count(envp));
 	if (env->capacity < 16)
 		env->capacity = 16;
-	env->buckets = allocator_calloc(env->capacity, sizeof(t_env_bucket));
+	env->buckets = ft_calloc(env->capacity, sizeof(t_env_bucket));
 	if (!env->buckets)
 		return (RESULT_ERROR);
 	env->count = 0;
 	env->allocator = allocator;
 	while (envp[i])
 	{
-		entry = allocator_strdup(envp[i]);
+		entry = ft_strdup(envp[i]);
 		if (!entry)
 			continue ;
 		value = ft_strchr(entry, '=');

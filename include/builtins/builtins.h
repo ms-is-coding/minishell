@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 08:22:29 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 12:57:44 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 12:09:51 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 typedef enum e_error
 {
 	ERR_NONE,
+	ERR_OOM,
 	ERR_TOO_MANY_ARGS,
 	ERR_INVALID_OPT,
 	ERR_INVALID_ID,

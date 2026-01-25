@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:17:59 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/25 16:17:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:45:06 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 void	ft_free(void *ptr)
 {
+	if (!ptr)
+		return ;
 	free((char *)ptr - sizeof(size_t));
 }

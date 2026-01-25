@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 16:54:25 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:10:42 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:28:18 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_result	env_resize(t_env *env)
 	old_buckets = env->buckets;
 	old_capacity = env->capacity;
 	env->capacity = scale_1_5_fast(env->capacity);
-	env->buckets = allocator_calloc(env->capacity, sizeof(t_env_bucket));
+	env->buckets = ft_calloc(env->capacity, sizeof(t_env_bucket));
 	if (!env->buckets)
 		return (RESULT_ERROR);
 	env->count = 0;
@@ -51,6 +51,6 @@ t_result	env_resize(t_env *env)
 		env_set(env, old_buckets[i].key,
 			old_buckets[i].value, old_buckets[i].flags);
 	}
-	allocator_free_ptr(old_buckets);
+	ft_free(old_buckets);
 	return (RESULT_OK);
 }

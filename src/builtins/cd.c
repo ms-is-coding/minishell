@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:44:16 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/16 20:26:31 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:22:29 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "builtins/builtins.h"
 #include "core/string.h"
 #include "core/stdio.h"
-#include "allocator/allocator.h"
 
 /**
  * @brief Resolves the target directory for the cd command.
@@ -61,9 +60,9 @@ static const char	*resolve_cwd(t_env *env, const char *path)
 static void	free_pwds(char **old, char **new)
 {
 	if (*old)
-		allocator_free_ptr(*old);
+		free(*old);
 	if (*new)
-		allocator_free_ptr(*new);
+		free(*new);
 }
 
 /**
@@ -144,8 +143,8 @@ int	builtin_cd(
 	cwd = resolve_cwd(&sh->env, argv[1]);
 	if (!cwd)
 		return (1);
-	new = allocator_calloc(PATH_MAX, sizeof(char));
-	old = allocator_calloc(PATH_MAX, sizeof(char));
+	new = ft_calloc(PATH_MAX, sizeof(char));
+	old = ft_calloc(PATH_MAX, sizeof(char));
 	if (!new || !old)
 	{
 		free_pwds(&old, &new);

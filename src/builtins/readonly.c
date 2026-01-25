@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 22:28:27 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 18:41:18 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/24 15:07:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,21 @@ static bool	is_valid_var(const char *str)
  */
 static int	separate_export(const char *arg, char **key, char **value)
 {
+	char	*new;
 	char	*eq;
 
+	new = ft_strdup(arg);
 	if (!is_valid_var(arg))
 		return (builtin_error(ctx("readonly", arg), ERR_INVALID_ID, 1));
-	eq = ft_strchr(arg, '=');
+	eq = ft_strchr(new, '=');
 	if (eq)
 	{
 		*eq = '\0';
-		*value = ft_strdup(eq + 1);
+		*value = eq + 1;
 	}
 	else
 		value = NULL;
-	*key = ft_strdup(arg);
+	*key = new;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:55:55 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 17:15:07 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:47:25 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,6 @@ static t_result	parse_error(t_cli_error err)
 	else if (err == CLI_ERR_NO_ACCEPT)
 		ft_dprintf(STDERR_FILENO, "Fatal: Option does not accept a value\n");
 	return (RESULT_ERROR);
-}
-
-/**
- * @brief Parses a positional argument and adds it to the CLI structure.
- *
- * @param cli Pointer to the CLI structure
- * @param arg The positional argument to parse
- * @return t_result RESULT_OK on success, RESULT_ERROR on failure.
- */
-static t_result	parse_positional(t_cli *cli, const char *arg)
-{
-	cli->positional[cli->pos_i++] = arg;
-	return (RESULT_OK);
 }
 
 /**
@@ -134,10 +121,7 @@ t_result	cli_parse(t_cli *cli, int argc, char **argv)
 	while (++i < argc)
 	{
 		if (argv[i][0] != '-')
-		{
-			if (parse_positional(cli, argv[i]) != RESULT_OK)
-				return (RESULT_ERROR);
-		}
+			ft_dprintf(2, "Warning: extra argument \"%s\"\n", argv[i]);
 		else if (argv[i][1] != '-')
 		{
 			if (parse_short(cli, argc, argv, &i) != RESULT_OK)

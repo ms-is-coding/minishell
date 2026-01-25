@@ -6,11 +6,12 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:47:51 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:34:39 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/24 15:08:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
+#include "env/env_internal.h"
 
 /**
  * @brief Removes an environment variable from the environment.
@@ -29,6 +30,7 @@ t_result	env_remove(t_env *env, const char *key)
 		return (RESULT_ERROR);
 	if (bucket->flags & ENV_FLAG_RDONLY)
 		return (RESULT_RDONLY);
+	env_free_bucket(bucket);
 	bucket->key = NULL;
 	bucket->value = NULL;
 	bucket->is_tombstone = 1;

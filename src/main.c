@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 11:27:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:43:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static void	sig_handler(int sig)
  */
 void	sh_destroy(t_shell *sh)
 {
-	cli_destroy(&sh->cli);
 	vec_free(sh->vm.exit_codes);
 	vec_free(sh->vm.pids);
 	env_destroy(&sh->env);

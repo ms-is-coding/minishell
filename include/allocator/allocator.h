@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 10:07:04 by smamalig          #+#    #+#             */
-/*   Updated: 2025/11/14 12:38:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:21:45 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,14 @@
 # ifndef STACK_ARENAS
 #  define STACK_ARENAS 1
 # endif
-# ifndef STACK_SLABS
-#  define STACK_SLABS 1
-# endif
 # ifndef MAX_ALLOC_SIZE
 #  define MAX_ALLOC_SIZE 512
 # endif
 
 # ifdef STACK_ONLY
 #  define ARENA_CAPACITY 4080 // 4096 - 16
-#  define SLAB_CAPACITY 4080 // 4096 - 16
 # else // add malloc padding
 #  define ARENA_CAPACITY 4072 // 4096 - 16 - 8
-#  define SLAB_CAPACITY 4072 // 4096 - 16 - 8
 # endif
 
 typedef uint16_t	t_arena_id;
@@ -40,7 +35,6 @@ typedef uint16_t	t_arena_id;
 typedef enum e_alloc_kind
 {
 	ALLOC_ARENA,
-	ALLOC_SLAB,
 	ALLOC_HEAP,
 }	t_alloc_kind;
 
@@ -73,25 +67,12 @@ typedef struct s_large_alloc
 	void			*data;
 }	t_large_alloc;
 
-typedef struct s_slab_region
-{
-	struct s_slab_region	*next;
-	uint16_t				id;
-	uint16_t				used;
-	uint16_t				max_free;
-	char					reserved[2];
-	char					data[SLAB_CAPACITY];
-}	t_slab_region;
-
 typedef struct s_allocator
 {
 	t_arena			*arenas;
-	t_slab_region	*slabs;
 	t_arena_id		next_arena_id;
-	uint16_t		next_slab_id;
-	char			reserved[4];
+	char			reserved[6];
 	t_arena			stack_arenas[STACK_ARENAS];
-	t_slab_region	stack_slabs[STACK_SLABS];
 }	t_allocator;
 
 void			allocator_init(t_allocator *alc);
@@ -102,26 +83,5 @@ void			allocator_arena_free(t_allocator *alc, t_arena *arena);
 
 t_allocation	allocator_alloc(t_allocator *alc, size_t size, t_arena *arena);
 void			allocator_free(t_allocator *alc, t_allocation alloc);
-
-// Attempts to find a slab allocation corresponding to `ptr`. If the allocation
-// was not found (e.g. `ptr` is arena-based, or not allocated through this API),
-// the function will throw an error.
-void			allocator_free_ptr(void *ptr);
-
-void			*allocator_malloc(size_t size)
-				__attribute__((__malloc__))
-				__attribute__((__warn_unused_result__));
-
-void			*allocator_calloc(size_t n, size_t size)
-				__attribute__((__malloc__))
-				__attribute__((__warn_unused_result__));
-
-char			*allocator_strdup(const char *s)
-				__attribute__((__malloc__))
-				__attribute__((__warn_unused_result__));
-
-char			*allocator_strndup(const char *s, size_t n)
-				__attribute__((__malloc__))
-				__attribute__((__warn_unused_result__));
 
 #endif // ALLOCATOR_H

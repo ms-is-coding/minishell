@@ -6,12 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:44:20 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/15 13:10:56 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 12:25:00 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/env.h"
-#include "env/env_internal.h"
 
 /**
  * @brief Retrieves the value associated with a given key in the environment.

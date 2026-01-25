@@ -6,15 +6,50 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 00:49:43 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:10:21 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 12:43:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
+#include "env/env.h"
 #include "env/env_internal.h"
 #include "core/string.h"
+#include "core/stdio.h"
 
-#define UNREACHABLE NULL
+static const char *get_color(const char *ptr)
+{
+	int index = ((uint64_t)ptr) % 14;
+
+	return (const char *[]){
+		"\x1b[31m",
+		"\x1b[32m",
+		"\x1b[33m",
+		"\x1b[34m",
+		"\x1b[35m",
+		"\x1b[36m",
+		"\x1b[37m",
+		"\x1b[30;41m",
+		"\x1b[30;42m",
+		"\x1b[30;43m",
+		"\x1b[30;44m",
+		"\x1b[30;45m",
+		"\x1b[30;46m",
+		"\x1b[30;47m",
+	}[index];
+}
+
+static void	print_env(t_env *e)
+{
+	return ;
+	; ft_dprintf(2, "\x1b[93m==> ENV <==\x1b[m\n");
+	for (size_t i = 0; i < e->capacity; i++)
+	{
+		t_env_bucket	*b = &e->buckets[i];
+		ft_dprintf(2, "%s%p\x1b[m [\"%s\" = \"%.32s\", flags=%i] %s%p\x1b[m\n",
+			b->is_tombstone ? "\x1b[91m" : b->value ? "\x1b[92m" : "",
+			b, b->key, b->value, b->flags, get_color(b->key), b->key);
+	}
+}
 
 /**
  * @brief Finds the bucket associated with a given key in the environment.
@@ -30,6 +65,7 @@ t_env_bucket	*env_find_key(t_env *env, const char *key)
 
 	i = env_hash(env, key);
 	bucket = &env->buckets[i];
+	print_env(env);
 	while (bucket)
 	{
 		bucket = &env->buckets[i];
@@ -42,7 +78,7 @@ t_env_bucket	*env_find_key(t_env *env, const char *key)
 			return (bucket);
 		i = (i + 1) % env->capacity;
 	}
-	return (UNREACHABLE);
+	__builtin_unreachable();
 }
 
 /**
@@ -71,5 +107,5 @@ t_env_bucket	*env_find_empty(t_env *env, const char *key)
 			return (bucket);
 		i = (i + 1) % env->capacity;
 	}
-	return (UNREACHABLE);
+	__builtin_unreachable();
 }

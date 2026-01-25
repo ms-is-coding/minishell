@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/25 11:18:10 by smamalig         ###   ########.fr        #
+#    Updated: 2026/01/25 13:22:51 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,12 +58,10 @@ SRC_VM			:= $(addprefix vm/, run.c jump.c redir.c arg.c spawn.c wait.c \
 SRC_DISASM		:= $(addprefix disasm/, disasm.c print.c print2.c null.c cmd.c \
 					arg.c exec.c redir.c jump.c heredoc.c)
 SRC_ENV			:= $(addprefix env/, hash.c get.c set.c remove.c find.c init.c \
-					build.c destroy.c resize.c)
+					build.c destroy.c resize.c helpers.c)
 SRC_ALLOCATOR	:= $(addprefix allocator/, init.c destroy.c alloc.c free.c \
-					malloc.c strdup.c \
 					arena/alloc.c arena/free.c arena/new.c arena/create.c \
-					arena/destroy.c arena/find.c \
-					slab/alloc.c slab/free.c slab/create.c slab/destroy.c)
+					arena/destroy.c arena/find.c)
 SRC_EXPANDER	:= $(addprefix expander/, expand.c init.c internal.c var.c \
 					char.c dquote.c squote.c user.c)
 SRC_UTIL		:= $(addprefix util/, warn.c version.c exec.c \

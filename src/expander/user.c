@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 02:42:44 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 16:19:18 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:25:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static void	get_self_home(t_expander *exp, t_var_expansion_mode mode)
 	exp->len += ft_strlen(home);
 	if (mode == VEXPM_EXTRACT)
 		ft_strcat(exp->frame->argv[exp->frame->argc], home);
-	home = allocator_strdup(home);
+	home = ft_strdup(home);
 	if (!home)
 		return ;
 	env_set(&((t_shell *)exp->sh)->env, "HOME", home,

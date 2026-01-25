@@ -6,11 +6,11 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/14 14:01:08 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:27:05 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:18:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "allocator/allocator_internal.h"
+#include "allocator/allocator.h"
 #include <stdlib.h>
 #include <assert.h>
 
@@ -26,6 +26,4 @@ void	allocator_free(t_allocator *alc, t_allocation alloc)
 	assert(alloc.kind != ALLOC_ARENA);
 	if (alloc.kind == ALLOC_HEAP)
 		free(alloc.data);
-	if (alloc.kind == ALLOC_SLAB)
-		allocator_slab_free(alloc);
 }

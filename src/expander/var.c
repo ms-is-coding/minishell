@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 16:25:19 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 18:52:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/25 13:23:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static const char	*extract_var(t_expander *exp)
 		key[k++] = expander_next(exp);
 	key[k] = '\0';
 	if (k == 0)
-		return (allocator_strdup("$"));
+		return (ft_strdup("$"));
 	return (env_get(&((t_shell *)exp->sh)->env, key));
 }
 

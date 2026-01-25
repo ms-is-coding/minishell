@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 14:28:45 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/14 19:26:46 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/25 13:17:32 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,5 @@ void	allocator_destroy(t_allocator *alc)
 		temp = alc->arenas->next;
 		allocator_arena_destroy(alc, alc->arenas);
 		alc->arenas = temp;
-	}
-	while (alc->slabs)
-	{
-		temp = alc->slabs->next;
-		allocator_slab_destroy(alc, alc->slabs);
-		alc->slabs = temp;
 	}
 }
