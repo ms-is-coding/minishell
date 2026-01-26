@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:01:30 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/16 20:31:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:01:58 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static void	prompt_pwd(t_shell *sh, t_prompt *p)
 	else if (!getcwd(pwd, PATH_MAX))
 		ft_strlcpy(pwd, "(unknown)", PATH_MAX);
 	home = env_get(&sh->env, "HOME");
-	if (ft_strstr(pwd, home))
+	if (home && ft_strlen(home) > 1 && ft_strstr(pwd, home))
 		ft_snprintf(pwd, PATH_MAX, "~%s", pwd + ft_strlen(home));
 	prompt_printf(p, ANSI_BLUE "[%s] ", pwd);
 }
