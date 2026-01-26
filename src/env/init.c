@@ -6,14 +6,17 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 01:02:15 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 13:24:38 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:41:52 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "core/stdio.h"
+#include "core/stdlib.h"
 #include "env/env.h"
 #include "common.h"
 #include "util/exec.h"
 #include "core/string.h"
+#include <stddef.h>
 #include <string.h>
 
 /**
@@ -66,6 +69,25 @@ static inline size_t	scale_1_25_fast(size_t x)
 	return (x + (x >> 2));
 }
 
+static t_result	env_init_entry(t_env *env, const char *entry)
+{
+	char	*key;
+	char	*value;
+
+	key = ft_strdup(entry);
+	if (!key)
+		return (RESULT_ERROR);
+	value = ft_strchr(key, '=');
+	if (!value)
+	{
+		ft_free(key);
+		return (RESULT_ERROR);
+	}
+	value[0] = '\0';
+	value++;
+	return (env_set(env, key, value, ENV_FLAG_EXPORT));
+}
+
 /**
  * @brief Initializes the environment structure with the given envp array.
  *
@@ -77,8 +99,6 @@ static inline size_t	scale_1_25_fast(size_t x)
 t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 {
 	size_t	i;
-	char	*value;
-	char	*entry;
 
 	i = 0;
 	env->capacity = scale_1_25_fast(envp_count(envp));
@@ -91,13 +111,11 @@ t_result	env_init(t_env *env, t_allocator *allocator, char **envp)
 	env->allocator = allocator;
 	while (envp[i])
 	{
-		entry = ft_strdup(envp[i]);
-		if (!entry)
-			continue ;
-		value = ft_strchr(entry, '=');
-		value[0] = '\0';
-		value++;
-		env_set(env, entry, value, ENV_FLAG_EXPORT);
+		if (env_init_entry(env, envp[i]) != RESULT_OK)
+		{
+			env_destroy(env);
+			return (RESULT_ERROR);
+		}
 		i++;
 	}
 	env_init_default_values(env);
