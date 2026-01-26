@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/26 14:52:30 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 15:55:42 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	vm_run(t_vm *vm, t_program *program)
 		}
 		handler(vm, program);
 	}
+	reset_fds(vm);
 	signal(SIGINT, sig_handler);
 	vm->last_exit_code = (int32_t)(int64_t)vec_get(vm->exit_codes, -1);
 	vm->active = false;

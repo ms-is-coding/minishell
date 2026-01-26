@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/26 15:33:43 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 15:52:38 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 		ft_dprintf(fd, "%s\n", line);
 		free(line);
 	}
+	close(fd);
 	vm->here_doc = false;
 }
 
@@ -85,7 +86,7 @@ static t_result	heredoc_open_file(char *filename)
 		if (i > 0x10000)
 			return (RESULT_ERROR);
 		ft_snprintf(filename, PATH_MAX, "/tmp/.msh_heredoc_%i", i);
-		fd = open(filename, O_CREAT | O_EXCL, 0600);
+		fd = open(filename, O_CREAT | O_EXCL | O_CLOEXEC, 0600);
 	}
 	close(fd);
 	return (RESULT_OK);
