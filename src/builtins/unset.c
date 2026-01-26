@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 18:20:35 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/15 13:09:16 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/26 16:09:27 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	builtin_unset(
 
 	argv++;
 	status = 0;
+	if (!argv[0])
+		return (0);
 	if (*argv[0] == '-' && *argv[1] != '\0')
 	{
 		if (ft_strcmp(*argv, "--") == 0)
