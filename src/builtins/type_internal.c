@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   type_internal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
+/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:11 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/14 18:45:55 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/26 16:19:57 by macarnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include <stddef.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include "builtins/type_internal.h"
 #include "core/string.h"
 
@@ -79,7 +80,7 @@ static size_t	fill_e(char *buf, const char *name, const char *path, char type)
  * @param type Type of the command
  * @param flags Flags indicating the output format
  */
-void	type_info(const char *name, const char *path, char type, char flags)
+bool	type_info(const char *name, const char *path, char type, char flags)
 {
 	char	buf[PATH_MAX];
 	size_t	len;
@@ -93,4 +94,5 @@ void	type_info(const char *name, const char *path, char type, char flags)
 	buf[len] = '\n';
 	write(STDOUT_FILENO, buf, len + 1);
 	ft_memset(buf, 0, PATH_MAX);
+	return (true);
 }

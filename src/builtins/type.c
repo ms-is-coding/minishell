@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
+/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 11:42:36 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/19 23:02:03 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:25:35 by macarnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,19 @@ static bool	try_exec(const char *arg, const char *env_path, char flags)
 
 	if (!arg || !env_path)
 		return (false);
+	if (*arg == '/' || *arg == '.')
+	{
+		if (access(arg, X_OK) == 0)
+			return (type_info(arg, arg, TYPE_EXEC, flags));
+		else
+			return (false);
+	}
 	while (*env_path)
 	{
 		len = ft_strcspn(env_path, ":");
 		ft_snprintf(path, PATH_MAX, "%.*s/%s", (int)len, env_path, arg);
 		if (access(path, X_OK) == 0)
-		{
-			type_info(arg, path, TYPE_EXEC, flags);
-			return (true);
-		}
+			return (type_info(arg, path, TYPE_EXEC, flags));
 		env_path += len;
 		if (*env_path == ':')
 			env_path++;

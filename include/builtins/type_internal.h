@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_internal.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
+/*   By: macarnie <macarnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:48:30 by mattcarniel       #+#    #+#             */
-/*   Updated: 2025/11/20 01:55:16 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/26 16:20:07 by macarnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@
 # define TYPE_EXEC		2
 # define TYPE_UNKNOWN	4
 
-void	type_info(const char *name, const char *path, char type, char flags);
+bool	type_info(const char *name, const char *path, char type, char flags);
 
 #endif
