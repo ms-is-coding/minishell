@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:58:16 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:26:58 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/26 14:53:17 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,6 @@ void	execute_builtin(void *sh_ptr, t_vm *vm, char **env)
 	reset_save(vm, saved_fds);
 	close_pipes(vm);
 	reset_fds(vm);
-	if (sh->should_exit)
-	{
-		sh_destroy(sh);
-		ft_dprintf(2, "exit\n");
-		_exit(exit_code);
-	}
 	vm->redir_count = 0;
 	vec_push(vm->exit_codes, (void *)(intptr_t)exit_code);
 }

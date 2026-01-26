@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:00:10 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 11:24:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:44:47 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ extern volatile sig_atomic_t	g_sigint;
 t_shell	*get_shell(t_shell *sh);
 int		repl(t_shell *sh);
 void	sh_destroy(t_shell *sh);
+void	sig_handler(int sig);
 
 #endif

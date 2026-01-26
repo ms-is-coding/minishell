@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 11:25:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 13:54:12 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:50:28 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <strings.h>
 #include <sys/types.h>
 #include <termios.h>
@@ -61,15 +60,15 @@ t_shell	*get_shell(t_shell *sh)
  *
  * @param sig Signal number
  */
-static void	sig_handler(int sig)
+void	sig_handler(int sig)
 {
 	t_shell	*sh;
 
+	(void)sig;
 	sh = get_shell(0);
 	if (!sh->vm.active)
 	{
-		if (sig == SIGINT)
-			rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_clear_visible_line();
 		rl_redraw_prompt_last_line();
 		rl_redisplay();

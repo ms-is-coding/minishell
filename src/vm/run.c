@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 14:02:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:52:30 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,6 @@ static t_exec_handler	dispatch_opcode(t_opcode opcode)
 }
 
 /**
- * @brief Signal handler for SIGINT and SIGQUIT.
- *
- * @param sig Signal number
- */
-static void	sig_handler(int sig)
-{
-	t_shell	*sh;
-
-	sh = get_shell(0);
-	if (!sh->vm.active)
-	{
-		if (sig == SIGINT)
-			rl_replace_line("", 0);
-		rl_clear_visible_line();
-		rl_redraw_prompt_last_line();
-		rl_redisplay();
-	}
-}
-
-/**
  * @brief Runs the virtual machine with the given program.
  *
  * @param vm Pointer to the virtual machine instance
@@ -79,7 +59,7 @@ void	vm_run(t_vm *vm, t_program *program)
 	vm->redir_count = 0;
 	vec_clear(vm->exit_codes);
 	signal(SIGINT, SIG_IGN);
-	while (program->pc < program->len)
+	while (program->pc < program->len && !((t_shell *)vm->shell)->should_exit)
 	{
 		handler = dispatch_opcode(program->data[program->pc] & OPCODE_MASK);
 		if (!handler)
