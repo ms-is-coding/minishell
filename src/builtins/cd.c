@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:44:16 by mattcarniel       #+#    #+#             */
-/*   Updated: 2026/01/25 13:22:29 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 15:17:50 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ static const char	*resolve_cwd(t_env *env, const char *path)
 static void	free_pwds(char **old, char **new)
 {
 	if (*old)
-		free(*old);
+		ft_free(*old);
 	if (*new)
-		free(*new);
+		ft_free(*new);
 }
 
 /**

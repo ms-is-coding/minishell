@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:33:13 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/24 16:27:28 by mattcarniel      ###   ########.fr       */
+/*   Updated: 2026/01/26 15:18:08 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ t_result	vm_init(t_vm *vm)
 	vm->exit_codes = vec_new(16);
 	vm->active = false;
 	vm->redir_count = 0;
+	vm->last_exit_code = 0;
 	return (RESULT_OK);
 }
