@@ -6,7 +6,7 @@
 #    By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 11:03:00 by smamalig          #+#    #+#              #
-#    Updated: 2026/01/25 13:22:51 by smamalig         ###   ########.fr        #
+#    Updated: 2026/01/26 14:22:39 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -156,7 +156,7 @@ re: fclean
 
 .PHONY: norm
 norm:
-	@echo $(SRCS) | xargs -n1 -P$(shell nproc) norminette | grep -v OK!
+	@echo $(SRCS) $(shell find . -name "*.h") | xargs -n1 -P$(shell nproc) norminette | grep -v OK!
 
 
 .PHONY: tidy

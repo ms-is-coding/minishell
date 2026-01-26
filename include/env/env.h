@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 17:20:09 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/25 12:03:47 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:23:16 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "allocator/allocator.h"
 # include "core/stdlib.h"
-#include <limits.h>
 
 typedef uint8_t	t_env_flags;
 
