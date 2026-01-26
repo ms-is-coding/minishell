@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 14:18:40 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/26 15:55:42 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:23:37 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,12 @@ void	vm_run(t_vm *vm, t_program *program)
 	while (program->pc < program->len && !((t_shell *)vm->shell)->should_exit)
 	{
 		handler = dispatch_opcode(program->data[program->pc] & OPCODE_MASK);
-		if (!handler)
-		{
-			ft_printf("FATAL: SIGILL (%02hhx) at %lx\n",
-				program->data[program->pc], program->pc);
-			exit(128 + SIGILL);
-		}
 		handler(vm, program);
+	}
+	if (vm->had_error)
+	{
+		vm->had_error = false;
+		vec_push(vm->exit_codes, (void *)1);
 	}
 	reset_fds(vm);
 	signal(SIGINT, sig_handler);
