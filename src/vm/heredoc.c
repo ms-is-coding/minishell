@@ -6,7 +6,7 @@
 /*   By: mattcarniel <mattcarniel@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 17:52:21 by smamalig          #+#    #+#             */
-/*   Updated: 2026/01/26 15:27:34 by smamalig         ###   ########.fr       */
+/*   Updated: 2026/01/26 15:33:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,21 @@ static void	heredoc_loop(t_vm *vm, char *filename, char *delim)
 	vm->here_doc = false;
 }
 
-static t_result	heredoc_open_file(char **filename)
+static t_result	heredoc_open_file(char *filename)
 {
 	int	fd;
 	int	i;
 
 	i = 0;
-	ft_snprintf(*filename, PATH_MAX, "/tmp/.msh_heredoc_%i", i);
-	fd = open(*filename, O_CREAT | O_EXCL, 0600);
+	ft_snprintf(filename, PATH_MAX, "/tmp/.msh_heredoc_%i", i);
+	fd = open(filename, O_CREAT | O_EXCL, 0600);
 	while (fd == -1)
 	{
 		i++;
 		if (i > 0x10000)
 			return (RESULT_ERROR);
-		ft_snprintf(*filename, PATH_MAX, "/tmp/.msh_heredoc_%i", i);
-		fd = open(*filename, O_CREAT | O_EXCL, 0600);
+		ft_snprintf(filename, PATH_MAX, "/tmp/.msh_heredoc_%i", i);
+		fd = open(filename, O_CREAT | O_EXCL, 0600);
 	}
 	close(fd);
 	return (RESULT_OK);
@@ -111,7 +111,7 @@ void	vm_heredoc(t_vm *vm, t_program *program)
 	if (target_fd == -1)
 		target_fd = 0;
 	delim = ft_strndup((char *)program->data + program->pc, len);
-	if (heredoc_open_file((char **)&filename) != RESULT_OK)
+	if (heredoc_open_file(filename) != RESULT_OK)
 	{
 		ft_dprintf(2, "error: could not create heredoc\n");
 		vm->had_error = true;
